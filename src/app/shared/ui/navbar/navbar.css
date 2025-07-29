@@ -1,0 +1,31 @@
+.underline-animated::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 3px; /* épaisseur du soulignement */
+  width: 0;
+  background-color: var(
+    --color-accent
+  ); /* ou theme('colors.accent') en Tailwind */
+  transition: width 0.3s ease-in-out;
+}
+
+.underline-animated:hover::after {
+  width: 100%;
+}
+
+.bouncing-dot {
+  animation: bounce 0.5s ease infinite;
+  display: inline-block;
+}
+
+@keyframes bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
