@@ -7,6 +7,7 @@ import angularTemplate from "@angular-eslint/eslint-plugin-template";
 import angularTemplateParser from "@angular-eslint/template-parser";
 import prettier from "eslint-config-prettier";
 import globals from "globals";
+import vitest from 'eslint-plugin-vitest';
 
 export default [
   // Ignorer les fichiers
@@ -23,16 +24,14 @@ export default [
 
   // Configuration pour les fichiers TypeScript
   {
-    files: ['**/*.spec.ts'],
+    // Configuration pour les fichiers de test Vitest
+    files: ["**/*.spec.ts"],
+    ...vitest.configs.recommended,
     languageOptions: {
-      globals: vitest.environments['vitest/globals'].globals
+      globals: {
+        ...vitest.environments.env.globals,
+      },
     },
-    plugins: {
-      vitest
-    },
-    rules: {
-      ...vitest.configs.recommended.rules
-    }
   },
   {
     files: ["**/*.ts"],
