@@ -1,0 +1,16 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="space-y-6">
+  <div>
+    <label for="email" class="block text-sm font-medium text-text">Email</label>
+    <input id="email" type="email" formControlName="email" required class="mt-1 block w-full px-3 py-2 bg-background border border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-accent focus:border-accent sm:text-sm">
+  </div>
+  <div>
+    <label for="password" class="block text-sm font-medium text-text">Mot de passe</label>
+    <input id="password" type="password" formControlName="password" required class="mt-1 block w-full px-3 py-2 bg-background border border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-accent focus:border-accent sm:text-sm">
+  </div>
+  @if (errorMessage()) {
+    <div class="text-red-500 text-sm">{{ errorMessage() }}</div>
+  }
+  <app-button type="submit" color="primary" [disabled]="form.invalid || isLoading()" [isLoading]="isLoading()" [customClass]="'w-full py-3'">
+    Se connecter
+  </app-button>
+</form>
