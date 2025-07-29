@@ -1,0 +1,7 @@
+<div class="fixed inset-0 bg-background bg-opacity-50 z-50 flex justify-center items-center" (click)="closeModal.emit()">
+  <div class="bg-background border border-accent p-8 rounded-lg shadow-lg w-full max-w-md" (click)="$event.stopPropagation()">
+    <h2 class="text-2xl font-bold text-text mb-4 flex justify-center">Connexion</h2>
+    <h3 class="text-text bg-accent py-2 rounded-xs font-bold text-sm mb-4 flex justify-center">Éspace réserver au grand barbu !!</h3>
+    <app-login-form (loginSuccess)="closeModal.emit()" />
+  </div>
+</div>
