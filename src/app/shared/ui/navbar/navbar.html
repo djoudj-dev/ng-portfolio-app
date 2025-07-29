@@ -1,0 +1,89 @@
+<nav
+  class="bg-background shadow-accent fixed top-0 left-0 z-50 w-full shadow-xs"
+  aria-label="Barre de navigation principale"
+>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16">
+      <!-- Logo -->
+      <div class="flex items-center">
+        <a
+          routerLink="/"
+          class="flex items-center text-2xl font-bold text-primary hover:text-accent"
+        >
+          <img ngSrc="/logo.svg" alt="Julien.N" class="h-16 w-16 text-primary" width="40" height="40" />
+          <span class="text-text text-3xl font-bold"
+          >Julien<span class="text-accent bouncing-dot">.</span>N</span
+          >
+        </a>
+      </div>
+
+      <!-- Menu centré -->
+      <div class="hidden md:flex items-center justify-center flex-1">
+        <div class="flex space-x-4">
+          @for (item of navigationItems; track item.label) {
+            <button
+              (click)="onNavigationClick(item.route, item.fragment)"
+              class="flex items-center space-x-2 relative group font-bold text-text hover:text-accent underline-animated"
+            >
+              <img
+                [ngSrc]="item.icon"
+                [alt]="item.altText"
+                class="h-5 w-5 icon-invert mb-1"
+                width="20"
+                height="20"
+              />
+              <span>{{ item.label }}</span>
+            </button>
+          }
+        </div>
+      </div>
+
+      <!-- Espace pour équilibrer et menu mobile -->
+      <div class="flex items-center space-x-4">
+        <a href="/cv/resume.txt" download="resume.txt">
+          <app-button
+            color="accent"
+            aria-label="Télécharger CV"
+            [customClass]="
+              'px-2 sm:px-3 py-1 sm:py-2 shadow-md hover:shadow-lg transition-all duration-200'
+            "
+          >
+            <div class="flex items-center justify-center gap-2 sm:gap-3">
+              <figure class="relative h-4 w-4 flex-shrink-0 sm:h-5 sm:w-5">
+                <img
+                  [ngSrc]="'/icons/download.svg'"
+                  alt="Icône de download"
+                  class="icon-invert absolute inset-0 h-full w-full object-contain"
+                  width="20"
+                  height="20"
+                />
+              </figure>
+              <span class="text-text text-sm font-medium sm:text-base"
+              >Mon CV</span
+              >
+            </div>
+          </app-button>
+        </a>
+        <app-button-dark-mode />
+
+        <!-- Auth Buttons -->
+        @if (!authService.isAuthenticated()) {
+          <button (click)="openLoginModal()" class="p-2 rounded-full hover:bg-accent/20">
+            <img ngSrc="/icons/login.svg" alt="Login" class="h-6 w-6 icon-invert" width="24" height="24" />
+          </button>
+        } @else {
+          <button (click)="logout()" class="p-2 rounded-full hover:bg-accent/20">
+            <img ngSrc="/icons/logout.svg" alt="Logout" class="h-6 w-6 icon-invert" width="24" height="24" />
+          </button>
+          <button (click)="navigateToAdmin()" class="p-2 rounded-full hover:bg-accent/20">
+            <img ngSrc="/icons/admin.svg" alt="Admin" class="h-6 w-6 icon-invert" width="24" height="24" />
+          </button>
+        }
+      </div>
+    </div>
+  </div>
+</nav>
+
+@if (isLoginModalOpen()) {
+  <app-login-modal (closeModal)="closeLoginModal()" />
+}
