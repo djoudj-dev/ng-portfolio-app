@@ -1,0 +1,20 @@
+Julien N.
+Web Developer
+
+Skills:
+- Angular
+- TypeScript
+- HTML/CSS
+- JavaScript
+- Node.js
+
+Experience:
+- Web Developer at Company A (2020-Present)
+- Junior Developer at Company B (2018-2020)
+
+Education:
+- Bachelor's Degree in Computer Science (2018)
+
+Contact:
+- Email: julien.n@example.com
+- LinkedIn: linkedin.com/in/julien-n
