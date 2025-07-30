@@ -1,0 +1,127 @@
+<section
+  class="py-8 -mt-px bg-background lg:py-16 text-text"
+  aria-labelledby="intro-heading"
+>
+  <div class="container px-4 mx-auto">
+    <!-- Layout en deux colonnes sur desktop -->
+    <div class="flex flex-col lg:flex-row lg:items-center lg:gap-12">
+      <!-- Colonne de gauche - Contenu texte -->
+      <article class="lg:w-1/2 lg:pr-8">
+        <h2
+          id="intro-heading"
+          class="mb-4 text-3xl font-bold text-center lg:mb-8 lg:text-start lg:text-6xl"
+        >
+          Bonjour,
+        </h2>
+
+        <h3 class="mb-6 text-2xl text-center lg:text-start lg:text-4xl">
+          Je suis
+          <strong
+            class="inline-block px-3 py-1 text-white rounded-lg transition-transform duration-300 bg-accent hover:rotate-15"
+          >
+            Julien NÉDELLEC
+          </strong>
+        </h3>
+
+        <h4
+          class="flex mb-6 max-w-2xl text-xl text-center leading-relaxed lg:text-start lg:text-2xl"
+        >
+          Développeur Angular passionné par la création d'applications web
+          modernes, performantes et accessibles. J'aime me spécialiser dans le
+          développement frontend avec Angular mais aussi dans le développement
+          de la partie backend selon les besoins.
+        </h4>
+
+        <p
+          class="mb-6 max-w-xl text-lg text-center leading-relaxed lg:text-start lg:text-xl text-text/80"
+        >
+          Mon objectif est de créer des expériences utilisateur exceptionnelles
+          en utilisant les meilleures pratiques et les technologies les plus
+          adaptées au projet en cours.
+        </p>
+
+        <!-- Boutons -->
+        <nav
+          class="flex flex-wrap justify-center gap-4 mt-8 lg:mt-12 lg:justify-start"
+          aria-label="Actions principales"
+        >
+          <app-button
+            color="secondary"
+            aria-label="Voir mes projets"
+            [customClass]="
+              'px-5 sm:px-6 py-3 sm:py-4 shadow-md hover:shadow-lg transition-all duration-200'
+            "
+            (buttonClick)="scrollToSection('projects')"
+          >
+            <div class="flex justify-center items-center gap-2 sm:gap-3">
+              <span class="text-sm font-medium sm:text-base text-text"
+              >Voir mes projets</span
+              >
+              <figure class="relative flex-shrink-0 w-4 h-4 sm:h-5 sm:w-5">
+                <img
+                  [ngSrc]="'icons/project.svg'"
+                  alt="Icône de projet"
+                  class="object-contain absolute inset-0 w-full h-full icon-invert"
+                  width="20"
+                  height="20"
+                />
+              </figure>
+            </div>
+          </app-button>
+
+          <app-button
+            color="accent"
+            aria-label="Me contacter"
+            [customClass]="
+              'px-5 sm:px-6 py-3 sm:py-4 shadow-md hover:shadow-lg transition-all duration-200'
+            "
+            (buttonClick)="scrollToSection('contact')"
+          >
+            <div class="flex justify-center items-center gap-2 sm:gap-3">
+              <span class="text-sm font-medium sm:text-base text-text"
+              >Me contacter</span
+              >
+              <figure class="relative flex-shrink-0 w-4 h-4 sm:h-5 sm:w-5">
+                <img
+                  [ngSrc]="'icons/mail.svg'"
+                  alt="Icône d'email"
+                  class="object-contain absolute inset-0 w-full h-full icon-invert"
+                  width="20"
+                  height="20"
+                />
+              </figure>
+            </div>
+          </app-button>
+        </nav>
+      </article>
+
+      <!-- Colonne de droite - Laptop avec WebStorm -->
+      <aside
+        class="hidden justify-center items-center mt-12 lg:mt-0 lg:flex lg:w-1/2"
+        aria-label="Illustration d'environnement de développement"
+      >
+        <figure class="relative z-0">
+          <app-home-laptop />
+        </figure>
+      </aside>
+    </div>
+    <div class="flex justify-center pt-12 lg:pt-14 sm:pt-10">
+      <button
+        (click)="scrollToSection('about')"
+        aria-label="Défiler vers la section À propos"
+        title="Aller à la section À propos"
+        class="p-2 rounded-full shadow-md transition-colors animate-bounce bg-accent hover:bg-accent-600 hover:shadow-lg"
+      >
+        <figure class="relative flex-shrink-0 w-10 h-10">
+          <img
+            [ngSrc]="'icons/arrow-b.svg'"
+            alt="Flèche vers le bas"
+            class="object-contain absolute inset-0 w-full h-full icon-invert"
+            width="24"
+            height="24"
+          />
+        </figure>
+      </button>
+    </div>
+  </div>
+</section>
