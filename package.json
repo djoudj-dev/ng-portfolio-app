@@ -37,7 +37,8 @@
     "rxjs": "~7.8.0",
     "tailwindcss": "^4.1.11",
     "tslib": "^2.3.0",
-    "zone.js": "~0.15.0"
+    "zone.js": "~0.15.0",
+    "jsdom": "^22.0.0"
   },
   "devDependencies": {
     "@analogjs/platform": "^1.19.2",
@@ -62,7 +63,6 @@
     "eslint-plugin-vitest": "^0.5.4",
     "globals": "^16.3.0",
     "jasmine-core": "~5.8.0",
-    "jsdom": "^22.0.0",
     "prettier": "^3.6.2",
     "typescript": "~5.8.2",
     "vite": "^6.0.0",
