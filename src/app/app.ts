@@ -1,10 +1,10 @@
 import { Component, DestroyRef, inject, OnInit, signal } from "@angular/core";
-import { Navbar } from "@shared/ui/navbar/navbar";
+import { Navbar } from "@shared/ui/navbar/components/navbar";
 import { NavigationEnd, Router, RouterOutlet } from "@angular/router";
 import { filter, delay } from "rxjs/operators";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { ScrollService } from "@core/services/scroll-service";
-import { ToastComponent } from "@shared/ui/toast/toast";
+import { ToastComponent } from "@shared/ui/toast/components/toast";
 
 @Component({
   selector: "app-root",

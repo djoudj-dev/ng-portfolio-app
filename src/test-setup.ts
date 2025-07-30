@@ -1,4 +1,3 @@
-import "@angular/compiler";
 import "@analogjs/vitest-angular/setup-zone";
 
 import { registerLocaleData } from "@angular/common";
