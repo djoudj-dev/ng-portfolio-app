@@ -1,19 +1,19 @@
 import { ChangeDetectionStrategy, Component, signal } from "@angular/core";
-import { HomeBadge } from "@features/users/home/home-badge/home-badge";
 import { NgOptimizedImage } from "@angular/common";
+import { HomeBadge } from "@features/home/badge/components/home-badge/home-badge";
 
 @Component({
   selector: "app-home-banner",
   imports: [HomeBadge, NgOptimizedImage],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <header class="bg-background flex justify-center px-4 mt-16">
+    <header class="mt-16 flex justify-center bg-background px-2">
       <section
-        class="text-text border-accent-600 max-w-full flex-col items-center gap-4 rounded-b-lg border px-5 py-4 shadow-lg"
+        class="flex-col items-center gap-2 rounded-b-lg border border-accent-600 px-4 py-3 shadow-lg sm:px-5 sm:py-4 md:flex-row md:justify-between md:gap-0"
         aria-labelledby="profile-heading"
       >
         <div
-          class="flex w-full flex-col gap-4 md:flex-row md:items-center md:justify-between"
+          class="flex w-full flex-col items-center gap-2  sm:flex-col md:justify-center"
         >
           <div class="flex items-center gap-4">
             <figure class="flex flex-shrink-0 items-center justify-center">
@@ -26,7 +26,10 @@ import { NgOptimizedImage } from "@angular/common";
               />
             </figure>
 
-            <h1 id="profile-heading" class="text-xl font-bold">
+            <h1
+              id="profile-heading"
+              class="text-center text-xl font-bold text-text sm:text-left"
+            >
               {{ title() }}
             </h1>
           </div>
