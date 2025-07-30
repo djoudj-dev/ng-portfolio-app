@@ -64,17 +64,18 @@ export class AuthService {
     const { error } = await supabase.auth.signOut();
     if (error) throw error;
     this.userProfileSignal.set(null);
-    await this.router.navigate(["/home"]);
+    await this.router.navigate(['/home']);
   }
 
   private async fetchUserProfile(userId: string): Promise<void> {
     const { data, error } = await supabase
-      .from("profiles")
-      .select("*")
-      .eq("id", userId)
+      .from('profiles')
+      .select('*')
+      .eq('id', userId)
       .maybeSingle();
 
     if (error) {
+      console.error("Erreur lors de la récupération du profil utilisateur", error);
       this.userProfileSignal.set(null);
       return;
     }

@@ -10,5 +10,6 @@ export const adminGuard: CanActivateFn = (): boolean | UrlTree => {
     return true;
   }
 
+  // Redirige vers la page d'accueil si l'utilisateur n'est pas admin
   return router.createUrlTree(["/home"]);
 };

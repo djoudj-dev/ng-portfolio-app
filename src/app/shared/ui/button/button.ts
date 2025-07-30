@@ -24,7 +24,7 @@ import {
         <span class="mr-2 inline-block">
           <img
             [ngSrc]="iconSpinner()"
-            class="text-text icon-invert h-4 w-4 animate-spin"
+            class="h-4 w-4 text-text icon-invert animate-spin"
             alt="Loading"
             height="24"
             width="24"
@@ -50,11 +50,11 @@ export class ButtonComponent {
   readonly iconSpinner = signal("icons/spinner.svg");
 
   readonly buttonClasses: Signal<Record<string, boolean>> = computed(() => ({
-    "bg-primary text-white hover:bg-primary/80 focus:bg-primary/70 active:bg-primary/90":
+    "bg-primary hover:bg-primary/80 focus:bg-primary/70 active:bg-primary/90 text-white":
       this.color() === "primary",
-    "bg-secondary text-white hover:bg-secondary/80 focus:bg-secondary/70 active:bg-secondary/90":
+    "bg-secondary hover:bg-secondary/80 focus:bg-secondary/70 active:bg-secondary/90 text-white":
       this.color() === "secondary",
-    "bg-accent text-white hover:bg-accent/80 focus:bg-accent/70 active:bg-accent/90":
+    "bg-accent hover:bg-accent/80 focus:bg-accent/70 active:bg-accent/90 text-white":
       this.color() === "accent",
 
     "transition-all duration-300 ease-in-out transform hover:scale-105 active:scale-95": true,

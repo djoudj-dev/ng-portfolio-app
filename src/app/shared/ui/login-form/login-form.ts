@@ -1,8 +1,9 @@
 import { Component, inject, output, signal } from "@angular/core";
 import { FormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
-import { AuthService } from "@core/services/auth.service";
+import { AuthService } from "@app/core/services/auth-service";
 import { ButtonComponent } from "@shared/ui/button/button";
 import { Router } from "@angular/router";
+import { ToastService } from "@shared/ui/toast/service/toast-service";
 
 @Component({
   selector: "app-login-form",
@@ -14,6 +15,7 @@ export class LoginFormComponent {
   private readonly fb = inject(FormBuilder);
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
+  private readonly toastService = inject(ToastService);
   readonly loginSuccess = output<void>();
   readonly isLoading = signal(false);
   readonly errorMessage = signal<string | null>(null);
@@ -23,7 +25,7 @@ export class LoginFormComponent {
     password: ["", [Validators.required]],
   });
 
-  onSubmit(): void {
+  async onSubmit(): Promise<void> {
     if (this.form.invalid) {
       return;
     }
@@ -32,17 +34,28 @@ export class LoginFormComponent {
 
     const credentials = this.form.getRawValue();
 
-    this.authService
-      .login({ email: credentials.email!, password: credentials.password! })
-      .subscribe({
-        next: () => {
-          this.loginSuccess.emit();
-          this.router.navigate(["/admin/dashboard"]); // ou une autre page protégée
-        },
-        error: (err: Error) => {
-          this.errorMessage.set(err.message || "An error occurred");
-          this.isLoading.set(false);
-        },
+    try {
+      await this.authService.signIn(
+        credentials.email!,
+        credentials.password!,
+      );
+      this.loginSuccess.emit();
+      this.toastService.show({
+        message: "Connexion réussie",
+        type: "success"
       });
+      this.router.navigate(["/admin/dashboard"]);
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        this.errorMessage.set(err.message);
+        this.toastService.show({
+          message: `Échec de connexion: ${err.message}`,
+          type: "error",
+          duration: 5000
+        });
+      }
+    } finally {
+      this.isLoading.set(false);
+    }
   }
 }
