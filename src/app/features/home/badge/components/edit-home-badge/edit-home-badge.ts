@@ -21,7 +21,7 @@ import {
             >Statut du badge</label
           >
           <select
-            class="w-full px-3 py-2 border border-primary-200 rounded-md bg-white text-text"
+            class="w-full px-3 py-2 border border-primary-200 rounded-md bg-background text-text"
             [ngModel]="badge()?.status"
             (ngModelChange)="updateStatus($event)"
           >
@@ -67,7 +67,13 @@ export class EditHomeBadge {
   updateDate(dateString: string): void {
     const badgeId = this.badge()?.id;
     if (badgeId) {
-      const date = dateString ? new Date(dateString).toISOString() : null;
+      let date: string | null = null;
+      if (dateString) {
+        const d = new Date(dateString);
+        if (!isNaN(d.getTime())) {
+          date = d.toISOString();
+        }
+      }
       this.badgeService.updateBadgeAvailability(badgeId, date);
     }
   }
