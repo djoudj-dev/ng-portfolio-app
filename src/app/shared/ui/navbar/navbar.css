@@ -3,11 +3,9 @@
   position: absolute;
   bottom: 0;
   left: 0;
-  height: 3px; /* épaisseur du soulignement */
+  height: 3px;
   width: 0;
-  background-color: var(
-    --color-accent
-  ); /* ou theme('colors.accent') en Tailwind */
+  background-color: var(--color-accent);
   transition: width 0.3s ease-in-out;
 }
 
