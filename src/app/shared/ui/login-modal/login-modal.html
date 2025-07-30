@@ -1,7 +1,7 @@
-<div class="fixed inset-0 bg-background bg-opacity-50 z-50 flex justify-center items-center" (click)="closeModal.emit()">
-  <div class="bg-background border border-accent p-8 rounded-lg shadow-lg w-full max-w-md" (click)="$event.stopPropagation()">
-    <h2 class="text-2xl font-bold text-text mb-4 flex justify-center">Connexion</h2>
-    <h3 class="text-text bg-accent py-2 rounded-xs font-bold text-sm mb-4 flex justify-center">Éspace réserver au grand barbu !!</h3>
+<div class="flex fixed inset-0 z-50 justify-center items-center bg-opacity-50 bg-background" (click)="closeModal.emit()">
+  <div class="p-8 w-full max-w-md border rounded-lg shadow-lg bg-background border-accent" (click)="$event.stopPropagation()">
+    <h2 class="flex justify-center mb-4 text-2xl font-bold text-text">Connexion</h2>
+    <h3 class="flex justify-center py-2 mb-4 text-sm font-bold bg-accent rounded-xs text-text">Éspace réserver au grand barbu !!</h3>
     <app-login-form (loginSuccess)="closeModal.emit()" />
   </div>
 </div>
