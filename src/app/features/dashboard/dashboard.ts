@@ -1,9 +1,10 @@
 import { ChangeDetectionStrategy, Component } from "@angular/core";
-import { EditHomeBadge } from "@features/admin/edit-home-badge/edit-home-badge";
+import { EditHomeBadge } from "@features/home/badge/components/edit-home-badge/edit-home-badge";
+import { EditCvComponent } from "./edit-cv/edit-cv";
 
 @Component({
   selector: "app-dashboard",
-  imports: [EditHomeBadge],
+  imports: [EditHomeBadge, EditCvComponent],
   templateUrl: "./dashboard.html",
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
