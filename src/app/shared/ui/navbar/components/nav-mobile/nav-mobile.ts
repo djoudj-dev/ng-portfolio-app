@@ -5,11 +5,11 @@ import {
   signal,
   ElementRef,
   HostListener,
-  output
+  output,
 } from "@angular/core";
-import { ScrollService } from "@app/core/services/scroll-service";
+import { ScrollService } from "@core/services/scroll-service";
 import { NAVIGATION_ITEMS } from "@shared/ui/navbar/constants/navlink.constant";
-import { AuthService } from "@app/core/services/auth-service";
+import { AuthService } from "@core/services/auth-service";
 import { Router } from "@angular/router";
 
 @Component({
