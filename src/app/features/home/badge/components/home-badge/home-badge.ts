@@ -67,7 +67,7 @@ export class HomeBadge {
       case BADGE_STATUS.UNAVAILABLE:
         return "Indisponible";
       case BADGE_STATUS.AVAILABLE_FROM:
-        return "Disponible à partir du :";
+        return "Disponible au";
       default:
         return "Statut inconnu";
     }

@@ -7,7 +7,7 @@ import { HomeBadge } from "@features/home/badge/components/home-badge/home-badge
   imports: [HomeBadge, NgOptimizedImage],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <header class="mt-16 flex justify-center bg-background px-2">
+    <header class="mt-14 flex justify-center bg-background px-2">
       <section
         class="flex-col items-center gap-2 rounded-b-lg border border-accent-600 px-4 py-3 shadow-lg sm:px-5 sm:py-4 md:flex-row md:justify-between md:gap-0"
         aria-labelledby="profile-heading"
