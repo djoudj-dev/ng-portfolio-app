@@ -1,0 +1,41 @@
+<div class="p-4 sm:p-6 bg-background rounded-lg shadow-md shadow-accent border border-primary-300">
+  <h2 class="text-xl sm:text-2xl font-bold text-text mb-4">Gérer mon CV</h2>
+
+  <div class="mb-4">
+    <label for="cvFile" class="block text-text text-sm font-medium mb-2">Sélectionner un fichier CV (PDF)</label>
+    <input
+      type="file"
+      id="cvFile"
+      (change)="onFileSelected($event)"
+      accept=".pdf"
+      class="block w-full text-sm text-text file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-accent file:text-text hover:file:bg-primary/80"
+    />
+    @if (selectedFile) {
+      <p class="mt-2 text-sm text-text/80">Fichier sélectionné: {{ selectedFile.name }}</p>
+    }
+  </div>
+
+  <div class="flex flex-col sm:flex-row sm:space-x-4 space-y-4 sm:space-y-0">
+    <app-button
+      (buttonClick)="uploadCv()"
+      [isLoading]="uploadStatus() === 'uploading'"
+      [disabled]="!selectedFile || uploadStatus() === 'uploading'"
+      color="accent"
+      customClass="py-2 px-4 w-full sm:w-auto hover:bg-primary/80"
+    >
+      {{ uploadStatus() === 'uploading' ? 'Upload en cours...' : 'Uploader le CV' }}
+    </app-button>
+
+    <app-button
+      (buttonClick)="downloadCv()"
+      color="accent"
+      customClass="py-2 px-4 w-full sm:w-auto hover:bg-primary/80"
+    >
+      Télécharger le CV actuel
+    </app-button>
+  </div>
+
+  @if (uploadStatus() === 'error') {
+    <p class="text-red-500 text-sm mt-2">Erreur lors de l'upload du CV. Veuillez réessayer.</p>
+  }
+</div>
