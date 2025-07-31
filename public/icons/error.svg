@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" class="h-32 w-32 mx-auto">
+  <!-- Envelope -->
+  <rect x="25" y="50" width="150" height="100" rx="5" fill="#f0f0f0" stroke="#cccccc" stroke-width="2"/>
+  <path d="M25,50 L100,100 L175,50" fill="none" stroke="#cccccc" stroke-width="2"/>
+
+  <!-- Red circle with X mark -->
+  <circle cx="150" cy="150" r="30" fill="#F44336" />
+  <path d="M140,140 L160,160 M160,140 L140,160" fill="none" stroke="white" stroke-width="5" stroke-linecap="round"/>
+</svg>

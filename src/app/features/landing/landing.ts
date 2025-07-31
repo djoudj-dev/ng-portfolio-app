@@ -1,4 +1,31 @@
-import { ChangeDetectionStrategy, Component } from "@angular/core";import { HeroSection } from "@features/landing/hero-section/hero-section";import { CardBadge } from "@features/landing/badge/components/card-badge/card-badge";import { About } from "@features/about/about";import { SkillsComponent } from "@features/skills/skills";import { ProjectsComponent } from "@features/projects/projects";import { ContactComponent } from "@features/contact/contact";@Component({  selector: "app-landing",  imports: [CardBadge, HeroSection, About, SkillsComponent, ProjectsComponent, ContactComponent],  template: `    <main id="home">      <app-card-badge />      <app-hero-section />      <app-about />      <app-skills />      <app-projects />      <app-contact />    </main>  `,
+import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { HeroSection } from "@features/landing/hero-section/hero-section";
+import { CardBadge } from "@features/landing/badge/components/card-badge/card-badge";
+import { About } from "@features/about/about";
+import { ProjectsComponent } from "@features/projects/projects";
+import { ContactComponent } from "@features/contact/contact";
+import { Skills } from "@features/skills/skills";
+
+@Component({
+  selector: "app-landing",
+  imports: [
+    CardBadge,
+    HeroSection,
+    About,
+    ProjectsComponent,
+    ContactComponent,
+    Skills,
+  ],
+  template: `
+    <main id="home">
+      <app-card-badge />
+      <app-hero-section />
+      <app-about />
+      <app-skills />
+      <app-projects />
+      <app-contact />
+    </main>
+  `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Landing {}
