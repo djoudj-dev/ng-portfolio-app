@@ -5,11 +5,11 @@ import {
   inject,
 } from "@angular/core";
 import { DatePipe, NgClass } from "@angular/common";
-import { BadgeService } from "@features/home/badge/services/badge.service";
-import { BADGE_STATUS } from "@features/home/badge/models/badge.model";
+import { BadgeService } from "@features/landing/badge/services/badge-service";
+import { BADGE_STATUS } from "@features/landing/badge/models/badge-model";
 
 @Component({
-  selector: "app-home-badge",
+  selector: "app-status-badge",
   imports: [NgClass, DatePipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
@@ -54,7 +54,7 @@ import { BADGE_STATUS } from "@features/home/badge/models/badge.model";
     }
   `,
 })
-export class HomeBadge {
+export class StatusBadge {
   protected readonly badgeService = inject(BadgeService);
   readonly badge = this.badgeService.latestBadge;
   public readonly BADGE_STATUS = BADGE_STATUS;
