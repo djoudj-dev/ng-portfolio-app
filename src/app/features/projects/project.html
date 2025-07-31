@@ -1,0 +1,116 @@
+<main id="projects" class="pb-4 lg:py-20">
+  <header>
+    <h1
+      id="projects-heading"
+      class="text-text decoration-accent mb-2 flex justify-center text-3xl font-bold underline lg:text-5xl"
+    >
+      {{ projectTitle() }}
+    </h1>
+    <p class="text-text/80 mx-auto mb-4 max-w-3xl text-center text-lg lg:mb-8">
+      {{ projectSubTitle() }}
+    </p>
+  </header>
+
+  <div class="container mx-auto px-4">
+    <!-- Search and filter section -->
+    <app-project-search
+      [searchQuery]="searchQuery()"
+      [filters]="filters()"
+      (searchChange)="onSearch($event)"
+      (clearSearchEvent)="clearSearch()"
+      (filterChange)="setFilter($event)"
+    />
+
+    <!-- Projects grid -->
+    <section aria-labelledby="projects-list-section">
+      <h2 id="projects-list-section" class="sr-only">Liste des projets</h2>
+
+      @if (filteredProjects().length) {
+        <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+          @for (project of paginatedProjects(); track project.id) {
+            <article
+              class="bg-background shadow-text border-accent rounded-lg border p-4 hover:scale-105 hover:shadow-md hover:transition-all hover:duration-300 hover:ease-in-out"
+            >
+              <header>
+                <div class="relative mb-4 h-48 overflow-hidden rounded">
+                  <img
+                    [ngSrc]="getProjectImageUrl(project.image_path)"
+                    [alt]="'Capture d ecran du projet ' + project.title"
+                    [fill]="true"
+                    class="h-full w-full object-cover"
+                  />
+                  <div class="absolute top-2 right-2">
+                    <span
+                      class="bg-accent text-background rounded px-2 py-1 text-xs font-semibold"
+                    >
+                      {{ project.category }}
+                    </span>
+                  </div>
+                </div>
+
+                <h3
+                  class="text-text decoration-accent mb-2 text-xl font-bold underline"
+                >
+                  {{ project.title }}
+                </h3>
+              </header>
+
+              <p class="text-text/80 mb-4 text-sm">
+                {{ project.description }}
+              </p>
+
+              <div class="mb-4 flex flex-wrap gap-2">
+                @for (tech of project.technologies; track tech) {
+                  <span
+                    class="bg-background-200 text-text/70 rounded-full px-2 py-1 text-xs"
+                  >
+                    {{ tech }}
+                  </span>
+                }
+              </div>
+
+              <footer class="mt-4 flex justify-between">
+                <div class="text-text/60 text-xs">
+                  {{ project.date }}
+                </div>
+
+                <div class="flex gap-2">
+                  @for (link of getAllProjectLinks(project); track link.href) {
+                    <a
+                      [href]="link.href"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="text-accent hover:text-accent-600 transition-colors"
+                      [attr.aria-label]="link.ariaLabel"
+                    >
+                      {{ link.label }}
+                    </a>
+                  }
+                </div>
+              </footer>
+            </article>
+          }
+        </div>
+
+        <!-- Pagination controls -->
+        <app-project-pagination
+          [currentPage]="currentPage()"
+          [totalPages]="totalPages()"
+          (pageChange)="goToPage($event)"
+        />
+      } @else {
+        <div class="py-12 text-center">
+          <p class="text-text/70 text-lg">
+            Aucun projet ne correspond à votre recherche.
+          </p>
+          <button
+            (click)="clearSearch(); setFilter('all')"
+            class="text-accent mt-4 hover:underline"
+          >
+            Réinitialiser les filtres
+          </button>
+        </div>
+      }
+    </section>
+  </div>
+</main>
