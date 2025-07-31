@@ -8,16 +8,16 @@ import {
   output,
 } from "@angular/core";
 import { ScrollService } from "@core/services/scroll-service";
-import { NAVIGATION_ITEMS } from "@shared/ui/navbar/constants/navlink.constant";
+import { NAVIGATION_ITEMS } from "@shared/ui/navbar/constants/navlink-constant";
 import { AuthService } from "@core/services/auth-service";
 import { Router } from "@angular/router";
 
 @Component({
-  selector: "app-nav-mobile",
+  selector: "app-navbar-mobile",
   imports: [CommonModule, NgOptimizedImage],
-  templateUrl: "./nav-mobile.html",
+  templateUrl: "./navbar-mobile.html",
 })
-export class NavMobile {
+export class NavbarMobile {
   navigationItems = NAVIGATION_ITEMS;
   isMenuOpen = signal(false);
   private readonly scrollService = inject(ScrollService);
