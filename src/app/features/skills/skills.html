@@ -1,0 +1,18 @@
+<main id="skills" class="text-text pb-6 lg:pb-8">
+  <header>
+    <h1
+      id="skills-heading"
+      class="text-text decoration-accent mb-2 flex justify-center text-3xl font-bold underline lg:text-5xl"
+    >
+      {{ skillsTitle() }}
+    </h1>
+    <p class="text-text/80 mx-auto mb-4 max-w-3xl text-center text-lg lg:mb-8">
+      {{ skillsSubTitle() }}
+    </p>
+  </header>
+
+  <div class="container mx-auto px-4">
+    <app-skills-groups-stacks />
+    <app-skills-certification />
+  </div>
+</main>
