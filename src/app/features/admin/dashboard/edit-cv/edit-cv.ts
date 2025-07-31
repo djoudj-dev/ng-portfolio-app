@@ -1,7 +1,7 @@
-import { Component, inject } from "@angular/core";
+import { ChangeDetectionStrategy, Component, inject } from "@angular/core";
 import { CommonModule } from "@angular/common";
-import { SupabaseStorageService } from "@app/core/services/supabase-storage-service";
-import { AuthService } from "@app/core/services/auth-service";
+import { SupabaseStorageService } from "@core/services/supabase-storage-service";
+import { AuthService } from "@core/services/auth-service";
 import { ButtonComponent } from "@shared/ui/button/button";
 import { ToastService } from "@shared/ui/toast/service/toast-service";
 
@@ -9,7 +9,7 @@ import { ToastService } from "@shared/ui/toast/service/toast-service";
   selector: "app-edit-cv",
   imports: [CommonModule, ButtonComponent],
   templateUrl: "./edit-cv.html",
-  styleUrl: "./edit-cv.css",
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EditCvComponent {
   private readonly supabaseStorageService = inject(SupabaseStorageService);
