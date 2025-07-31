@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, Component, signal } from "@angular/core";
 import { NgOptimizedImage } from "@angular/common";
-import { HomeBadge } from "@features/home/badge/components/home-badge/home-badge";
+import { StatusBadge } from "@features/landing/badge/components/status-badge/status-badge";
 
 @Component({
-  selector: "app-home-banner",
-  imports: [HomeBadge, NgOptimizedImage],
+  selector: "app-card-badge",
+  imports: [StatusBadge, NgOptimizedImage],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <header class="mt-14 flex justify-center bg-background px-2">
@@ -34,14 +34,14 @@ import { HomeBadge } from "@features/home/badge/components/home-badge/home-badge
             </h1>
           </div>
           <aside aria-label="Statut de disponibilité">
-            <app-home-badge />
+            <app-status-badge />
           </aside>
         </div>
       </section>
     </header>
   `,
 })
-export class HomeBanner {
+export class CardBadge {
   readonly title = signal("Développeur Angular");
   readonly logoPath = signal("icons/angular.webp");
 }

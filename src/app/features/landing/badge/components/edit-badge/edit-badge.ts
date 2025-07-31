@@ -1,13 +1,13 @@
 import { ChangeDetectionStrategy, Component, inject } from "@angular/core";
 import { FormsModule } from "@angular/forms";
-import { BadgeService } from "@features/home/badge/services/badge.service";
+import { BadgeService } from "@features/landing/badge/services/badge-service";
 import {
   BADGE_STATUS,
   BadgeStatus,
-} from "@features/home/badge/models/badge.model";
+} from "@features/landing/badge/models/badge-model";
 
 @Component({
-  selector: "app-edit-home-badge",
+  selector: "app-edit-badge",
   imports: [FormsModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
@@ -52,7 +52,7 @@ import {
     </div>
   `,
 })
-export class EditHomeBadge {
+export class EditBadge {
   private readonly badgeService = inject(BadgeService);
   readonly badge = this.badgeService.latestBadge;
   public readonly BADGE_STATUS = BADGE_STATUS;

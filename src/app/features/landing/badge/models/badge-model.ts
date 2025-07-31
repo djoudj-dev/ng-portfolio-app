@@ -4,8 +4,6 @@ export type BadgeStatus =
   | "AVAILABLE_FROM"
   | "UPCOMING";
 
-// Create a constant object with the same values as the BadgeStatus type
-// This allows using the values at runtime while maintaining type safety
 export const BADGE_STATUS = {
   AVAILABLE: "AVAILABLE",
   UNAVAILABLE: "UNAVAILABLE",

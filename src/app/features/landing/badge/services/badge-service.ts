@@ -4,7 +4,7 @@ import { ToastService } from "@shared/ui/toast/service/toast-service";
 import {
   BadgeModel,
   BadgeStatus,
-} from "@features/home/badge/models/badge.model";
+} from "@features/landing/badge/models/badge-model";
 
 @Injectable({ providedIn: "root" })
 export class BadgeService {
@@ -30,7 +30,7 @@ export class BadgeService {
     const { data, error } = await supabase.from("badges").select("*");
 
     if (error) {
-      console.error("Error fetching badges:", error);
+      console.error("Erreur lors de la récupération des badges:", error);
       return;
     }
     this._badges.set(data as BadgeModel[]);
@@ -43,7 +43,7 @@ export class BadgeService {
       .eq("id", id);
 
     if (error) {
-      console.error("Error updating badge status:", error);
+      console.error("Erreur lors de la mise à jour du statut du badge:", error);
       this.toastService.show({
         message: `Échec de la mise à jour du badge: ${error.message}`,
         type: "error",
@@ -68,7 +68,10 @@ export class BadgeService {
       .eq("id", id);
 
     if (error) {
-      console.error("Error updating badge availability:", error);
+      console.error(
+        "Erreur lors de la mise à jour de la disponibilité du badge:",
+        error,
+      );
       this.toastService.show({
         message: `Échec de la mise à jour de la disponibilité du badge: ${error.message}`,
         type: "error",
