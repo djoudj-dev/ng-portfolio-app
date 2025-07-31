@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { NgOptimizedImage } from "@angular/common";
 import { OBJECTIVE_DATA } from "./data/objective-data";
 
@@ -32,6 +32,7 @@ import { OBJECTIVE_DATA } from "./data/objective-data";
       </div>
     </article>
   `,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AboutObjectiveCard {
   objectiveData = OBJECTIVE_DATA;

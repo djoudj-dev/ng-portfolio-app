@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { NgOptimizedImage } from '@angular/common';
 import { BadgeTechData } from './interface/badge-tech-data';
 import { DATA_BADGE_TECH } from './data/data-badge-tech';
@@ -33,6 +33,7 @@ import { DATA_BADGE_TECH } from './data/data-badge-tech';
       </ul>
     </section>
   `,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AboutBadgeTech {
   readonly techBadges = signal<BadgeTechData[]>(DATA_BADGE_TECH);

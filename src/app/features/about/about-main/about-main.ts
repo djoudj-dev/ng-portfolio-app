@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { NgOptimizedImage } from "@angular/common";
 import { AboutCardMindset } from "../about-card-mindset/about-card-mindset";
 import { AboutBadgeTech } from "../about-badge-tech/about-badge-tech";
@@ -16,6 +16,7 @@ import { ABOUT_MAIN_DATA } from "./data/about-main-data";
     AboutHero,
   ],
   templateUrl: "./about-main.html",
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AboutMain {
   aboutMainData = ABOUT_MAIN_DATA;
