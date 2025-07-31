@@ -8,6 +8,8 @@ import { provideHttpClient } from "@angular/common/http";
 import { routes } from "./app.routes";
 import { registerLocaleData } from "@angular/common";
 import localeFr from "@angular/common/locales/fr";
+import { SupabaseClient } from "@supabase/supabase-js";
+import { supabase } from "@core/services/supabase-client";
 
 registerLocaleData(localeFr, "fr");
 export const appConfig: ApplicationConfig = {
@@ -16,5 +18,6 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
     provideHttpClient(),
+    { provide: SupabaseClient, useValue: supabase },
   ],
 };
