@@ -1,5 +1,5 @@
 import { Component, DestroyRef, inject, OnInit, signal } from "@angular/core";
-import { Navbar } from "@shared/ui/navbar/components/navbar";
+import { Navbar } from "@shared/ui/navbar/components/navbar/navbar";
 import { NavigationEnd, Router, RouterOutlet } from "@angular/router";
 import { filter, delay } from "rxjs/operators";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
@@ -24,7 +24,7 @@ export class App implements OnInit {
         filter(
           (event): event is NavigationEnd => event instanceof NavigationEnd,
         ),
-        delay(0), // Ensure view is rendered before scrolling
+        delay(0),
         takeUntilDestroyed(this.destroyRef),
       )
       .subscribe((event: NavigationEnd) => {
