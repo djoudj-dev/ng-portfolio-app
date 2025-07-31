@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { NgOptimizedImage } from '@angular/common';
 import { MindsetData } from './interface/mindset-data';
 import { MINDSET } from './data/mindset-data';
@@ -39,6 +39,7 @@ import { MINDSET } from './data/mindset-data';
       </ul>
     </section>
   `,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AboutCardMindset {
   readonly mindsetData = signal<MindsetData[]>(MINDSET);

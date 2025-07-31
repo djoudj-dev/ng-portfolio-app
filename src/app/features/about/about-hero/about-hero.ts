@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ABOUT_HERO_DATA } from './data/about-hero-data';
 
 @Component({
@@ -22,6 +22,7 @@ import { ABOUT_HERO_DATA } from './data/about-hero-data';
       </div>
     </article>
   `,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AboutHero {
   aboutHeroData = ABOUT_HERO_DATA;
