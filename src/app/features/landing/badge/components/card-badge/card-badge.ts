@@ -15,7 +15,7 @@ import { StatusBadge } from "@features/landing/badge/components/status-badge/sta
         <div
           class="flex w-full flex-col items-center gap-2  sm:flex-col md:justify-center"
         >
-          <div class="flex items-center gap-4">
+          <div class="flex items-center gap-4 lg:mt-2">
             <figure class="flex flex-shrink-0 items-center justify-center">
               <img
                 [ngSrc]="logoPath()"
@@ -26,16 +26,18 @@ import { StatusBadge } from "@features/landing/badge/components/status-badge/sta
               />
             </figure>
 
-            <h1
-              id="profile-heading"
-              class="text-center text-xl font-bold text-text sm:text-left"
-            >
-              {{ title() }}
-            </h1>
+            <div class="flex flex-col md:flex-row md:items-center md:gap-3">
+              <h1
+                id="profile-heading"
+                class="text-center text-xl font-bold text-text sm:text-left mt-2"
+              >
+                {{ title() }}
+              </h1>
+              <aside aria-label="Statut de disponibilité" class="mt-2 md:mt-0">
+                <app-status-badge />
+              </aside>
+            </div>
           </div>
-          <aside aria-label="Statut de disponibilité">
-            <app-status-badge />
-          </aside>
         </div>
       </section>
     </header>

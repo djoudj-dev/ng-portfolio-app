@@ -5,10 +5,11 @@ import { filter, delay } from "rxjs/operators";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { ScrollService } from "@core/services/scroll-service";
 import { ToastComponent } from "@shared/ui/toast/components/toast";
+import { FooterComponent } from "@shared/ui/footer/footer.component";
 
 @Component({
   selector: "app-root",
-  imports: [Navbar, ToastComponent, RouterOutlet],
+  imports: [Navbar, ToastComponent, RouterOutlet, FooterComponent],
   templateUrl: "./app.html",
 })
 export class App implements OnInit {
