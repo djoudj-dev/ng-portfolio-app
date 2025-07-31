@@ -1,19 +1,25 @@
 import { Routes } from "@angular/router";
-import { adminGuard } from "@core/guards/admin.guard";
+import { adminGuard } from "@core/guards/admin-guard";
 
 export const routes: Routes = [
   {
     path: "",
-    loadComponent: () => import("@features/home/home").then((m) => m.Home),
+    loadComponent: () =>
+      import("@features/landing/landing").then((m) => m.Landing),
   },
   {
-    path: "home",
-    loadComponent: () => import("@features/home/home").then((m) => m.Home),
+    path: "landing",
+    loadComponent: () =>
+      import("@features/landing/landing").then((m) => m.Landing),
+  },
+  {
+    path: "about",
+    loadComponent: () => import("@features/about/about").then((m) => m.About),
   },
   {
     path: "admin/dashboard",
     loadComponent: () =>
-      import("@features/dashboard/dashboard").then((m) => m.Dashboard),
+      import("@features/admin/dashboard/dashboard").then((m) => m.Dashboard),
     canActivate: [adminGuard],
   },
 ];
