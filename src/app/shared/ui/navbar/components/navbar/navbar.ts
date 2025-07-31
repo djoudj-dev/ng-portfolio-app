@@ -1,13 +1,18 @@
-import { Component, inject, signal } from "@angular/core";
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  signal,
+} from "@angular/core";
 import { NgOptimizedImage } from "@angular/common";
 import { Router, RouterLink } from "@angular/router";
-import { ButtonDarkMode } from "@shared/ui/button-dark-mode/button-dark-mode";
-import { NAVIGATION_ITEMS } from "../constants/navlink.constant";
+import { ButtonDarkMode } from "@shared/ui/button/button-dark-mode/button-dark-mode";
+import { NAVIGATION_ITEMS } from "../../constants/navlink-constant";
 import { ButtonComponent } from "@shared/ui/button/button";
 import { AuthService } from "@core/services/auth-service";
-import { LoginModalComponent } from "../../login-modal/login-modal";
+import { LoginModalComponent } from "@shared/ui/login/login-modal/login-modal";
 import { ScrollService } from "@core/services/scroll-service";
-import { NavMobile } from "@shared/ui/navbar/components/nav-mobile/nav-mobile";
+import { NavbarMobile } from "@shared/ui/navbar/components/navbar-mobile/navbar-mobile";
 import { SupabaseStorageService } from "@core/services/supabase-storage-service";
 import { ToastService } from "@shared/ui/toast/service/toast-service";
 
@@ -19,10 +24,11 @@ import { ToastService } from "@shared/ui/toast/service/toast-service";
     ButtonDarkMode,
     ButtonComponent,
     LoginModalComponent,
-    NavMobile,
+    NavbarMobile,
   ],
   templateUrl: "./navbar.html",
   styleUrl: "./navbar.css",
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Navbar {
   navigationItems = NAVIGATION_ITEMS;
@@ -34,8 +40,12 @@ export class Navbar {
   private readonly toastService = inject(ToastService);
 
   onNavigationClick(route: string | undefined, fragment?: string): void {
+    const currentUrl = this.router.url;
     const navigationRoute = route ?? "";
-    if (navigationRoute) {
+
+    if (currentUrl === "/" && fragment) {
+      this.scrollService.scrollToSection(fragment);
+    } else if (navigationRoute) {
       this.router.navigateByUrl(navigationRoute).then(() => {
         if (fragment) {
           this.scrollService.scrollToSection(fragment);
