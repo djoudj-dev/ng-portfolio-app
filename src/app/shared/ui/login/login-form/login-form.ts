@@ -1,6 +1,6 @@
 import { Component, inject, output, signal } from "@angular/core";
 import { FormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
-import { AuthService } from "@app/core/services/auth-service";
+import { AuthService } from "@core/services/auth-service";
 import { ButtonComponent } from "@shared/ui/button/button";
 import { Router } from "@angular/router";
 import { ToastService } from "@shared/ui/toast/service/toast-service";
@@ -9,7 +9,48 @@ import { ToastService } from "@shared/ui/toast/service/toast-service";
   selector: "app-login-form",
   standalone: true,
   imports: [ReactiveFormsModule, ButtonComponent],
-  templateUrl: "./login-form.html",
+  template: `
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="space-y-6">
+      <div>
+        <label for="email" class="block text-sm font-medium text-text"
+          >Email</label
+        >
+        <input
+          id="email"
+          type="email"
+          formControlName="email"
+          autocomplete="email"
+          required
+          class="block px-3 py-2 mt-1 w-full border rounded-md shadow-sm bg-background border-gray-600 focus:outline-none focus:ring-accent focus:border-accent sm:text-sm"
+        />
+      </div>
+      <div>
+        <label for="password" class="block text-sm font-medium text-text"
+          >Mot de passe</label
+        >
+        <input
+          id="password"
+          type="password"
+          formControlName="password"
+          autocomplete="current-password"
+          required
+          class="block px-3 py-2 mt-1 w-full border rounded-md shadow-sm bg-background border-gray-600 focus:outline-none focus:ring-accent focus:border-accent sm:text-sm"
+        />
+      </div>
+      @if (errorMessage()) {
+        <div class="text-sm text-red-500">{{ errorMessage() }}</div>
+      }
+      <app-button
+        type="submit"
+        color="primary"
+        [disabled]="form.invalid || isLoading()"
+        [isLoading]="isLoading()"
+        [customClass]="'w-full py-3'"
+      >
+        Se connecter
+      </app-button>
+    </form>
+  `,
 })
 export class LoginFormComponent {
   private readonly fb = inject(FormBuilder);
@@ -35,14 +76,11 @@ export class LoginFormComponent {
     const credentials = this.form.getRawValue();
 
     try {
-      await this.authService.signIn(
-        credentials.email!,
-        credentials.password!,
-      );
+      await this.authService.signIn(credentials.email!, credentials.password!);
       this.loginSuccess.emit();
       this.toastService.show({
         message: "Connexion réussie",
-        type: "success"
+        type: "success",
       });
       this.router.navigate(["/admin/dashboard"]);
     } catch (err: unknown) {
@@ -51,7 +89,7 @@ export class LoginFormComponent {
         this.toastService.show({
           message: `Échec de connexion: ${err.message}`,
           type: "error",
-          duration: 5000
+          duration: 5000,
         });
       }
     } finally {
