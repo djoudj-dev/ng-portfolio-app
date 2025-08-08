@@ -2,9 +2,10 @@ import {
   ChangeDetectionStrategy,
   Component,
   inject,
-  OnInit,
   signal,
 } from "@angular/core";
+import { toSignal } from "@angular/core/rxjs-interop";
+import { from } from "rxjs";
 import { EditCvComponent } from "./edit-cv/edit-cv";
 import { EditBadge } from "@features/landing/badge/components/edit-badge/edit-badge";
 import { ProjectFormComponent } from "@features/projects/components/project-form/project-form";
@@ -53,21 +54,16 @@ import { ButtonComponent } from "@shared/ui/button/button";
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class Dashboard implements OnInit {
+export class Dashboard {
   private readonly projectService = inject(ProjectService);
 
-  currentView = signal<"add" | "list" | "edit">("list");
-  projects = signal<ProjectData[]>([]);
-  selectedProject = signal<ProjectData | undefined>(undefined);
+  readonly currentView = signal<"add" | "list" | "edit">("list");
+  readonly selectedProject = signal<ProjectData | undefined>(undefined);
+  private readonly refreshTrigger = signal<void>(undefined);
 
-  async ngOnInit(): Promise<void> {
-    await this.loadProjects();
-  }
-
-  async loadProjects(): Promise<void> {
-    const projects = await this.projectService.getProjects();
-    this.projects.set(projects);
-  }
+  readonly projects = toSignal(from(this.projectService.getProjects()), {
+    initialValue: [],
+  });
 
   showAddForm(): void {
     this.currentView.set("add");
@@ -77,11 +73,11 @@ export class Dashboard implements OnInit {
   showProjectList(): void {
     this.currentView.set("list");
     this.selectedProject.set(undefined);
-    this.loadProjects(); // Recharger la liste à chaque fois
+    this.refreshTrigger.set(); // Trigger a refresh
   }
 
   editProject(id: string): void {
-    const projectToEdit = this.projects().find((p) => p.id === id);
+    const projectToEdit = this.projects()?.find((p) => p.id === id);
     if (projectToEdit) {
       this.selectedProject.set(projectToEdit);
       this.currentView.set("edit");
@@ -96,7 +92,7 @@ export class Dashboard implements OnInit {
     ) {
       try {
         await this.projectService.deleteProject(project.id, project.image_path);
-        await this.loadProjects();
+        this.refreshTrigger.set(); // Trigger a refresh
       } catch (error) {
         console.error("Error deleting project:", error);
       }

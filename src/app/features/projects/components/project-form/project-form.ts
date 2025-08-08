@@ -2,8 +2,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   inject,
-  Input,
-  OnInit,
+  input,
   signal,
 } from "@angular/core";
 import { FormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
@@ -28,8 +27,8 @@ import {
   templateUrl: "./project-form.html",
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProjectFormComponent implements OnInit {
-  @Input() project?: ProjectData;
+export class ProjectFormComponent {
+  project = input<ProjectData | undefined>();
 
   private readonly fb = inject(FormBuilder);
   private readonly projectService = inject(ProjectService);
@@ -56,19 +55,6 @@ export class ProjectFormComponent implements OnInit {
       fullstack: [null as string | null],
     }),
   });
-
-  ngOnInit(): void {
-    if (this.project) {
-      this.isEditMode.set(true);
-      this.projectForm.patchValue(this.project);
-      if (this.project.image_path) {
-        this.imagePreview.set(
-          this.projectService.getPublicUrl(this.project.image_path),
-        );
-      }
-    }
-  }
-
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
@@ -106,13 +92,14 @@ export class ProjectFormComponent implements OnInit {
         github_urls: rawData.github_urls ?? undefined,
       };
 
-      if (this.isEditMode() && this.project) {
+      if (this.isEditMode() && this.project()) {
+        const projectValue = this.project()!;
         const updateData: ProjectUpdateData = {
           ...formData,
-          image_path: this.project.image_path, // Conserver l'image existante si non modifiée
+          image_path: projectValue.image_path,
         };
         await this.projectService.updateProject(
-          this.project.id,
+          projectValue.id,
           updateData,
           this.selectedFile ?? undefined,
         );

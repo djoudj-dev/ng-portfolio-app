@@ -4,30 +4,31 @@ import {
   inject,
   signal,
   ElementRef,
-  HostListener,
   output,
 } from "@angular/core";
 import { ScrollService } from "@core/services/scroll-service";
 import { NAVIGATION_ITEMS } from "@shared/ui/navbar/constants/navlink-constant";
-import { AuthService } from "@core/services/auth-service";
+import { SupabaseService } from "@core/services/supabase.service";
 import { Router } from "@angular/router";
 
 @Component({
   selector: "app-navbar-mobile",
   imports: [CommonModule, NgOptimizedImage],
   templateUrl: "./navbar-mobile.html",
+  host: {
+    '(document:click)': 'onClick($event)',
+  },
 })
 export class NavbarMobile {
   navigationItems = NAVIGATION_ITEMS;
   isMenuOpen = signal(false);
   private readonly scrollService = inject(ScrollService);
-  readonly authService = inject(AuthService);
+  readonly supabaseService = inject(SupabaseService);
   private readonly router = inject(Router);
   private readonly elementRef = inject(ElementRef);
 
   readonly openLoginModalRequest = output<void>();
 
-  @HostListener("document:click", ["$event"])
   onClick(event: MouseEvent) {
     if (
       this.isMenuOpen() &&
@@ -51,7 +52,7 @@ export class NavbarMobile {
   }
 
   logout(): void {
-    this.authService.signOut();
+    this.supabaseService.signOut();
     this.closeMenu();
   }
 

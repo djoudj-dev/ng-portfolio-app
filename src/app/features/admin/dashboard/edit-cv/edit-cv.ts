@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject } from "@angular/core";
 import { CommonModule } from "@angular/common";
-import { SupabaseStorageService } from "@core/services/supabase-storage-service";
-import { AuthService } from "@core/services/auth-service";
+import { SupabaseService } from "@core/services/supabase.service";
 import { ButtonComponent } from "@shared/ui/button/button";
 import { ToastService } from "@shared/ui/toast/service/toast-service";
 
@@ -12,11 +11,10 @@ import { ToastService } from "@shared/ui/toast/service/toast-service";
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EditCvComponent {
-  private readonly supabaseStorageService = inject(SupabaseStorageService);
-  private readonly authService = inject(AuthService);
+  private readonly supabaseService = inject(SupabaseService);
   private readonly toastService = inject(ToastService);
 
-  readonly uploadStatus = this.supabaseStorageService.uploadStatus;
+  readonly uploadStatus = this.supabaseService.uploadStatus;
   selectedFile: File | null = null;
 
   onFileSelected(event: Event): void {
@@ -37,7 +35,7 @@ export class EditCvComponent {
       return;
     }
 
-    const user = this.authService.user();
+    const user = this.supabaseService.user();
     if (!user) {
       this.toastService.show({
         message: "Vous devez être connecté pour uploader un CV.",
@@ -46,7 +44,7 @@ export class EditCvComponent {
       return;
     }
 
-    const path = await this.supabaseStorageService.uploadCV(
+    const path = await this.supabaseService.uploadCV(
       this.selectedFile,
       user.id,
     );
@@ -66,7 +64,7 @@ export class EditCvComponent {
   }
 
   async downloadCv(): Promise<void> {
-    const user = this.authService.user();
+    const user = this.supabaseService.user();
     if (!user) {
       this.toastService.show({
         message:
@@ -76,7 +74,7 @@ export class EditCvComponent {
       return;
     }
 
-    const publicUrl = await this.supabaseStorageService.downloadCV(user.id);
+    const publicUrl = await this.supabaseService.downloadCV(user.id);
 
     if (publicUrl) {
       window.open(publicUrl, "_blank");

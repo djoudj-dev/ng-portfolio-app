@@ -1,38 +1,26 @@
-import { Component, DestroyRef, inject, OnInit, signal } from "@angular/core";
-import { Navbar } from "@shared/ui/navbar/components/navbar/navbar";
-import { NavigationEnd, Router, RouterOutlet } from "@angular/router";
-import { filter, delay } from "rxjs/operators";
-import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
-import { ScrollService } from "@core/services/scroll-service";
-import { ToastComponent } from "@shared/ui/toast/components/toast";
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  signal,
+} from "@angular/core";
+import { RouterOutlet } from "@angular/router";
 import { FooterComponent } from "@shared/ui/footer/footer.component";
+import { Navbar } from "@shared/ui/navbar/components/navbar/navbar";
+import { ToastComponent } from "@shared/ui/toast/components/toast";
+import { ThemeService } from "@core/services/theme-service";
 
 @Component({
   selector: "app-root",
   imports: [Navbar, ToastComponent, RouterOutlet, FooterComponent],
   templateUrl: "./app.html",
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  host: {
+    "[class.dark]": "themeService.isDarkMode()",
+    "[attr.data-theme]": "themeService.theme()",
+  },
 })
-export class App implements OnInit {
+export class App {
   protected readonly title = signal("ng-portfolio-app");
-
-  private readonly router = inject(Router);
-  private readonly scrollService = inject(ScrollService);
-  private readonly destroyRef = inject(DestroyRef);
-
-  ngOnInit(): void {
-    this.router.events
-      .pipe(
-        filter(
-          (event): event is NavigationEnd => event instanceof NavigationEnd,
-        ),
-        delay(0),
-        takeUntilDestroyed(this.destroyRef),
-      )
-      .subscribe((event: NavigationEnd) => {
-        const urlTree = this.router.parseUrl(event.urlAfterRedirects);
-        const fragment = urlTree.fragment;
-
-        this.scrollService.scrollToSection(fragment);
-      });
-  }
+  protected readonly themeService = inject(ThemeService);
 }

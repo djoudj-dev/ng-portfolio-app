@@ -6,7 +6,6 @@ import {
   input,
   output,
   signal,
-  Signal,
 } from "@angular/core";
 
 @Component({
@@ -14,9 +13,8 @@ import {
   imports: [CommonModule, NgOptimizedImage],
   template: `
     <button
-      class="w-full text-base font-semibold tracking-wide focus:outline-none"
       [type]="type()"
-      [ngClass]="buttonClasses()"
+      [class]="buttonClasses()"
       [disabled]="disabled()"
       (click)="buttonClick.emit($event)"
     >
@@ -38,7 +36,6 @@ import {
 })
 export class ButtonComponent {
   readonly buttonClick = output<MouseEvent>();
-  readonly text = input<string>("");
   readonly type = input<"button" | "submit" | "reset">("button");
   readonly color = input<"primary" | "secondary" | "accent">("primary");
   readonly disabled = input<boolean>(false);
@@ -49,21 +46,43 @@ export class ButtonComponent {
 
   readonly iconSpinner = signal("icons/spinner.svg");
 
-  readonly buttonClasses: Signal<Record<string, boolean>> = computed(() => ({
-    "bg-primary hover:bg-primary/80 focus:bg-primary/70 active:bg-primary/90 text-white":
-      this.color() === "primary",
-    "bg-secondary hover:bg-secondary/80 focus:bg-secondary/70 active:bg-secondary/90 text-white":
-      this.color() === "secondary",
-    "bg-accent hover:bg-accent/80 focus:bg-accent/70 active:bg-accent/90 text-white":
-      this.color() === "accent",
+  readonly buttonClasses = computed(() => {
+    const classes = [
+      'w-full',
+      'text-base',
+      'font-semibold',
+      'tracking-wide',
+      'focus:outline-none',
+      'transition-all',
+      'duration-300',
+      'ease-in-out',
+      'transform',
+      'hover:scale-105',
+      'active:scale-95',
+    ];
 
-    "transition-all duration-300 ease-in-out transform hover:scale-105 active:scale-95": true,
+    const color = this.color();
+    if (color === 'primary') {
+      classes.push('bg-primary', 'hover:bg-primary/80', 'focus:bg-primary/70', 'active:bg-primary/90', 'text-white');
+    } else if (color === 'secondary') {
+      classes.push('bg-secondary', 'hover:bg-secondary/80', 'focus:bg-secondary/70', 'active:bg-secondary/90', 'text-white');
+    } else if (color === 'accent') {
+      classes.push('bg-accent', 'hover:bg-accent/80', 'focus:bg-accent/70', 'active:bg-accent/90', 'text-white');
+    }
 
-    "rounded-lg": this.rounded(),
-    "rounded-none": this.noRounded(),
+    if (this.rounded()) {
+      classes.push('rounded-lg');
+    }
+    if (this.noRounded()) {
+      classes.push('rounded-none');
+    }
+    if (this.customClass()) {
+      classes.push(this.customClass());
+    }
+    if (this.disabled()) {
+      classes.push('opacity-50', 'cursor-not-allowed');
+    }
 
-    [this.customClass()]: !!this.customClass(),
-
-    "opacity-50 cursor-not-allowed": this.disabled(),
-  }));
+    return classes.join(' ');
+  });
 }
