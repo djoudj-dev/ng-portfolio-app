@@ -4,12 +4,14 @@ import {
   inject,
   output,
   signal,
+  computed,
 } from "@angular/core";
 import { FormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
-import { SupabaseService } from "@core/services/supabase.service";
+import { SupabaseService } from "@core/services/supabase-service";
 import { ButtonComponent } from "@shared/ui/button/button";
 import { Router } from "@angular/router";
 import { ToastService } from "@shared/ui/toast/service/toast-service";
+import { SecurityService } from "@core/services/security-service";
 
 @Component({
   selector: "app-login-form",
@@ -22,9 +24,18 @@ export class LoginFormComponent {
   private readonly supabaseService = inject(SupabaseService);
   private readonly router = inject(Router);
   private readonly toastService = inject(ToastService);
+  private readonly securityService = inject(SecurityService);
+  
   readonly loginSuccess = output<void>();
   readonly isLoading = signal(false);
   readonly errorMessage = signal<string | null>(null);
+  
+  // Computed pour l'état de rate limiting
+  readonly isRateLimited = computed(() => this.securityService.isRateLimited());
+  readonly rateLimitInfo = computed(() => {
+    const email = this.form.get('email')?.value ?? '';
+    return this.securityService.getBlockInfo(`login_${email}`);
+  });
 
   readonly form = this.fb.group({
     email: ["", [Validators.required, Validators.email]],
