@@ -2,7 +2,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   forwardRef,
-  Input,
+  input,
   signal,
 } from "@angular/core";
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
@@ -24,7 +24,7 @@ import { Technology } from "@features/projects/data/technologies";
   ],
 })
 export class CustomMultiSelectComponent implements ControlValueAccessor {
-  @Input() options: Technology[] = [];
+  options = input<Technology[]>([]);
 
   selectedOptions = signal<string[]>([]);
   isOpen = signal(false);

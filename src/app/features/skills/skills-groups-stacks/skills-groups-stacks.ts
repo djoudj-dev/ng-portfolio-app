@@ -1,10 +1,10 @@
-import { Component, signal } from '@angular/core';
-import { NgOptimizedImage } from '@angular/common';
-import { SkillCategoryData } from '../interface/skill-data';
-import { SKILL_CATEGORIES } from '../data/skill-data';
+import { Component, signal } from "@angular/core";
+import { NgOptimizedImage } from "@angular/common";
+import { SkillCategoryData } from "../interface/skill-data";
+import { SKILL_CATEGORIES } from "../data/skill-data";
 
 @Component({
-  selector: 'app-skills-groups-stacks',
+  selector: "app-skills-groups-stacks",
   imports: [NgOptimizedImage],
   template: `
     <section
@@ -16,25 +16,25 @@ import { SKILL_CATEGORIES } from '../data/skill-data';
           class="bg-background shadow-text border-accent rounded-lg border p-6 hover:scale-105 hover:shadow-md hover:transition-all hover:duration-300 hover:ease-in-out"
         >
           <div class="mb-4 flex items-center gap-2">
-            @if (category.id === 'frontend') {
+            @if (category.id === "frontend") {
               <img
-                [ngSrc]="'skills/frontend.svg'"
+                [ngSrc]="'icons/frontend.svg'"
                 alt="Icône développement frontend"
                 width="24"
                 height="24"
                 class="icon-invert h-6 w-6"
               />
-            } @else if (category.id === 'backend') {
+            } @else if (category.id === "backend") {
               <img
-                [ngSrc]="'skills/backend.svg'"
+                [ngSrc]="'icons/backend.svg'"
                 alt="Icône développement backend"
                 width="24"
                 height="24"
                 class="icon-invert h-6 w-6"
               />
-            } @else if (category.id === 'tools') {
+            } @else if (category.id === "tools") {
               <img
-                [ngSrc]="'skills/devops.svg'"
+                [ngSrc]="'icons/devops.svg'"
                 alt="Icône outils de développement"
                 width="24"
                 height="24"

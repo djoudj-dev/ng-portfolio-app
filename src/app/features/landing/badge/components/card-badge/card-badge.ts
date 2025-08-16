@@ -7,38 +7,37 @@ import { StatusBadge } from "@features/landing/badge/components/status-badge/sta
   imports: [StatusBadge, NgOptimizedImage],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <header class="mt-14 flex justify-center bg-background px-2">
+    <header class="mt-14 flex justify-center bg-background px-4">
       <section
-        class="flex-col items-center gap-2 rounded-b-lg border border-accent-600 px-4 py-3 shadow-lg sm:px-5 sm:py-4 md:flex-row md:justify-between md:gap-0"
+        class="w-full max-w-sm flex flex-row items-center justify-center gap-4 rounded-b-lg border border-accent-600 px-3 py-3 text-center shadow-lg sm:max-w-md sm:flex-row sm:items-center sm:justify-center sm:px-4 sm:py-4 md:max-w-2xl"
         aria-labelledby="profile-heading"
       >
-        <div
-          class="flex w-full flex-col items-center gap-2  sm:flex-col md:justify-center"
-        >
-          <div class="flex items-center gap-4 lg:mt-2">
-            <figure class="flex flex-shrink-0 items-center justify-center">
-              <img
-                [ngSrc]="logoPath()"
-                [alt]="title() + ' - Développeur Angular'"
-                width="48"
-                height="48"
-                class="h-12 w-12"
-              />
-            </figure>
+        <!-- Logo -->
+        <figure class="flex items-center justify-center">
+          <img
+            [ngSrc]="logoPath()"
+            [alt]="title() + ' - Développeur Angular'"
+            width="48"
+            height="48"
+            class="h-10 w-10 sm:h-12 sm:w-12"
+          />
+        </figure>
 
-            <div class="flex flex-col md:flex-row md:items-center md:gap-3">
-              <h1
-                id="profile-heading"
-                class="text-center text-xl font-bold text-text sm:text-left mt-2"
-              >
-                {{ title() }}
-              </h1>
-              <aside aria-label="Statut de disponibilité" class="mt-2 md:mt-0">
-                <app-status-badge />
-              </aside>
-            </div>
-          </div>
-        </div>
+        <!-- Titre -->
+        <h1
+          id="profile-heading"
+          class="mt-0 text-base font-bold text-text sm:text-xl"
+        >
+          {{ title() }}
+        </h1>
+
+        <!-- Badge de statut -->
+        <aside
+          aria-label="Statut de disponibilité"
+          class="flex justify-center"
+        >
+          <app-status-badge />
+        </aside>
       </section>
     </header>
   `,

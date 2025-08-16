@@ -9,7 +9,7 @@
 
   @if (isOpen()) {
     <ul class="absolute z-10 w-full mt-1 bg-background border border-primary-300 rounded-lg shadow-lg max-h-60 overflow-y-auto">
-      @for (option of options; track option.name) {
+      @for (option of options(); track option.name) {
         <li (click)="toggleSelection(option.name)" class="px-4 py-2 flex items-center cursor-pointer hover:bg-primary-300/20">
           <input type="checkbox" [checked]="isOptionSelected(option.name)" class="mr-3 h-4 w-4 rounded text-accent focus:ring-accent">
           <img [ngSrc]="option.icon" [alt]="option.name" width="20" height="20" class="mr-2">

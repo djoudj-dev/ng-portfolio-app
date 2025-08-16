@@ -1,10 +1,9 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  EventEmitter,
   inject,
-  Input,
-  Output,
+  input,
+  output,
 } from "@angular/core";
 import { ProjectData } from "@features/projects/interface/project-data";
 import { ProjectService } from "@features/projects/services/project-service";
@@ -22,7 +21,7 @@ import { ButtonComponent } from "@shared/ui/button/button";
         Liste des projets
       </h2>
       <div class="space-y-4">
-        @for (project of projects; track project.id) {
+        @for (project of projects(); track project.id) {
           <div
             class="flex items-center justify-between p-3 bg-background-200 rounded-lg"
           >
@@ -58,9 +57,9 @@ import { ButtonComponent } from "@shared/ui/button/button";
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProjectListComponent {
-  @Input() projects: ProjectData[] = [];
-  @Output() edit = new EventEmitter<string>();
-  @Output() delete = new EventEmitter<ProjectData>();
+  projects = input.required<ProjectData[]>();
+  edit = output<string>();
+  delete = output<ProjectData>();
 
   private readonly projectService = inject(ProjectService);
 

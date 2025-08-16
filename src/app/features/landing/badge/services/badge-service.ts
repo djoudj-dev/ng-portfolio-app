@@ -1,5 +1,5 @@
-import { Injectable, signal, computed, inject } from "@angular/core";
-import { supabase } from "@core/services/supabase-client";
+import { Injectable, signal, computed, inject, effect } from "@angular/core";
+import { SupabaseService } from "@core/services/supabase.service";
 import { ToastService } from "@shared/ui/toast/service/toast-service";
 import {
   BadgeModel,
@@ -9,7 +9,19 @@ import {
 @Injectable({ providedIn: "root" })
 export class BadgeService {
   private readonly _badges = signal<BadgeModel[]>([]);
+  private readonly _initialized = signal(false);
   private readonly toastService = inject(ToastService);
+  private readonly supabaseService = inject(SupabaseService);
+
+  constructor() {
+    effect(() => {
+      if (!this._initialized()) {
+        this._initialized.set(true);
+        void this.getBadges();
+      }
+    });
+  }
+
   public readonly badges = this._badges.asReadonly();
   public readonly latestBadge = computed(() => {
     const badges = this._badges();
@@ -19,15 +31,10 @@ export class BadgeService {
         new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime(),
     )[0];
   });
-
-  constructor() {
-    setTimeout(() => {
-      this.getBadges();
-    }, 100);
-  }
-
   async getBadges() {
-    const { data, error } = await supabase.from("badges").select("*");
+    const { data, error } = await this.supabaseService
+      .from("badges")
+      .select("*");
 
     if (error) {
       console.error("Erreur lors de la récupération des badges:", error);
@@ -37,7 +44,7 @@ export class BadgeService {
   }
 
   async updateBadgeStatus(id: string, status: BadgeStatus) {
-    const { error } = await supabase
+    const { error } = await this.supabaseService
       .from("badges")
       .update({ status, updated_at: new Date().toISOString() })
       .eq("id", id);
@@ -59,7 +66,7 @@ export class BadgeService {
   }
 
   async updateBadgeAvailability(id: string, availableFrom: string | null) {
-    const { error } = await supabase
+    const { error } = await this.supabaseService
       .from("badges")
       .update({
         available_from: availableFrom,

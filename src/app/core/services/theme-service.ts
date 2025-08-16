@@ -1,46 +1,44 @@
-import { computed, Injectable, signal } from '@angular/core';
+import { computed, effect, Injectable, signal } from "@angular/core";
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export class ThemeService {
-  private readonly themeKey = 'theme';
-  private readonly _isDarkMode = signal<boolean>(false);
+  private readonly themeKey = "theme";
+  private readonly _theme = signal<"light" | "dark">(this.getInitialTheme());
 
-  readonly isDarkMode = computed(() => this._isDarkMode());
+  readonly theme = this._theme.asReadonly();
+  readonly isDarkMode = computed(() => this._theme() === "dark");
 
   constructor() {
-    this.loadTheme();
+    effect(() => {
+      const theme = this._theme();
+      if (typeof localStorage !== "undefined") {
+        try {
+          localStorage.setItem(this.themeKey, theme);
+        } catch {
+          // localStorage might be unavailable (SSR or privacy mode)
+        }
+      }
+      if (typeof document !== "undefined") {
+        const root = document.documentElement;
+        root.classList.toggle("dark", theme === "dark");
+        root.setAttribute("data-theme", theme);
+      }
+    });
   }
 
   toggleTheme(): void {
-    this.setTheme(this.isDarkMode() ? 'light' : 'dark');
+    this._theme.update((current) => (current === "light" ? "dark" : "light"));
   }
 
-  setTheme(theme: 'light' | 'dark'): void {
-    const isDark = theme === 'dark';
-    this._isDarkMode.set(isDark);
-
-    if (typeof document !== 'undefined') {
-      document.documentElement.setAttribute('data-theme', theme);
+  private getInitialTheme(): "light" | "dark" {
+    if (typeof localStorage !== "undefined") {
+      const savedTheme = localStorage.getItem(this.themeKey);
+      if (savedTheme === "dark" || savedTheme === "light") {
+        return savedTheme;
+      }
     }
-
-    if (typeof localStorage !== 'undefined') {
-      localStorage.setItem(this.themeKey, theme);
-    }
-  }
-
-  loadTheme(): void {
-    const savedTheme =
-      typeof localStorage !== 'undefined'
-        ? localStorage.getItem(this.themeKey)
-        : null;
-
-    const theme = savedTheme === 'dark' ? 'dark' : 'light';
-    this.setTheme(theme);
-  }
-
-  get theme(): 'light' | 'dark' {
-    return this.isDarkMode() ? 'dark' : 'light';
+    return "light";
   }
 }

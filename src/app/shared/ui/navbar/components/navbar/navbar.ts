@@ -9,11 +9,10 @@ import { Router, RouterLink } from "@angular/router";
 import { ButtonDarkMode } from "@shared/ui/button/button-dark-mode/button-dark-mode";
 import { NAVIGATION_ITEMS } from "../../constants/navlink-constant";
 import { ButtonComponent } from "@shared/ui/button/button";
-import { AuthService } from "@core/services/auth-service";
 import { LoginModalComponent } from "@shared/ui/login/login-modal/login-modal";
 import { ScrollService } from "@core/services/scroll-service";
 import { NavbarMobile } from "@shared/ui/navbar/components/navbar-mobile/navbar-mobile";
-import { SupabaseStorageService } from "@core/services/supabase-storage-service";
+import { SupabaseService } from "@core/services/supabase.service";
 import { ToastService } from "@shared/ui/toast/service/toast-service";
 
 @Component({
@@ -34,9 +33,8 @@ export class Navbar {
   navigationItems = NAVIGATION_ITEMS;
   private readonly scrollService = inject(ScrollService);
   private readonly router = inject(Router);
-  readonly authService = inject(AuthService);
+  readonly supabaseService = inject(SupabaseService);
   readonly isLoginModalOpen = signal(false);
-  private readonly supabaseStorageService = inject(SupabaseStorageService);
   private readonly toastService = inject(ToastService);
 
   onNavigationClick(route: string | undefined, fragment?: string): void {
@@ -65,7 +63,7 @@ export class Navbar {
   }
 
   logout(): void {
-    this.authService.signOut();
+    this.supabaseService.signOut();
   }
 
   navigateToAdmin(): void {
@@ -76,7 +74,7 @@ export class Navbar {
     // Allow anyone to download the admin's CV
     const adminUserId = "a7c8d5e2-5917-49b0-85df-40ed042e0d90"; // Replace with the actual admin user ID
 
-    const publicUrl = await this.supabaseStorageService.downloadCV(adminUserId);
+    const publicUrl = await this.supabaseService.downloadCV(adminUserId);
 
     if (publicUrl) {
       window.open(publicUrl, "_blank");

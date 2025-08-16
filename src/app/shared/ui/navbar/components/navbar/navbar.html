@@ -73,7 +73,7 @@
         <app-button-dark-mode class="hidden md:block" />
 
         <!-- Auth Buttons -->
-        @if (!authService.user()) {
+        @if (!supabaseService.user()) {
           <button
             (click)="openLoginModal()"
             class="hidden p-2 rounded-full hover:bg-accent/20 md:block"
