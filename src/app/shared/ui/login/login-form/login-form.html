@@ -1,10 +1,10 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()" class="space-y-6">
       <div>
-        <label for="email" class="block text-sm font-medium text-text"
+        <label for="login-email" class="block text-sm font-medium text-text"
           >Email</label
         >
         <input
-          id="email"
+          id="login-email"
           type="email"
           formControlName="email"
           autocomplete="email"
@@ -28,13 +28,25 @@
       @if (errorMessage()) {
         <div class="text-sm text-red-500">{{ errorMessage() }}</div>
       }
+      
+      @if (rateLimitInfo().isBlocked) {
+        <div class="text-sm text-orange-500 bg-orange-50 border border-orange-200 rounded p-3">
+          <p><strong>Trop de tentatives de connexion</strong></p>
+          <p>Réessayez dans {{ rateLimitInfo().minutesRemaining }} minute(s)</p>
+        </div>
+      }
+      
       <app-button
         type="submit"
         color="primary"
-        [disabled]="form.invalid || isLoading()"
+        [disabled]="form.invalid || isLoading() || rateLimitInfo().isBlocked"
         [isLoading]="isLoading()"
         [customClass]="'w-full py-3'"
       >
-        Se connecter
+        @if (rateLimitInfo().isBlocked) {
+          Bloqué ({{ rateLimitInfo().minutesRemaining }}min)
+        } @else {
+          Se connecter
+        }
       </app-button>
     </form>
