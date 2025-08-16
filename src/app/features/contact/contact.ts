@@ -1,6 +1,7 @@
-import { Component, signal } from "@angular/core";
+import { Component, inject, signal } from "@angular/core";
 import { NgOptimizedImage } from "@angular/common";
 import { ReactiveFormsModule } from "@angular/forms";
+import { Router } from "@angular/router";
 import { ContactCardGroup } from "./interface/contact.interface";
 import { CONTACT_DATA } from "./data/contact-data";
 import { ContactMessageCard } from "@features/contact/components/contact-message-card/contact-message-card";
@@ -11,6 +12,8 @@ import { ContactMessageCard } from "@features/contact/components/contact-message
   templateUrl: "./contact.html",
 })
 export class Contact {
+  private readonly router = inject(Router);
+  
   readonly contactTitle = signal<string>("Contactez-moi");
   readonly contactSubTitle = signal<string>(
     "N'hésitez pas à me contacter pour toute question ou proposition de collaboration.",
@@ -19,4 +22,8 @@ export class Contact {
   readonly contactCardGroups = signal<ContactCardGroup[]>(
     CONTACT_DATA.cardGroups,
   );
+
+  navigateToTop(): void {
+    this.router.navigate(['/']);
+  }
 }
