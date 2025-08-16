@@ -1,6 +1,6 @@
 import { NgOptimizedImage } from "@angular/common";
 import { ChangeDetectionStrategy, Component, inject } from "@angular/core";
-import { ScrollService } from "@app/core/services/scroll-service";
+import { Router } from "@angular/router";
 import { LaptopView } from "@features/landing/laptop-view/laptop-view";
 import { ButtonComponent } from "@shared/ui/button/button";
 
@@ -24,8 +24,17 @@ import { ButtonComponent } from "@shared/ui/button/button";
   `,
 })
 export class HeroSection {
-  private readonly scrollService = inject(ScrollService);
-  scrollToSection(fragment: string): Promise<void> {
-    return this.scrollService.scrollToSection(fragment);
+  private readonly router = inject(Router);
+  
+  navigateToProjects(): void {
+    this.router.navigate(['/projects']);
+  }
+  
+  navigateToContact(): void {
+    this.router.navigate(['/contact']);
+  }
+  
+  navigateToAbout(): void {
+    this.router.navigate(['/about']);
   }
 }
