@@ -14,7 +14,7 @@ import { NgOptimizedImage } from "@angular/common";
     >
       <img
         class="h-5 w-5 transition-all duration-300 ease-in-out group-hover:scale-110 group-hover:rotate-12 icon-invert"
-        [ngSrc]="isDarkMode() ? 'icons/moon.svg' : 'icons/sun.svg'"
+        [ngSrc]="isDarkMode() ? '/icons/moon.svg' : '/icons/sun.svg'"
         [alt]="isDarkMode() ? 'Mode sombre activé' : 'Mode clair activé'"
         width="20"
         height="20"

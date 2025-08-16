@@ -1,39 +1,31 @@
 import { CommonModule, NgOptimizedImage } from "@angular/common";
-import {
-  Component,
-  inject,
-  signal,
-  ElementRef,
-  output,
-} from "@angular/core";
-import { ScrollService } from "@core/services/scroll-service";
+import { Component, inject, signal, output } from "@angular/core";
 import { NAVIGATION_ITEMS } from "@shared/ui/navbar/constants/navlink-constant";
-import { SupabaseService } from "@core/services/supabase.service";
+import { SupabaseService } from "@core/services/supabase-service";
 import { Router } from "@angular/router";
+import { ClickOutsideBehaviorDirective } from "@shared/behaviors/click-outside";
 
 @Component({
   selector: "app-navbar-mobile",
   imports: [CommonModule, NgOptimizedImage],
   templateUrl: "./navbar-mobile.html",
-  host: {
-    '(document:click)': 'onClick($event)',
-  },
+  hostDirectives: [
+    {
+      directive: ClickOutsideBehaviorDirective,
+      outputs: ["clickedOutside:menuClosed"],
+    },
+  ],
 })
 export class NavbarMobile {
   navigationItems = NAVIGATION_ITEMS;
   isMenuOpen = signal(false);
-  private readonly scrollService = inject(ScrollService);
   readonly supabaseService = inject(SupabaseService);
   private readonly router = inject(Router);
-  private readonly elementRef = inject(ElementRef);
 
   readonly openLoginModalRequest = output<void>();
 
-  onClick(event: MouseEvent) {
-    if (
-      this.isMenuOpen() &&
-      !this.elementRef.nativeElement.contains(event.target)
-    ) {
+  menuClosed() {
+    if (this.isMenuOpen()) {
       this.closeMenu();
     }
   }
@@ -46,8 +38,10 @@ export class NavbarMobile {
     this.isMenuOpen.set(false);
   }
 
-  onNavigationClick(fragment?: string) {
-    this.scrollService.scrollToSection(fragment);
+  onNavigationClick(route?: string) {
+    if (route) {
+      this.router.navigate([route]);
+    }
     this.closeMenu();
   }
 

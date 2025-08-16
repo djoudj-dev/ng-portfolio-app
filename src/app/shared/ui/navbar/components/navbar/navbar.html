@@ -6,8 +6,8 @@
     <div class="flex justify-between items-center h-16">
       <!-- Logo -->
       <div class="flex items-center">
-        <a
-          routerLink="/"
+        <button
+          (click)="onNavigationClick('/')"
           class="flex items-center text-2xl font-bold hover:text-accent text-primary"
         >
           <img
@@ -20,28 +20,33 @@
           <span class="text-3xl font-bold text-text"
             >Julien<span class="bouncing-dot text-accent">.</span>N</span
           >
-        </a>
+        </button>
       </div>
 
       <!-- Menu de navigation pour les écrans larges -->
       <div class="hidden justify-center items-center flex-1 md:flex">
-        <div class="flex space-x-4">
+        <ul class="flex space-x-4" role="list">
           @for (item of navigationItems; track item.label) {
-            <button
-              (click)="onNavigationClick(item.route, item.fragment)"
-              class="flex relative items-center space-x-2 font-bold group hover:text-accent text-text underline-animated"
-            >
-              <img
-                [ngSrc]="item.icon"
-                [alt]="item.altText"
-                class="mb-1 w-5 h-5 icon-invert"
-                width="20"
-                height="20"
-              />
-              <span>{{ item.label }}</span>
-            </button>
+            <li>
+              <a
+                (click)="onNavigationClick(item.route)"
+                [attr.href]="item.route"
+                class="flex relative items-center space-x-2 font-bold group hover:text-accent text-text underline-animated"
+                role="button"
+                tabindex="0"
+              >
+                <img
+                  [ngSrc]="item.icon"
+                  alt="Icône {{ item.label }}"
+                  class="mb-1 w-5 h-5 icon-invert"
+                  width="20"
+                  height="20"
+                />
+                <span>{{ item.label }}</span>
+              </a>
+            </li>
           }
-        </div>
+        </ul>
       </div>
 
       <!-- Boutons d'action et menu mobile -->
@@ -76,12 +81,12 @@
         @if (!supabaseService.user()) {
           <button
             (click)="openLoginModal()"
-            class="hidden p-2 rounded-full hover:bg-accent/20 md:block"
+            class="hidden p-2 rounded-lg bg-background hover:bg-accent group md:block"
           >
             <img
               ngSrc="/icons/login.svg"
               alt="Login"
-              class="w-6 h-6 icon-invert"
+              class="w-6 h-6 transition-all duration-300 ease-in-out group-hover:scale-110 group-hover:rotate-12 icon-invert"
               width="24"
               height="24"
             />
@@ -89,24 +94,24 @@
         } @else {
           <button
             (click)="logout()"
-            class="hidden p-2 rounded-full hover:bg-accent/20 md:block"
+            class="hidden p-2 rounded-lg bg-background hover:bg-accent group md:block"
           >
             <img
               ngSrc="/icons/logout.svg"
               alt="Logout"
-              class="w-6 h-6 icon-invert"
+              class="w-6 h-6 transition-all duration-300 ease-in-out group-hover:scale-110 group-hover:rotate-12 icon-invert"
               width="24"
               height="24"
             />
           </button>
           <button
             (click)="navigateToAdmin()"
-            class="hidden p-2 rounded-full hover:bg-accent/20 md:block"
+            class="hidden p-2 rounded-lg bg-background hover:bg-accent group md:block"
           >
             <img
               ngSrc="/icons/admin.svg"
               alt="Admin"
-              class="w-6 h-6 icon-invert"
+              class="w-6 h-6 transition-all duration-300 ease-in-out group-hover:scale-110 group-hover:rotate-12 icon-invert"
               width="24"
               height="24"
             />
@@ -121,15 +126,15 @@
               [customClass]="'px-2 sm:px-3 py-1 sm:py-2 shadow-md hover:shadow-lg transition-all duration-200'"
             >
               <div class="flex justify-center items-center gap-2 sm:gap-3">
-                <figure class="relative flex-shrink-0 w-4 h-4 sm:h-5 sm:w-5">
+                <span class="relative flex-shrink-0 w-4 h-4 sm:h-5 sm:w-5">
                   <img
                     [ngSrc]="'/icons/download.svg'"
-                    alt="Icône de download"
+                    alt="Icône téléchargement"
                     class="object-contain absolute inset-0 w-full h-full icon-invert"
                     width="20"
                     height="20"
                   />
-                </figure>
+                </span>
                 <span class="text-sm font-medium sm:text-base text-text">Mon CV</span>
               </div>
             </app-button>
