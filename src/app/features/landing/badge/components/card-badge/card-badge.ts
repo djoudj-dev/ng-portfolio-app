@@ -7,7 +7,7 @@ import { StatusBadge } from "@features/landing/badge/components/status-badge/sta
   imports: [StatusBadge, NgOptimizedImage],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <header class="mt-14 flex justify-center bg-background px-4">
+    <header class="pt-16 pb-4 flex justify-center bg-background px-4">
       <section
         class="w-full max-w-sm flex flex-row items-center justify-center gap-4 rounded-b-lg border border-accent-600 px-3 py-3 text-center shadow-lg sm:max-w-md sm:flex-row sm:items-center sm:justify-center sm:px-4 sm:py-4 md:max-w-2xl"
         aria-labelledby="profile-heading"
@@ -32,10 +32,7 @@ import { StatusBadge } from "@features/landing/badge/components/status-badge/sta
         </h1>
 
         <!-- Badge de statut -->
-        <aside
-          aria-label="Statut de disponibilité"
-          class="flex justify-center"
-        >
+        <aside aria-label="Statut de disponibilité" class="flex justify-center">
           <app-status-badge />
         </aside>
       </section>

@@ -1,5 +1,5 @@
 import { Injectable, signal, computed, inject, effect } from "@angular/core";
-import { SupabaseService } from "@core/services/supabase.service";
+import { SupabaseService } from "@core/services/supabase-service";
 import { ToastService } from "@shared/ui/toast/service/toast-service";
 import {
   BadgeModel,
