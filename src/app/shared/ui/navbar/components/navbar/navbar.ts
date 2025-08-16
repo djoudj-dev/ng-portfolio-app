@@ -5,21 +5,19 @@ import {
   signal,
 } from "@angular/core";
 import { NgOptimizedImage } from "@angular/common";
-import { Router, RouterLink } from "@angular/router";
+import { Router } from "@angular/router";
 import { ButtonDarkMode } from "@shared/ui/button/button-dark-mode/button-dark-mode";
 import { NAVIGATION_ITEMS } from "../../constants/navlink-constant";
 import { ButtonComponent } from "@shared/ui/button/button";
 import { LoginModalComponent } from "@shared/ui/login/login-modal/login-modal";
-import { ScrollService } from "@core/services/scroll-service";
 import { NavbarMobile } from "@shared/ui/navbar/components/navbar-mobile/navbar-mobile";
-import { SupabaseService } from "@core/services/supabase.service";
+import { SupabaseService } from "@core/services/supabase-service";
 import { ToastService } from "@shared/ui/toast/service/toast-service";
 
 @Component({
   selector: "app-navbar",
   imports: [
     NgOptimizedImage,
-    RouterLink,
     ButtonDarkMode,
     ButtonComponent,
     LoginModalComponent,
@@ -31,26 +29,14 @@ import { ToastService } from "@shared/ui/toast/service/toast-service";
 })
 export class Navbar {
   navigationItems = NAVIGATION_ITEMS;
-  private readonly scrollService = inject(ScrollService);
   private readonly router = inject(Router);
   readonly supabaseService = inject(SupabaseService);
   readonly isLoginModalOpen = signal(false);
   private readonly toastService = inject(ToastService);
 
-  onNavigationClick(route: string | undefined, fragment?: string): void {
-    const currentUrl = this.router.url;
-    const navigationRoute = route ?? "";
-
-    if (currentUrl === "/" && fragment) {
-      this.scrollService.scrollToSection(fragment);
-    } else if (navigationRoute) {
-      this.router.navigateByUrl(navigationRoute).then(() => {
-        if (fragment) {
-          this.scrollService.scrollToSection(fragment);
-        }
-      });
-    } else if (fragment) {
-      this.scrollService.scrollToSection(fragment);
+  onNavigationClick(route: string | undefined): void {
+    if (route) {
+      this.router.navigate([route]);
     }
   }
 

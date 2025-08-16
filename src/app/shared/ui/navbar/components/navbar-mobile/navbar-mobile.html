@@ -35,7 +35,7 @@
         <div class="py-2">
           @for (item of navigationItems; track item.label) {
             <button
-              (click)="onNavigationClick(item.fragment)"
+              (click)="onNavigationClick(item.route)"
               class="flex items-center px-4 py-3 space-x-3 w-full text-sm font-medium text-left transition-colors duration-200 group hover:text-accent hover:bg-accent/10 text-text"
             >
               <img
