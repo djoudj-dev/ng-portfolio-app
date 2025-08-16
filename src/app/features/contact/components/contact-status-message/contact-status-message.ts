@@ -12,7 +12,7 @@ export type SubmissionStatus = "success" | "error";
       <div class="text-center">
         @if (status() === "success") {
           <img
-            [ngSrc]="'icons/success.svg'"
+            [ngSrc]="'/icons/success.svg'"
             alt="Error icon"
             class="mx-auto h-48 w-48"
             width="128"
@@ -28,7 +28,7 @@ export type SubmissionStatus = "success" | "error";
           </p>
         } @else {
           <img
-            [ngSrc]="'icons/error.svg'"
+            [ngSrc]="'/icons/error.svg'"
             alt="Error icon"
             class="mx-auto h-48 w-48"
             width="128"
