@@ -1,5 +1,5 @@
-<main id="projects" class="pb-4 lg:py-20">
-  <header>
+<main id="projects" class="pb-4 pt-20 lg:pb-20 lg:pt-18">
+  <header class="mb-8 px-4 lg:mb-12">
     <h1
       id="projects-heading"
       class="text-text decoration-accent mb-2 flex justify-center text-3xl font-bold underline lg:text-5xl"
@@ -13,13 +13,29 @@
 
   <div class="container mx-auto px-4">
     <!-- Search and filter section -->
-    <app-project-search
-      [searchQuery]="searchQuery()"
-      [filters]="filters()"
-      (searchChange)="onSearch($event)"
-      (clearSearchEvent)="clearSearch()"
-      (filterChange)="setFilter($event)"
-    />
+    @defer (on viewport) {
+      <app-project-search
+        [searchQuery]="searchQuery()"
+        [filters]="filters()"
+        (searchChange)="onSearch($event)"
+        (clearSearchEvent)="clearSearch()"
+        (filterChange)="setFilter($event)"
+      />
+    } @placeholder {
+      <section class="mb-8" aria-labelledby="search-filter-section">
+        <h2 id="search-filter-section" class="sr-only">Recherche et filtres</h2>
+        <div class="flex flex-col justify-center gap-4 sm:flex-row">
+          <div class="relative w-full sm:w-72">
+            <div class="bg-background-200 text-text border-primary w-full rounded-lg border px-4 py-2 h-10 animate-pulse"></div>
+          </div>
+        </div>
+        <div class="mt-4 flex flex-wrap justify-center gap-2">
+          <div class="bg-accent rounded px-3 py-1 text-sm w-16 h-8 animate-pulse"></div>
+          <div class="bg-accent rounded px-3 py-1 text-sm w-20 h-8 animate-pulse"></div>
+          <div class="bg-accent rounded px-3 py-1 text-sm w-18 h-8 animate-pulse"></div>
+        </div>
+      </section>
+    }
 
     <!-- Projects grid -->
     <section aria-labelledby="projects-list-section">
@@ -93,11 +109,20 @@
         </div>
 
         <!-- Pagination controls -->
-        <app-project-pagination
-          [currentPage]="currentPage()"
-          [totalPages]="totalPages()"
-          (pageChange)="goToPage($event)"
-        />
+        @defer (on viewport; prefetch on idle) {
+          <app-project-pagination
+            [currentPage]="currentPage()"
+            [totalPages]="totalPages()"
+            (pageChange)="goToPage($event)"
+          />
+        } @placeholder {
+          <div class="mt-8 flex items-center justify-center space-x-2">
+            <div class="bg-accent rounded px-3 py-1 text-sm w-8 h-8 animate-pulse"></div>
+            <div class="bg-accent rounded px-3 py-1 text-sm w-8 h-8 animate-pulse"></div>
+            <div class="bg-accent rounded px-3 py-1 text-sm w-8 h-8 animate-pulse"></div>
+            <div class="bg-accent rounded px-3 py-1 text-sm w-8 h-8 animate-pulse"></div>
+          </div>
+        }
       } @else {
         <div class="py-12 text-center">
           <p class="text-text/70 text-lg">
@@ -112,5 +137,23 @@
         </div>
       }
     </section>
+  </div>
+  <div class="fixed bottom-8 right-8 z-40">
+    <button
+      (click)="navigateToContact()"
+      aria-label="Aller à la section Contact"
+      title="Me contacter"
+      class="p-2 rounded-full shadow-md transition-colors bg-accent hover:bg-accent-600 hover:shadow-lg"
+    >
+      <span class="relative flex-shrink-0 w-10 h-10">
+        <img
+          ngSrc="/icons/arrow-b.svg"
+          alt="Flèche vers le contact"
+          class="object-contain inset-0 w-full h-full icon-invert"
+          width="24"
+          height="24"
+        />
+      </span>
+    </button>
   </div>
 </main>

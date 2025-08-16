@@ -16,6 +16,7 @@ import {
 import { ProjectPagination } from "@features/projects/components/project-pagination/project-pagination";
 import { ProjectSearch } from "@features/projects/components/project-search/project-search";
 import { ProjectService } from "./services/project-service";
+import { Router } from "@angular/router";
 
 @Component({
   selector: "app-project",
@@ -25,6 +26,7 @@ import { ProjectService } from "./services/project-service";
 })
 export class Project implements OnInit {
   private readonly projectService = inject(ProjectService);
+  private readonly router = inject(Router);
 
   // Titles
   readonly projectTitle = signal<string>("Mes Projets");
@@ -167,5 +169,9 @@ export class Project implements OnInit {
     }
 
     return links;
+  }
+
+  navigateToContact(): void {
+    this.router.navigate(['/contact']);
   }
 }
