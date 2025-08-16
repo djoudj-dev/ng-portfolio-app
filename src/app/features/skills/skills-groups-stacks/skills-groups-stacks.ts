@@ -2,10 +2,11 @@ import { Component, signal } from "@angular/core";
 import { NgOptimizedImage } from "@angular/common";
 import { SkillCategoryData } from "../interface/skill-data";
 import { SKILL_CATEGORIES } from "../data/skill-data";
+import { HoverClassBehaviorDirective } from "@shared/behaviors/hover-class";
 
 @Component({
   selector: "app-skills-groups-stacks",
-  imports: [NgOptimizedImage],
+  imports: [NgOptimizedImage, HoverClassBehaviorDirective],
   template: `
     <section
       class="grid grid-cols-1 gap-6 md:grid-cols-3"
@@ -13,12 +14,13 @@ import { SKILL_CATEGORIES } from "../data/skill-data";
     >
       @for (category of skillCategories(); track category.id) {
         <article
-          class="bg-background shadow-text border-accent rounded-lg border p-6 hover:scale-105 hover:shadow-md hover:transition-all hover:duration-300 hover:ease-in-out"
+          class="bg-background shadow-text border-accent rounded-lg border p-6"
+          appHoverClass
         >
           <div class="mb-4 flex items-center gap-2">
             @if (category.id === "frontend") {
               <img
-                [ngSrc]="'icons/frontend.svg'"
+                [ngSrc]="'/icons/frontend.svg'"
                 alt="Icône développement frontend"
                 width="24"
                 height="24"
@@ -26,7 +28,7 @@ import { SKILL_CATEGORIES } from "../data/skill-data";
               />
             } @else if (category.id === "backend") {
               <img
-                [ngSrc]="'icons/backend.svg'"
+                [ngSrc]="'/icons/backend.svg'"
                 alt="Icône développement backend"
                 width="24"
                 height="24"
@@ -34,7 +36,7 @@ import { SKILL_CATEGORIES } from "../data/skill-data";
               />
             } @else if (category.id === "tools") {
               <img
-                [ngSrc]="'icons/devops.svg'"
+                [ngSrc]="'/icons/devops.svg'"
                 alt="Icône outils de développement"
                 width="24"
                 height="24"
