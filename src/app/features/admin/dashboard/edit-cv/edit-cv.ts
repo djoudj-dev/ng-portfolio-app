@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject } from "@angular/core";
 import { CommonModule } from "@angular/common";
-import { SupabaseService } from "@core/services/supabase.service";
+import { SupabaseService } from "@core/services/supabase-service";
 import { ButtonComponent } from "@shared/ui/button/button";
 import { ToastService } from "@shared/ui/toast/service/toast-service";
 
