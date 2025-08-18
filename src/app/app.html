@@ -1,8 +1,14 @@
-<div class="flex flex-col min-h-screen">
-  <app-navbar />
+<div class="bg-background flex flex-col min-h-screen" lang="fr">
+  <header>
+    <app-navbar />
+  </header>
   <app-toast />
-  <main class="flex-grow">
+  <main class="flex-grow" id="main-content">
     <router-outlet></router-outlet>
   </main>
-  <app-footer />
+  @if (showFooter()) {
+    <footer>
+      <app-footer />
+    </footer>
+  }
 </div>

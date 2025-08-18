@@ -5,6 +5,7 @@ import {
   input,
   signal,
 } from "@angular/core";
+import { NgOptimizedImage } from "@angular/common";
 import { FormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
 import { ButtonComponent } from "@shared/ui/button/button";
 import { CustomMultiSelectComponent } from "@features/projects/components/custom-multi-select/custom-multi-select";
@@ -23,7 +24,12 @@ import {
 
 @Component({
   selector: "app-project-form",
-  imports: [ReactiveFormsModule, ButtonComponent, CustomMultiSelectComponent],
+  imports: [
+    ReactiveFormsModule,
+    ButtonComponent,
+    CustomMultiSelectComponent,
+    NgOptimizedImage,
+  ],
   templateUrl: "./project-form.html",
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

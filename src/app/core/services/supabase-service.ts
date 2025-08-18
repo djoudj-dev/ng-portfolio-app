@@ -1,6 +1,7 @@
 import { Injectable, signal, computed, inject } from "@angular/core";
 import { SupabaseClient, User } from "@supabase/supabase-js";
 import { Router } from "@angular/router";
+import { RateLimitService } from "@core/services/rate-limit-service";
 
 export interface UserProfile {
   id: string;
@@ -22,6 +23,7 @@ export class SupabaseService {
   private readonly userSignal = signal<User | null>(null);
   private readonly userProfileSignal = signal<UserProfile | null>(null);
   private readonly router = inject(Router);
+  private readonly rateLimitService = inject(RateLimitService);
 
   readonly uploadStatus = signal<"idle" | "uploading" | "done" | "error">(
     "idle",
@@ -86,14 +88,30 @@ export class SupabaseService {
   }
 
   async signIn(email: string, password: string) {
+    // Vérifier le rate limiting avant la tentative
+    const rateLimitKey = `login_${email}`;
+    if (!this.rateLimitService.checkRateLimit(rateLimitKey)) {
+      const minutesRemaining = this.rateLimitService.getBlockTimeRemaining(rateLimitKey);
+      throw new Error(
+        `Trop de tentatives de connexion. Réessayez dans ${minutesRemaining} minute(s).`
+      );
+    }
+
     const { data, error } = await this.runWithLockRetry(() =>
       this.client.auth.signInWithPassword({
         email,
         password,
       }),
     );
-    if (error) throw error;
+    
+    if (error) {
+      // Connexion échouée - ne pas réinitialiser le rate limit
+      throw error;
+    }
+    
     if (data.user) {
+      // Connexion réussie - réinitialiser le rate limit
+      this.rateLimitService.resetRateLimit(rateLimitKey);
       await this.fetchUserProfile(data.user.id);
     }
   }
@@ -103,8 +121,10 @@ export class SupabaseService {
       this.client.auth.signOut(),
     );
     if (error) throw error;
+    // Clear local auth state immediately; onAuthStateChange will also run
+    this.userSignal.set(null);
     this.userProfileSignal.set(null);
-    await this.router.navigate(["/home"]);
+    await this.router.navigate(["/landing"]);
   }
 
   private async fetchUserProfile(userId: string): Promise<void> {
