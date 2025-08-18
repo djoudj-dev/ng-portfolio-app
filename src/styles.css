@@ -49,6 +49,16 @@
 }
 
 @layer base {
+  /* Éviter le flash blanc en mode dark */
+  html {
+    background-color: oklch(100% 0 0); /* Mode clair par défaut */
+  }
+  
+  html[data-theme="dark"],
+  html.dark {
+    background-color: oklch(25% 0.005 260) !important; /* Mode dark immédiat */
+  }
+
   [data-theme="dark"],
   .dark {
     --color-text: oklch(92% 0.01 260);
@@ -94,5 +104,403 @@
   [data-theme="dark"] .icon-invert,
   .dark .icon-invert {
     filter: invert(1);
+  }
+}
+
+/* ===== Anti-Flash & View Transitions Animations ===== */
+/* IMPORTANT: Styles globaux uniquement pour les View Transitions */
+
+/* Éliminer complètement le flash blanc */
+::view-transition,
+::view-transition-group(*),
+::view-transition-image-pair(*),
+::view-transition-old(*),
+::view-transition-new(*) {
+  background-color: transparent !important;
+}
+
+/* Forcer le fond selon le thème pendant les transitions */
+html[data-theme="dark"] ::view-transition-group(root),
+html.dark ::view-transition-group(root) {
+  background-color: oklch(25% 0.005 260) !important;
+}
+
+html:not([data-theme="dark"]):not(.dark) ::view-transition-group(root) {
+  background-color: oklch(100% 0 0) !important;
+}
+
+/* S'assurer que le body garde sa couleur pendant les transitions */
+body {
+  background-color: var(--color-background);
+  transition: background-color 0ms !important; /* Pas de transition sur le fond */
+}
+
+/* Variables pour les transitions adaptées aux thèmes */
+:root {
+  --transition-duration-fast: 200ms;
+  --transition-duration-normal: 300ms;
+  --transition-duration-slow: 400ms;
+  --transition-easing: cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-easing-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  --transition-shadow-light: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+  --transition-shadow-dark: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
+  --transition-blur-light: blur(8px);
+  --transition-blur-dark: blur(12px);
+}
+
+[data-theme="dark"], .dark {
+  --transition-shadow-light: var(--transition-shadow-dark);
+  --transition-blur-light: var(--transition-blur-dark);
+}
+
+/* Animations keyframes améliorées */
+@keyframes slide-from-right {
+  from {
+    transform: translateX(100%) scale(0.95);
+    opacity: 0;
+    filter: var(--transition-blur-light);
+  }
+  50% {
+    opacity: 0.7;
+    filter: blur(4px);
+  }
+  to {
+    transform: translateX(0) scale(1);
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+
+@keyframes slide-to-left {
+  from {
+    transform: translateX(0) scale(1);
+    opacity: 1;
+    filter: blur(0);
+  }
+  50% {
+    opacity: 0.7;
+    filter: blur(4px);
+  }
+  to {
+    transform: translateX(-100%) scale(0.95);
+    opacity: 0;
+    filter: var(--transition-blur-light);
+  }
+}
+
+@keyframes slide-from-left {
+  from {
+    transform: translateX(-100%) scale(0.95);
+    opacity: 0;
+    filter: var(--transition-blur-light);
+  }
+  50% {
+    opacity: 0.7;
+    filter: blur(4px);
+  }
+  to {
+    transform: translateX(0) scale(1);
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+
+@keyframes slide-to-right {
+  from {
+    transform: translateX(0) scale(1);
+    opacity: 1;
+    filter: blur(0);
+  }
+  50% {
+    opacity: 0.7;
+    filter: blur(4px);
+  }
+  to {
+    transform: translateX(100%) scale(0.95);
+    opacity: 0;
+    filter: var(--transition-blur-light);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+    filter: var(--transition-blur-light);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+@keyframes fade-out {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-20px);
+    filter: var(--transition-blur-light);
+  }
+}
+
+@keyframes scale-in {
+  from {
+    transform: scale(0.85) rotate(-2deg);
+    opacity: 0;
+    filter: var(--transition-blur-light);
+    box-shadow: var(--transition-shadow-light);
+  }
+  60% {
+    transform: scale(1.02) rotate(1deg);
+    opacity: 0.8;
+    filter: blur(2px);
+  }
+  to {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+    filter: blur(0);
+    box-shadow: none;
+  }
+}
+
+@keyframes scale-out {
+  from {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+    filter: blur(0);
+    box-shadow: none;
+  }
+  40% {
+    transform: scale(1.05) rotate(-1deg);
+    opacity: 0.8;
+    filter: blur(2px);
+  }
+  to {
+    transform: scale(0.9) rotate(2deg);
+    opacity: 0;
+    filter: var(--transition-blur-light);
+    box-shadow: var(--transition-shadow-light);
+  }
+}
+
+/* Nouvelles animations pour plus de fluidité */
+@keyframes float-in {
+  from {
+    transform: translateY(30px) scale(0.9);
+    opacity: 0;
+    filter: brightness(1.2) saturate(1.3) var(--transition-blur-light);
+  }
+  60% {
+    transform: translateY(-5px) scale(1.02);
+    opacity: 0.9;
+    filter: brightness(1.05) saturate(1.1) blur(1px);
+  }
+  to {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+    filter: brightness(1) saturate(1) blur(0);
+  }
+}
+
+@keyframes float-out {
+  from {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+    filter: brightness(1) saturate(1) blur(0);
+  }
+  40% {
+    transform: translateY(-10px) scale(1.03);
+    opacity: 0.8;
+    filter: brightness(1.05) saturate(1.1) blur(1px);
+  }
+  to {
+    transform: translateY(-40px) scale(0.95);
+    opacity: 0;
+    filter: brightness(1.2) saturate(1.3) var(--transition-blur-light);
+  }
+}
+
+@keyframes spiral-in {
+  from {
+    transform: scale(0.7) rotate(-180deg) translateZ(0);
+    opacity: 0;
+    filter: hue-rotate(30deg) var(--transition-blur-light);
+  }
+  50% {
+    opacity: 0.6;
+    filter: hue-rotate(15deg) blur(4px);
+  }
+  to {
+    transform: scale(1) rotate(0deg) translateZ(0);
+    opacity: 1;
+    filter: hue-rotate(0deg) blur(0);
+  }
+}
+
+@keyframes spiral-out {
+  from {
+    transform: scale(1) rotate(0deg) translateZ(0);
+    opacity: 1;
+    filter: hue-rotate(0deg) blur(0);
+  }
+  50% {
+    opacity: 0.6;
+    filter: hue-rotate(-15deg) blur(4px);
+  }
+  to {
+    transform: scale(0.7) rotate(180deg) translateZ(0);
+    opacity: 0;
+    filter: hue-rotate(-30deg) var(--transition-blur-light);
+  }
+}
+
+/* ===== Transitions par défaut améliorées ===== */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: var(--transition-duration-normal);
+  animation-timing-function: var(--transition-easing);
+}
+
+::view-transition-old(root) {
+  animation-name: fade-out;
+}
+
+::view-transition-new(root) {
+  animation-name: fade-in;
+}
+
+/* ===== Transitions spécifiques par type avec thème ===== */
+
+/* Navigation vers la home page */
+html[data-view-transition="slide-to-home"] {
+  ::view-transition-old(root) {
+    animation-name: slide-to-right;
+    animation-duration: var(--transition-duration-normal);
+    animation-timing-function: var(--transition-easing);
+  }
+  
+  ::view-transition-new(root) {
+    animation-name: slide-from-left;
+    animation-duration: var(--transition-duration-normal);
+    animation-timing-function: var(--transition-easing);
+  }
+}
+
+/* Navigation depuis la home page */
+html[data-view-transition="slide-from-home"] {
+  ::view-transition-old(root) {
+    animation-name: slide-to-left;
+    animation-duration: var(--transition-duration-normal);
+    animation-timing-function: var(--transition-easing);
+  }
+  
+  ::view-transition-new(root) {
+    animation-name: slide-from-right;
+    animation-duration: var(--transition-duration-normal);
+    animation-timing-function: var(--transition-easing);
+  }
+}
+
+/* Transition fade avec échelle */
+html[data-view-transition="fade-transition"] {
+  ::view-transition-old(root) {
+    animation-name: scale-out;
+    animation-duration: var(--transition-duration-fast);
+    animation-timing-function: var(--transition-easing);
+  }
+  
+  ::view-transition-new(root) {
+    animation-name: scale-in;
+    animation-duration: var(--transition-duration-fast);
+    animation-timing-function: var(--transition-easing-bounce);
+  }
+}
+
+/* Nouvelles transitions fluides */
+html[data-view-transition="float-transition"] {
+  ::view-transition-old(root) {
+    animation-name: float-out;
+    animation-duration: var(--transition-duration-normal);
+    animation-timing-function: var(--transition-easing);
+  }
+  
+  ::view-transition-new(root) {
+    animation-name: float-in;
+    animation-duration: var(--transition-duration-normal);
+    animation-timing-function: var(--transition-easing-bounce);
+  }
+}
+
+html[data-view-transition="spiral-transition"] {
+  ::view-transition-old(root) {
+    animation-name: spiral-out;
+    animation-duration: var(--transition-duration-slow);
+    animation-timing-function: var(--transition-easing);
+  }
+  
+  ::view-transition-new(root) {
+    animation-name: spiral-in;
+    animation-duration: var(--transition-duration-slow);
+    animation-timing-function: var(--transition-easing-bounce);
+  }
+}
+
+/* Transitions adaptées au thème dark (plus prononcées) */
+[data-theme="dark"] html[data-view-transition],
+.dark html[data-view-transition] {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: calc(var(--transition-duration-normal) * 1.2);
+  }
+}
+
+/* Transitions pour l'admin (plus sophistiquées) */
+html[data-view-transition="admin-enter"] {
+  ::view-transition-old(root) {
+    animation-name: scale-out, fade-out;
+    animation-duration: var(--transition-duration-fast);
+  }
+  
+  ::view-transition-new(root) {
+    animation-name: spiral-in;
+    animation-duration: var(--transition-duration-slow);
+    animation-timing-function: var(--transition-easing-bounce);
+  }
+}
+
+html[data-view-transition="admin-exit"] {
+  ::view-transition-old(root) {
+    animation-name: spiral-out;
+    animation-duration: var(--transition-duration-normal);
+  }
+  
+  ::view-transition-new(root) {
+    animation-name: float-in;
+    animation-duration: var(--transition-duration-normal);
+    animation-timing-function: var(--transition-easing);
+  }
+}
+
+/* ===== Optimisations performance ===== */
+
+/* Réduire les animations sur les appareils lents */
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 100ms !important;
+    animation-name: fade-out, fade-in !important;
+  }
+}
+
+/* Désactiver les transitions sur mobile pour les performances */
+@media (max-width: 768px) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 150ms;
   }
 }
