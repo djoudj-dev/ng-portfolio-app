@@ -7,7 +7,7 @@ import { CardBadge } from "@features/landing/badge/components/card-badge/card-ba
   imports: [CardBadge, HeroSection],
   template: `
     <main>
-      <div id="home" class="relative">
+      <div id="home">
         <app-card-badge />
       </div>
       <app-hero-section />

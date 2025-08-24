@@ -75,7 +75,7 @@ export const routes: Routes = [
       {
         path: "cv/upload",
         loadComponent: () =>
-          import("@features/admin/dashboard/edit-cv/edit-cv").then((m) => m.EditCvComponent),
+          import("@features/admin/pages/cv/edit-cv/edit-cv").then((m) => m.EditCvComponent),
         canActivate: [crudGuard],
       },
       // Routes Projets

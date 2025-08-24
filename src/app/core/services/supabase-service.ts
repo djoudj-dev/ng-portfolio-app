@@ -14,7 +14,7 @@ export interface UserProfile {
 
 @Injectable({ providedIn: "root" })
 export class SupabaseService {
-  private readonly client = inject(SupabaseClient);
+  readonly client = inject(SupabaseClient);
 
   constructor() {
     void this.initialize();
@@ -91,9 +91,10 @@ export class SupabaseService {
     // Vérifier le rate limiting avant la tentative
     const rateLimitKey = `login_${email}`;
     if (!this.rateLimitService.checkRateLimit(rateLimitKey)) {
-      const minutesRemaining = this.rateLimitService.getBlockTimeRemaining(rateLimitKey);
+      const minutesRemaining =
+        this.rateLimitService.getBlockTimeRemaining(rateLimitKey);
       throw new Error(
-        `Trop de tentatives de connexion. Réessayez dans ${minutesRemaining} minute(s).`
+        `Trop de tentatives de connexion. Réessayez dans ${minutesRemaining} minute(s).`,
       );
     }
 
@@ -103,12 +104,12 @@ export class SupabaseService {
         password,
       }),
     );
-    
+
     if (error) {
       // Connexion échouée - ne pas réinitialiser le rate limit
       throw error;
     }
-    
+
     if (data.user) {
       // Connexion réussie - réinitialiser le rate limit
       this.rateLimitService.resetRateLimit(rateLimitKey);
