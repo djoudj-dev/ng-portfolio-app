@@ -8,8 +8,8 @@ import {
 } from "@angular/core";
 import { Router, RouterOutlet } from "@angular/router";
 import { NgOptimizedImage } from "@angular/common";
-import { SidebarComponent } from './sidebar';
-import { MobileOverlayComponent } from './mobile-overlay';
+import { SidebarComponent } from "./sidebar";
+import { MobileOverlayComponent } from "./mobile-overlay";
 
 export interface SidebarItem {
   id: string;
@@ -21,7 +21,12 @@ export interface SidebarItem {
 
 @Component({
   selector: "app-admin-layout",
-  imports: [RouterOutlet, NgOptimizedImage, SidebarComponent, MobileOverlayComponent],
+  imports: [
+    RouterOutlet,
+    NgOptimizedImage,
+    SidebarComponent,
+    MobileOverlayComponent,
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: "./admin-layout.html",
 })
@@ -29,7 +34,7 @@ export class AdminLayoutComponent {
   // State signals
   readonly sidebarOpen = signal(false);
   readonly sidebarCollapsed = signal(false);
-  readonly activeSection = signal<string>("dashboard");
+  readonly activeSection = signal<string>("");
   readonly activeSubSection = signal<string>("");
   readonly windowWidth = signal(window.innerWidth);
 
@@ -39,13 +44,13 @@ export class AdminLayoutComponent {
   // Computed signals
   readonly isDesktop = computed(() => this.windowWidth() >= 1024);
   readonly isMobile = computed(() => this.windowWidth() < 1024);
-  
-  readonly shouldShowMobileOverlay = computed(() => 
-    this.sidebarOpen() && this.isMobile()
+
+  readonly shouldShowMobileOverlay = computed(
+    () => this.sidebarOpen() && this.isMobile(),
   );
 
-  readonly mainContentClasses = computed(() => 
-    this.sidebarCollapsed() ? 'lg:pl-16' : 'lg:pl-64'
+  readonly mainContentClasses = computed(() =>
+    this.sidebarCollapsed() ? "lg:pl-16" : "lg:pl-64",
   );
 
   readonly currentSectionTitle = computed(() => {
@@ -177,10 +182,21 @@ export class AdminLayoutComponent {
     }
 
     // En mode étendu, gérer les sous-menus
-    this.activeSection.set(item.id);
-    this.activeSubSection.set("");
-
-    if (!item.children) {
+    if (item.children) {
+      // Si l'item a des enfants, toggle l'ouverture/fermeture
+      if (this.activeSection() === item.id) {
+        // Si déjà ouvert, fermer
+        this.activeSection.set("");
+        this.activeSubSection.set("");
+      } else {
+        // Sinon, ouvrir
+        this.activeSection.set(item.id);
+        this.activeSubSection.set("");
+      }
+    } else {
+      // Si pas d'enfants, naviguer directement
+      this.activeSection.set("");
+      this.activeSubSection.set("");
       this.router.navigate([item.route]);
       this.closeSidebar();
     }
@@ -195,14 +211,14 @@ export class AdminLayoutComponent {
   getSectionClasses(sectionId: string): string {
     const isActive = this.activeSection() === sectionId;
     return isActive
-      ? "bg-accent text-background shadow-lg"
-      : "text-text hover:bg-accent/10 hover:text-accent";
+      ? "bg-background hover:bg-accent text-text shadow-lg border border-accent mb-2"
+      : "text-text hover:bg-accent hover:text-accent mb-2";
   }
 
   getSubSectionClasses(subSectionId: string): string {
     const isActive = this.activeSubSection() === subSectionId;
     return isActive
-      ? "bg-accent/20 text-accent"
-      : "text-text/80 hover:bg-accent/5 hover:text-accent";
+      ? "bg-background hover:bg-accent text-text border border-accent mb-2"
+      : "text-text hover:bg-accent hover:text-accent";
   }
 }

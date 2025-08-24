@@ -13,6 +13,7 @@ import { LoginModalComponent } from "@shared/ui/login/login-modal/login-modal";
 import { NavbarMobile } from "@shared/ui/navbar/components/navbar-mobile/navbar-mobile";
 import { SupabaseService } from "@core/services/supabase-service";
 import { ToastService } from "@shared/ui/toast/service/toast-service";
+import { CvService } from "@features/admin/services/cv-service";
 
 @Component({
   selector: "app-navbar",
@@ -33,6 +34,7 @@ export class Navbar {
   readonly supabaseService = inject(SupabaseService);
   readonly isLoginModalOpen = signal(false);
   private readonly toastService = inject(ToastService);
+  private readonly cvService = inject(CvService);
 
   onNavigationClick(route: string | undefined): void {
     if (route) {
@@ -63,6 +65,13 @@ export class Navbar {
     const publicUrl = await this.supabaseService.downloadCV(adminUserId);
 
     if (publicUrl) {
+      // Incrémenter le compteur de téléchargements pour tous les visiteurs
+      try {
+        await this.cvService.incrementDownloadCount();
+      } catch (error) {
+        console.warn('Could not increment download count:', error);
+      }
+      
       window.open(publicUrl, "_blank");
       this.toastService.show({
         message: "Téléchargement du CV initié.",

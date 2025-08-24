@@ -1,4 +1,4 @@
-<div class="min-h-screen bg-background flex">
+<div class="min-h-screen bg-background flex pt-16">
   <!-- Sidebar -->
   <app-sidebar
     [items]="sidebarItems"
@@ -22,13 +22,13 @@
   <!-- Main content -->
   <main class="flex-1 transition-all duration-300" [class]="mainContentClasses()">
     <!-- Header mobile -->
-    <div class="lg:hidden flex h-16 items-center justify-between px-4 bg-background border-b border-accent">
+    <div class="lg:hidden fixed top-16 left-0 right-0 z-30 flex h-16 items-center justify-between px-4 bg-background border-b border-accent">
       <button
         (click)="toggleSidebar()"
         class="p-2 rounded-lg hover:bg-accent text-text"
       >
         <img
-          [ngSrc]="'/icons/menu.svg'"
+          [ngSrc]="'/icons/grid.svg'"
           alt="Ouvrir menu"
           class="w-6 h-6 icon-invert"
           width="24"
@@ -40,7 +40,7 @@
     </div>
 
     <!-- Page content -->
-    <div class="p-6 lg:p-8 min-h-screen">
+    <div class="p-6 lg:p-8 pt-20 lg:pt-6 min-h-screen">
       <router-outlet></router-outlet>
     </div>
   </main>

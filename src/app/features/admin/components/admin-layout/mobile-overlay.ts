@@ -1,11 +1,11 @@
-import { Component, output, ChangeDetectionStrategy } from '@angular/core';
+import { Component, output, ChangeDetectionStrategy } from "@angular/core";
 
 @Component({
-  selector: 'app-mobile-overlay',
+  selector: "app-mobile-overlay",
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div
-      class="fixed inset-0 z-40 bg-gray-600 bg-opacity-75"
+      class="fixed inset-0 z-30 bg-background bg-opacity-75"
       (click)="onClose()"
     ></div>
   `,

@@ -19,7 +19,7 @@ import { NgOptimizedImage } from "@angular/common";
   template: `
     <div class="space-y-6">
       <!-- Header -->
-      <div class="border-b border-primary-200 dark:border-primary-700 pb-4">
+      <div class="border-b border-accent pb-4">
         <h1 class="text-2xl font-bold text-text">Vue d'ensemble</h1>
         <p class="text-secondary mt-1">
           Gérez votre portfolio depuis ce dashboard
@@ -28,9 +28,7 @@ import { NgOptimizedImage } from "@angular/common";
 
       <!-- Stats cards -->
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div
-          class="bg-primary-50 dark:bg-primary-900 rounded-xl p-6 border border-primary-200 dark:border-primary-700"
-        >
+        <div class="bg-background rounded-xl p-6 border border-accent">
           <div class="flex items-center">
             <div class="flex-shrink-0">
               <img
@@ -42,17 +40,15 @@ import { NgOptimizedImage } from "@angular/common";
               />
             </div>
             <div class="ml-4">
-              <p class="text-sm font-medium text-secondary">Badges actifs</p>
-              <p class="text-2xl font-semibold text-primary">
+              <p class="text-sm font-medium text-text">Badges actifs</p>
+              <p class="text-2xl font-semibold text-text">
                 {{ badgeStats().available }}
               </p>
             </div>
           </div>
         </div>
 
-        <div
-          class="bg-secondary-50 dark:bg-secondary-900 rounded-xl p-6 border border-secondary-200 dark:border-secondary-700"
-        >
+        <div class="bg-background rounded-xl p-6 border border-accent">
           <div class="flex items-center">
             <div class="flex-shrink-0">
               <img
@@ -64,17 +60,15 @@ import { NgOptimizedImage } from "@angular/common";
               />
             </div>
             <div class="ml-4">
-              <p class="text-sm font-medium text-secondary">Projets</p>
-              <p class="text-2xl font-semibold text-secondary">
+              <p class="text-sm font-medium text-text">Projets</p>
+              <p class="text-2xl font-semibold text-text">
                 {{ projects().length }}
               </p>
             </div>
           </div>
         </div>
 
-        <div
-          class="bg-accent-50 dark:bg-accent-900 rounded-xl p-6 border border-accent-200 dark:border-accent-700"
-        >
+        <div class="bg-background rounded-xl p-6 border border-accent">
           <div class="flex items-center">
             <div class="flex-shrink-0">
               <img
@@ -86,21 +80,18 @@ import { NgOptimizedImage } from "@angular/common";
               />
             </div>
             <div class="ml-4">
-              <p class="text-sm font-medium text-secondary">
-                Projets mis en avant
-              </p>
-              <p class="text-2xl font-semibold text-accent">
+              <p class="text-sm font-medium text-text">Projets mis en avant</p>
+              <p class="text-2xl font-semibold text-text">
                 {{ featuredProjectsCount() }}
               </p>
             </div>
           </div>
         </div>
+
       </div>
 
       <!-- Quick actions -->
-      <div
-        class="bg-background rounded-xl border border-primary-200 dark:border-primary-700 p-6"
-      >
+      <div class="bg-background rounded-xl p-6 border border-accent p-6">
         <h2 class="text-lg font-semibold text-text mb-4">Actions rapides</h2>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <app-button
@@ -110,7 +101,7 @@ import { NgOptimizedImage } from "@angular/common";
           >
             <div class="flex items-center">
               <img
-                [ngSrc]="'/icons/plus.svg'"
+                [ngSrc]="'icons/plus.svg'"
                 alt="Ajouter"
                 class="w-4 h-4 mr-2 icon-invert"
                 width="16"
@@ -173,15 +164,14 @@ import { NgOptimizedImage } from "@angular/common";
         </div>
       </div>
 
+
       <!-- Recent activity -->
-      <div
-        class="bg-background rounded-xl border border-primary-200 dark:border-primary-700 p-6"
-      >
+      <div class="bg-background rounded-xl border border-accent p-6">
         <h2 class="text-lg font-semibold text-text mb-4">Activité récente</h2>
         <div class="space-y-3">
           @if (latestBadge()) {
             <div
-              class="flex items-center p-3 bg-primary-50 dark:bg-primary-900 rounded-lg"
+              class="flex items-center p-3 bg-background border border-accent rounded-lg"
             >
               <img
                 [ngSrc]="'/icons/badge.svg'"
@@ -193,7 +183,7 @@ import { NgOptimizedImage } from "@angular/common";
               <span class="ml-3 text-sm text-text"
                 >Dernier badge mis à jour</span
               >
-              <span class="ml-auto text-xs text-secondary">{{
+              <span class="ml-auto text-xs text-text">{{
                 getRelativeTime(latestBadge()!.updated_at)
               }}</span>
             </div>
@@ -201,7 +191,7 @@ import { NgOptimizedImage } from "@angular/common";
 
           @if (latestProject()) {
             <div
-              class="flex items-center p-3 bg-secondary-50 dark:bg-secondary-900 rounded-lg"
+              class="flex items-center p-3 bg-background border border-accent rounded-lg"
             >
               <img
                 [ngSrc]="'/icons/folder.svg'"
@@ -213,14 +203,14 @@ import { NgOptimizedImage } from "@angular/common";
               <span class="ml-3 text-sm text-text"
                 >Projet "{{ latestProject()!.title }}" créé</span
               >
-              <span class="ml-auto text-xs text-secondary">{{
+              <span class="ml-auto text-xs text-text">{{
                 getRelativeTime(latestProject()!.date)
               }}</span>
             </div>
           }
 
           <div
-            class="flex items-center p-3 bg-accent-50 dark:bg-accent-900 rounded-lg"
+            class="flex items-center p-3 bg-background border border-accent rounded-lg"
           >
             <img
               [ngSrc]="'/icons/dashboard.svg'"
@@ -232,7 +222,7 @@ import { NgOptimizedImage } from "@angular/common";
             <span class="ml-3 text-sm text-text"
               >Dashboard admin accessible</span
             >
-            <span class="ml-auto text-xs text-secondary">Maintenant</span>
+            <span class="ml-auto text-xs text-text">Maintenant</span>
           </div>
         </div>
       </div>
@@ -252,6 +242,7 @@ export class AdminOverviewComponent {
   readonly projects = toSignal(from(this.projectService.getProjects()), {
     initialValue: [],
   });
+
 
   // Statistiques calculées
   readonly badgeStats = computed(() => {

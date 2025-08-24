@@ -49,6 +49,8 @@ export class ButtonComponent {
   readonly buttonClasses = computed(() => {
     const classes = [
       'w-full',
+      'px-4',
+      'py-3',
       'text-base',
       'font-semibold',
       'tracking-wide',

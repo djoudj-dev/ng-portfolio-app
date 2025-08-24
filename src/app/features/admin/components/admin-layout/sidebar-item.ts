@@ -50,7 +50,7 @@ export interface SidebarItem {
 
         @if (shouldShowTooltip()) {
           <div
-            class="absolute left-full ml-2 px-2 py-1 bg-primary text-background text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity z-50 whitespace-nowrap pointer-events-none"
+            class="absolute left-full ml-2 px-2 py-1 bg-background text-text text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity z-50 whitespace-nowrap pointer-events-none"
           >
             {{ item().label }}
           </div>
