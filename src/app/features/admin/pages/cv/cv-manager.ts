@@ -37,12 +37,10 @@ import { ToastService } from "@shared/ui/toast/service/toast-service";
                 Prévisualiser
               </div>
             </app-button>
-            <app-button
+            <app-button 
               color="accent"
               (buttonClick)="downloadCv()"
-              [customClass]="
-                !cvStats().hasCV ? 'opacity-50 cursor-not-allowed' : ''
-              "
+              [customClass]="!cvStats().hasCV ? 'opacity-50 cursor-not-allowed' : ''"
             >
               <div class="flex items-center">
                 <img
@@ -108,8 +106,7 @@ import { ToastService } from "@shared/ui/toast/service/toast-service";
                     {{ getFileName() }}
                   </h3>
                   <p class="text-xs text-text/70">
-                    {{ cvStats().version }} • Modifié le
-                    {{ cvStats().lastUpdated }}
+                    {{ cvStats().version }} • Modifié le {{ cvStats().lastUpdated }}
                   </p>
                 </div>
               </div>
@@ -173,36 +170,22 @@ import { ToastService } from "@shared/ui/toast/service/toast-service";
           </div>
         } @else {
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div
-              class="text-center p-4 bg-background border border-accent rounded-lg"
-            >
-              <div class="text-2xl font-bold text-accent">
-                {{ cvStats().version }}
-              </div>
+            <div class="text-center p-4 bg-background border border-accent rounded-lg">
+              <div class="text-2xl font-bold text-accent">{{ cvStats().version }}</div>
               <div class="text-sm text-text/70">Version</div>
             </div>
-
-            <div
-              class="text-center p-4 bg-background border border-accent rounded-lg"
-            >
-              <div class="text-2xl font-bold text-accent">
-                {{ cvStats().downloadCount }}
-              </div>
+            
+            <div class="text-center p-4 bg-background border border-accent rounded-lg">
+              <div class="text-2xl font-bold text-accent">{{ cvStats().downloadCount }}</div>
               <div class="text-sm text-text/70">Téléchargements</div>
             </div>
-
-            <div
-              class="text-center p-4 bg-background border border-accent rounded-lg"
-            >
-              <div class="text-2xl font-bold text-accent">
-                {{ cvStats().fileSize }}
-              </div>
+            
+            <div class="text-center p-4 bg-background border border-accent rounded-lg">
+              <div class="text-2xl font-bold text-accent">{{ cvStats().fileSize }}</div>
               <div class="text-sm text-text/70">Taille du fichier</div>
             </div>
-
-            <div
-              class="text-center p-4 bg-background border border-accent rounded-lg"
-            >
+            
+            <div class="text-center p-4 bg-background border border-accent rounded-lg">
               <div class="text-2xl font-bold text-accent">
                 @if (cvStats().hasCV) {
                   <img
@@ -225,14 +208,12 @@ import { ToastService } from "@shared/ui/toast/service/toast-service";
               <div class="text-sm text-text/70">Statut</div>
             </div>
           </div>
-
+          
           @if (cvStats().hasCV) {
             <div class="mt-6 pt-6 border-t border-accent">
               <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
                 <div class="flex justify-between">
-                  <span class="font-medium text-text"
-                    >Dernière mise à jour :</span
-                  >
+                  <span class="font-medium text-text">Dernière mise à jour :</span>
                   <span class="text-text/70">{{ cvStats().lastUpdated }}</span>
                 </div>
                 <div class="flex justify-between">
@@ -267,7 +248,7 @@ export class CvManagerComponent {
   private readonly cvService = inject(CvService);
   private readonly supabaseService = inject(SupabaseService);
   private readonly toastService = inject(ToastService);
-
+  
   readonly cvStats = this.cvService.cvStats;
   readonly cvLoading = this.cvService.loading;
   readonly cvData = this.cvService.cvData;
@@ -301,10 +282,10 @@ export class CvManagerComponent {
     if (publicUrl) {
       // Incrémenter le compteur de téléchargements
       await this.cvService.incrementDownloadCount();
-
+      
       // Ouvrir le CV
       window.open(publicUrl, "_blank");
-
+      
       this.toastService.show({
         message: "CV téléchargé avec succès.",
         type: "success",
@@ -319,9 +300,9 @@ export class CvManagerComponent {
 
   getFileName(): string {
     const data = this.cvData();
-    if (!data?.file_path) return "CV_Inconnu.pdf";
-
-    const fileName = data.file_path.split("/").pop();
-    return fileName ?? "CV.pdf";
+    if (!data?.file_path) return 'CV_Inconnu.pdf';
+    
+    const fileName = data.file_path.split('/').pop();
+    return fileName ?? 'CV.pdf';
   }
 }

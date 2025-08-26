@@ -3,9 +3,7 @@
   aria-labelledby="intro-heading"
 >
   <div class="container px-4 mx-auto">
-    <!-- Layout en deux colonnes sur desktop -->
     <div class="flex flex-col lg:flex-row lg:items-center lg:gap-12">
-      <!-- Colonne de gauche - Contenu texte -->
       <article class="lg:w-1/2 lg:pr-8">
         <h1
           id="intro-heading"
@@ -105,23 +103,25 @@
         </figure>
       </aside>
     </div>
-    <div class="flex justify-center pt-12 lg:pt-14 sm:pt-10">
+    <div class="flex flex-col items-center pt-12 lg:pt-14 sm:pt-10">
       <button
         (click)="navigateToAbout()"
-        aria-label="Aller à la section À propos"
-        title="Aller à la section À propos"
-        class="p-2 rounded-full shadow-md transition-colors animate-bounce bg-accent hover:bg-accent-600 hover:shadow-lg"
+        aria-label="En savoir plus sur moi"
+        title="En savoir plus sur moi"
+        class="px-6 py-3 rounded-lg shadow-md transition-all duration-300 bg-accent hover:bg-accent-600 hover:shadow-lg hover:scale-105 text-text font-medium flex items-center gap-2"
       >
-        <span class="relative flex-shrink-0 w-10 h-10">
+        Un peu plus sur moi
+        <span class="relative flex-shrink-0 w-5 h-5">
           <img
             [ngSrc]="'/icons/arrow-b.svg'"
             alt="Flèche vers le bas"
             class="object-contain inset-0 w-full h-full icon-invert"
-            width="24"
-            height="24"
+            width="20"
+            height="20"
           />
         </span>
       </button>
+
     </div>
   </div>
 </section>
