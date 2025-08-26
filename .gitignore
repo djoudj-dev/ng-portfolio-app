@@ -41,6 +41,9 @@ testem.log
 .DS_Store
 Thumbs.db
 
-# Environments
-src/environments
+# Environments (tous les fichiers exclus du versioning)
+src/environments/
+
+# Variables d'environnement locales
+.env.local
 

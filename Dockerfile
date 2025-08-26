@@ -1,3 +1,4 @@
+
 # Multi-stage Dockerfile pour Angular avec pnpm et Nginx
 FROM node:20-alpine AS builder
 
@@ -16,6 +17,36 @@ RUN pnpm install --frozen-lockfile
 # Copier le code source
 COPY . .
 
+# Variables d'environnement pour la génération des fichiers de configuration
+ARG SUPABASE_URL
+ARG SUPABASE_ANON_KEY
+
+# Générer les fichiers d'environnement à partir des fichiers existants
+RUN if [ -z "$SUPABASE_URL" ] || [ -z "$SUPABASE_ANON_KEY" ]; then \
+    echo "Erreur: Les variables SUPABASE_URL et SUPABASE_ANON_KEY doivent être définies"; \
+    exit 1; \
+  fi
+
+# Sauvegarder les fichiers originaux et créer les versions avec variables d'environnement
+RUN cp src/environments/environment.ts src/environments/environment.ts.bak && \
+    cp src/environments/environment.development.ts src/environments/environment.development.ts.bak
+
+# Générer environment.ts pour la production
+RUN sed "s|production: false|production: true|g; \
+         s|process.env\['SUPABASE_URL'\] ?? \"[^\"]*\"|\"${SUPABASE_URL}\"|g; \
+         s|process.env\['SUPABASE_ANON_KEY'\] ?? \"[^\"]*\"|\"${SUPABASE_ANON_KEY}\"|g; \
+         s|\"https://[^\"]*\"|\"${SUPABASE_URL}\"|g; \
+         s|\"eyJ[^\"]*\"|\"${SUPABASE_ANON_KEY}\"|g" \
+    src/environments/environment.ts.bak > src/environments/environment.ts
+
+# Générer environment.development.ts
+RUN sed "s|\"https://[^\"]*\"|\"${SUPABASE_URL}\"|g; \
+         s|\"eyJ[^\"]*\"|\"${SUPABASE_ANON_KEY}\"|g" \
+    src/environments/environment.development.ts.bak > src/environments/environment.development.ts
+
+# Nettoyer les fichiers de sauvegarde
+RUN rm -f src/environments/*.bak
+
 # Build de l'application pour la production
 RUN pnpm run build
 
@@ -27,21 +58,21 @@ COPY <<EOF /etc/nginx/conf.d/default.conf
 server {
     listen 80;
     server_name localhost;
-    
+
     root /usr/share/nginx/html;
     index index.html;
-    
+
     # Gérer les routes Angular (SPA)
     location / {
         try_files \$uri \$uri/ /index.html;
     }
-    
+
     # Cache pour les assets statiques
     location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot)$ {
         expires 1y;
         add_header Cache-Control "public, immutable";
     }
-    
+
     # Compression gzip
     gzip on;
     gzip_vary on;
