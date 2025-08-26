@@ -81,7 +81,7 @@ FROM nginx:alpine AS production
 # Copier la configuration Nginx personnalisée
 COPY <<EOF /etc/nginx/conf.d/default.conf
 server {
-    listen 80;
+    listen 3000;
     server_name localhost;
 
     root /usr/share/nginx/html;
@@ -109,8 +109,8 @@ EOF
 # Copier les fichiers buildés depuis le stage builder
 COPY --from=builder /app/dist/ng-portfolio-app/browser /usr/share/nginx/html
 
-# Exposer le port 80
-EXPOSE 80
+# Exposer le port 3000
+EXPOSE 3000
 
 # Démarrer Nginx
 CMD ["nginx", "-g", "daemon off;"]
