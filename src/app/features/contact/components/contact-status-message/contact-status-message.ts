@@ -1,5 +1,5 @@
 import { NgOptimizedImage } from "@angular/common";
-import { Component, input, output } from "@angular/core";
+import { Component, input, output, ChangeDetectionStrategy } from "@angular/core";
 import { ButtonComponent } from "@shared/ui/button/button";
 
 export type SubmissionStatus = "success" | "error";
@@ -7,6 +7,7 @@ export type SubmissionStatus = "success" | "error";
 @Component({
   selector: "app-contact-status-message",
   imports: [ButtonComponent, NgOptimizedImage],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="flex flex-col items-center justify-center py-14">
       <div class="text-center">

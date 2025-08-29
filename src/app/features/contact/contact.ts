@@ -1,4 +1,4 @@
-import { Component, inject, signal } from "@angular/core";
+import { Component, inject, signal, ChangeDetectionStrategy } from "@angular/core";
 import { NgOptimizedImage } from "@angular/common";
 import { ReactiveFormsModule } from "@angular/forms";
 import { Router } from "@angular/router";
@@ -10,6 +10,7 @@ import { ContactMessageCard } from "@features/contact/components/contact-message
   selector: "app-contact",
   imports: [NgOptimizedImage, ReactiveFormsModule, ContactMessageCard],
   templateUrl: "./contact.html",
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Contact {
   private readonly router = inject(Router);
