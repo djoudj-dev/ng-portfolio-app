@@ -3,66 +3,46 @@ import { inject, Injectable, signal } from "@angular/core";
 import { firstValueFrom } from "rxjs";
 import { environment } from "@environments/environment";
 import { ContactForm } from "@features/contact/interface/contact.interface";
-import { EMAIL_TEMPLATE } from "@features/contact/templates/email-template";
-import { EMAIL_CONFIRMATION_TEMPLATE } from "@features/contact/templates/email-confirmation-template";
+
+export interface ContactMessage {
+  id: string;
+  name: string;
+  email: string;
+  subject: string;
+  message: string;
+  isRead: boolean;
+  createdAt: string;
+}
 
 @Injectable({ providedIn: "root" })
 export class ContactService {
   readonly status = signal<"idle" | "sending" | "sent" | "error">("idle");
   private readonly http = inject(HttpClient);
 
-  private buildEmailHtml(payload: ContactForm): string {
-    const escapedMessage = this.escape(payload.message).replace(/\n/g, "<br>");
-
-    return EMAIL_TEMPLATE.replace(/{{name}}/g, this.escape(payload.name))
-      .replace(/{{email}}/g, this.escape(payload.email))
-      .replace(/{{subject}}/g, this.escape(payload.subject))
-      .replace(/{{message}}/g, escapedMessage);
-  }
-
-  private buildConfirmationHtml(name: string): string {
-    return EMAIL_CONFIRMATION_TEMPLATE.replace(/{{name}}/g, this.escape(name));
-  }
-
-  private escape(str: string): string {
-    return str
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;")
-      .replace(/'/g, "&#039;");
-  }
-
   async sendMail(payload: ContactForm): Promise<boolean> {
     this.status.set("sending");
 
-    const emailToOwner = this.buildEmailHtml(payload);
-    const emailToUser = this.buildConfirmationHtml(payload.name);
-
     const requestBody = {
-      fromName: payload.name,
-      fromEmail: payload.email,
+      name: payload.name,
+      email: payload.email,
       subject: payload.subject,
       message: payload.message,
-      htmlUserToOwner: emailToOwner,
-      htmlOwnerToUser: emailToUser,
     };
 
     try {
       const response = await firstValueFrom(
-        this.http.post<{ success?: boolean; message?: string; ids?: string[] }>(
-          `${environment.supabaseUrl}/functions/v1/resend-email`,
+        this.http.post<ContactMessage>(
+          `${environment.apiUrl}/contact`,
           requestBody,
           {
             headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer ${environment.supabaseKey}`,
             },
           },
         ),
       );
 
-      if (response?.success || response?.ids?.length) {
+      if (response?.id) {
         this.status.set("sent");
         return true;
       } else {
@@ -73,6 +53,64 @@ export class ContactService {
     } catch (err) {
       console.error("Erreur d'envoi:", err);
       this.status.set("error");
+      return false;
+    }
+  }
+
+  async getContacts(): Promise<ContactMessage[]> {
+    try {
+      return await firstValueFrom(
+        this.http.get<ContactMessage[]>(`${environment.apiUrl}/contact`)
+      );
+    } catch (err) {
+      console.error("Erreur lors de la récupération des contacts:", err);
+      return [];
+    }
+  }
+
+  async getUnreadCount(): Promise<number> {
+    try {
+      const response = await firstValueFrom(
+        this.http.get<{ count: number }>(`${environment.apiUrl}/contact/unread-count`)
+      );
+      return response.count;
+    } catch (err) {
+      console.error("Erreur lors de la récupération du nombre de messages non lus:", err);
+      return 0;
+    }
+  }
+
+  async getContact(id: string): Promise<ContactMessage | null> {
+    try {
+      return await firstValueFrom(
+        this.http.get<ContactMessage>(`${environment.apiUrl}/contact/${id}`)
+      );
+    } catch (err) {
+      console.error("Erreur lors de la récupération du contact:", err);
+      return null;
+    }
+  }
+
+  async markAsRead(id: string): Promise<boolean> {
+    try {
+      await firstValueFrom(
+        this.http.put(`${environment.apiUrl}/contact/${id}/read`, {})
+      );
+      return true;
+    } catch (err) {
+      console.error("Erreur lors du marquage comme lu:", err);
+      return false;
+    }
+  }
+
+  async deleteContact(id: string): Promise<boolean> {
+    try {
+      await firstValueFrom(
+        this.http.delete(`${environment.apiUrl}/contact/${id}`)
+      );
+      return true;
+    } catch (err) {
+      console.error("Erreur lors de la suppression du contact:", err);
       return false;
     }
   }

@@ -1,5 +1,5 @@
 import { NgClass } from "@angular/common";
-import { Component, inject, signal } from "@angular/core";
+import { Component, inject, signal, ChangeDetectionStrategy } from "@angular/core";
 import {
   FormBuilder,
   FormGroup,
@@ -23,6 +23,7 @@ type SubmissionStatus = "idle" | "success" | "error";
     NgClass,
     ContactStatusMessage,
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="min-h-[500px]">
       @if (formSubmissionStatus() === "idle") {
