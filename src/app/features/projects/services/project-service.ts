@@ -1,168 +1,172 @@
-import { inject, Injectable } from '@angular/core';
-import { SupabaseClient } from '@supabase/supabase-js';
-import { ProjectData, ProjectCategory, GithubUrls } from '@features/projects/interface/project-data';
-
-// Type pour les données brutes du formulaire (peut contenir des null pour les champs optionnels)
-export interface ProjectFormValue {
-  title: string | null;
-  description: string | null;
-  technologies: string[] | null;
-  demo_url: string | null;
-  category: ProjectCategory | null;
-  featured: boolean | null;
-  date: string | null;
-  github_urls: {
-    frontend: string | null;
-    backend: string | null;
-    fullstack: string | null;
-  } | null;
-}
-
-// Type pour l'insertion (les champs requis sont non-nullables)
-export type ProjectInsertData = {
-  title: string;
-  description: string;
-  technologies: string[];
-  demo_url?: string | null;
-  category: ProjectCategory | null;
-  featured: boolean;
-  date: string | null;
-  github_urls?: GithubUrls | null;
-};
-
-// Type pour la mise à jour (tous les champs sont optionnels)
-export type ProjectUpdateData = Partial<ProjectInsertData & { image_path?: string }>;
+import { Injectable, inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { firstValueFrom } from 'rxjs';
+import { environment } from '@environments/environment';
+import {
+  ProjectModel,
+  CreateProjectDto,
+  UpdateProjectDto,
+  ProjectFilterDto,
+  ProjectPaginatedResponse
+} from '@features/projects/models/project-model';
 
 @Injectable({ providedIn: 'root' })
 export class ProjectService {
-  private readonly supabase: SupabaseClient = inject(SupabaseClient);
+  private readonly http = inject(HttpClient);
+  private readonly apiUrl = `${environment.apiUrl}/projects`;
 
-  async getProjects(): Promise<ProjectData[]> {
-    const { data, error } = await this.supabase
-      .from('projects')
-      .select('*')
-      .order('date', { ascending: false });
+  async getAllProjects(filters: ProjectFilterDto = {}): Promise<ProjectPaginatedResponse> {
+    const params = new URLSearchParams();
 
-    if (error) {
-      console.error('Error fetching projects:', error);
-      return [];
-    }
-    return data || [];
-  }
+    if (filters.search) params.append('search', filters.search);
+    if (filters.category) params.append('category', filters.category);
+    if (filters.status) params.append('status', filters.status);
+    if (filters.featured !== undefined) params.append('featured', filters.featured.toString());
+    if (filters.page) params.append('page', filters.page.toString());
+    if (filters.limit) params.append('limit', filters.limit.toString());
+    if (filters.sortBy) params.append('sortBy', filters.sortBy);
+    if (filters.sortOrder) params.append('sortOrder', filters.sortOrder);
 
-  async getProjectById(id: string): Promise<ProjectData | null> {
-    const { data, error } = await this.supabase
-      .from('projects')
-      .select('*')
-      .eq('id', id)
-      .single();
+    const url = params.toString() ? `${this.apiUrl}?${params}` : this.apiUrl;
 
-    if (error) {
-      console.error(`Error fetching project ${id}:`, error);
-      return null;
-    }
-    return data;
-  }
-
-  async addProject(projectData: ProjectInsertData, imageFile: File): Promise<ProjectData | null> {
-    const imagePath = `public/${Date.now()}_${imageFile.name}`;
-    const { error: uploadError } = await this.supabase.storage
-      .from('projects')
-      .upload(imagePath, imageFile);
-
-    if (uploadError) {
-      console.error('Error uploading image:', uploadError);
-      throw uploadError;
-    }
-
-    const dataToInsert = {
-      title: projectData.title,
-      description: projectData.description,
-      technologies: projectData.technologies,
-      image_path: imagePath,
-      demo_url: projectData.demo_url,
-      github_urls: projectData.github_urls,
-      category: projectData.category,
-      featured: projectData.featured,
-      date: projectData.date,
-    };
-
-    const { data, error: insertError } = await this.supabase
-      .from('projects')
-      .insert(dataToInsert)
-      .select()
-      .single();
-
-    if (insertError) {
-      console.error('Error inserting project:', insertError);
-      throw insertError;
-    }
-    return data;
-  }
-
-  async updateProject(id: string, projectData: ProjectUpdateData, imageFile?: File): Promise<ProjectData | null> {
-    let finalImagePath: string | undefined = projectData.image_path;
-
-    if (imageFile) {
-      const newImagePath = `public/${Date.now()}_${imageFile.name}`;
-      const { error: uploadError } = await this.supabase.storage
-        .from('projects')
-        .upload(newImagePath, imageFile);
-
-      if (uploadError) {
-        console.error('Error uploading new image:', uploadError);
-        throw uploadError;
-      }
-      finalImagePath = newImagePath;
-    }
-
-    const dataToUpdate = {
-      title: projectData.title,
-      description: projectData.description,
-      technologies: projectData.technologies,
-      image_path: finalImagePath,
-      demo_url: projectData.demo_url,
-      github_urls: projectData.github_urls,
-      category: projectData.category,
-      featured: projectData.featured,
-      date: projectData.date,
-    };
-
-    const { data, error } = await this.supabase
-      .from('projects')
-      .update(dataToUpdate)
-      .eq('id', id)
-      .select()
-      .single();
-
-    if (error) {
-      console.error(`Error updating project ${id}:`, error);
+    try {
+      return await firstValueFrom(this.http.get<ProjectPaginatedResponse>(url));
+    } catch (error) {
+      console.error('Erreur lors de la récupération des projets:', error);
       throw error;
     }
-    return data;
   }
 
-  async deleteProject(id: string, imagePath: string): Promise<void> {
-    const { error: storageError } = await this.supabase.storage
-      .from('projects')
-      .remove([imagePath]);
-
-    if (storageError) {
-      console.error(`Error deleting image ${imagePath}:`, storageError);
-    }
-
-    const { error: dbError } = await this.supabase.from('projects').delete().eq('id', id);
-
-    if (dbError) {
-      console.error(`Error deleting project ${id}:`, dbError);
-      throw dbError;
+  async getProjectById(id: string): Promise<ProjectModel> {
+    try {
+      return await firstValueFrom(this.http.get<ProjectModel>(`${this.apiUrl}/${id}`));
+    } catch (error) {
+      console.error(`Erreur lors de la récupération du projet ${id}:`, error);
+      throw error;
     }
   }
 
-  getPublicUrl(path: string): string {
-    const { data } = this.supabase.storage.from('projects').getPublicUrl(path);
-    return data?.publicUrl || '';
+  async getFeaturedProjects(limit: number = 6): Promise<ProjectModel[]> {
+    try {
+      return await firstValueFrom(
+        this.http.get<ProjectModel[]>(`${this.apiUrl}/featured/list?limit=${limit}`)
+      );
+    } catch (error) {
+      console.error('Erreur lors de la récupération des projets mis en avant:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Crée un nouveau projet avec upload d'image optionnel.
+   * Authentication is handled automatically by the auth interceptor.
+   */
+  async createProject(projectData: CreateProjectDto, imageFile?: File): Promise<ProjectModel> {
+    const formData = this.buildFormData(projectData, imageFile);
+
+    try {
+      return await firstValueFrom(
+        this.http.post<ProjectModel>(this.apiUrl, formData)
+      );
+    } catch (error) {
+      console.error('Erreur lors de la création du projet:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Met à jour un projet existant.
+   * Authentication is handled automatically by the auth interceptor.
+   */
+  async updateProject(id: string, projectData: UpdateProjectDto, imageFile?: File): Promise<ProjectModel> {
+    const formData = this.buildFormData(projectData, imageFile);
+
+    try {
+      return await firstValueFrom(
+        this.http.put<ProjectModel>(`${this.apiUrl}/${id}`, formData)
+      );
+    } catch (error) {
+      console.error(`Erreur lors de la mise à jour du projet ${id}:`, error);
+      throw error;
+    }
+  }
+
+  /**
+   * Supprime un projet.
+   * Authentication is handled automatically by the auth interceptor.
+   */
+  async deleteProject(id: string): Promise<void> {
+    try {
+      await firstValueFrom(
+        this.http.delete<void>(`${this.apiUrl}/${id}`)
+      );
+    } catch (error) {
+      console.error(`Erreur lors de la suppression du projet ${id}:`, error);
+      throw error;
+    }
+  }
+
+  /**
+   * Construit un FormData à partir des données du projet et du fichier image.
+   */
+  private buildFormData(projectData: CreateProjectDto | UpdateProjectDto, imageFile?: File): FormData {
+    const formData = new FormData();
+
+    // Log des données avant construction
+    console.log('Building FormData with project data:', projectData);
+    console.log('Image file:', imageFile);
+
+    // Ajouter les champs du projet
+    Object.entries(projectData).forEach(([key, value]) => {
+      if (value !== undefined && value !== null) {
+        if (key === 'technologies' && Array.isArray(value)) {
+          formData.append(key, JSON.stringify(value));
+          console.log(`FormData - ${key}:`, JSON.stringify(value));
+        } else if (typeof value === 'boolean') {
+          formData.append(key, value.toString());
+          console.log(`FormData - ${key}:`, value.toString());
+        } else if (key === 'category') {
+          // Convert category to uppercase to match backend enum
+          const uppercaseCategory = value.toString().toUpperCase();
+          formData.append(key, uppercaseCategory);
+          console.log(`FormData - ${key}:`, uppercaseCategory);
+        } else {
+          formData.append(key, value.toString());
+          console.log(`FormData - ${key}:`, value.toString());
+        }
+      }
+    });
+
+    // Ajouter le fichier image si présent
+    if (imageFile) {
+      formData.append('image', imageFile, imageFile.name);
+      console.log('FormData - image:', imageFile.name, imageFile.type, imageFile.size);
+    }
+
+    // Log du FormData final
+    console.log('Final FormData entries:');
+    for (const [key, value] of formData.entries()) {
+      console.log(`  ${key}:`, value);
+    }
+
+    return formData;
+  }
+  /**
+   * Génère une URL publique pour les images (fallback pour le développement).
+   */
+  getImageUrl(imagePath?: string | null): string {
+    if (!imagePath) {
+      return 'https://via.placeholder.com/400x300?text=No+Image';
+    }
+
+    // Si c'est déjà une URL complète, la retourner telle quelle
+    if (imagePath.startsWith('http')) {
+      return imagePath;
+    }
+
+    // Construire l'URL complète avec l'API et ajouter un timestamp pour éviter le cache
+    const cleanPath = imagePath.replace(/^\/+/, '');
+    const timestamp = new Date().getTime();
+    return `${environment.apiUrl}/${cleanPath}?t=${timestamp}`;
   }
 }
-
-

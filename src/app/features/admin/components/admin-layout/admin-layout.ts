@@ -4,20 +4,15 @@ import {
   inject,
   computed,
   ChangeDetectionStrategy,
-  HostListener,
+  OnInit,
+  OnDestroy,
 } from "@angular/core";
-import { Router, RouterOutlet } from "@angular/router";
+import { Router, RouterOutlet, NavigationEnd } from "@angular/router";
 import { NgOptimizedImage } from "@angular/common";
 import { SidebarComponent } from "./sidebar";
 import { MobileOverlayComponent } from "./mobile-overlay";
-
-export interface SidebarItem {
-  id: string;
-  label: string;
-  icon: string;
-  route: string;
-  children?: SidebarItem[];
-}
+import { Subscription } from "rxjs";
+import { SidebarItem } from "@features/admin/models/sidebar-item";
 
 @Component({
   selector: "app-admin-layout",
@@ -29,8 +24,11 @@ export interface SidebarItem {
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: "./admin-layout.html",
+  host: {
+    '(window:resize)': 'onResize($event)'
+  }
 })
-export class AdminLayoutComponent {
+export class AdminLayoutComponent implements OnInit, OnDestroy {
   // State signals
   readonly sidebarOpen = signal(false);
   readonly sidebarCollapsed = signal(false);
@@ -40,6 +38,7 @@ export class AdminLayoutComponent {
 
   // Router injection moderne
   private readonly router = inject(Router);
+  private routerSub?: Subscription;
 
   // Computed signals
   readonly isDesktop = computed(() => this.windowWidth() >= 1024);
@@ -58,8 +57,6 @@ export class AdminLayoutComponent {
     const section = this.sidebarItems.find((item) => item.id === activeId);
     return section?.label ?? "Dashboard";
   });
-
-  @HostListener("window:resize", ["$event"])
   onResize(event: Event): void {
     const target = event.target as Window;
     this.windowWidth.set(target.innerWidth);
@@ -77,43 +74,15 @@ export class AdminLayoutComponent {
     },
     {
       id: "badges",
-      label: "Badges",
+      label: "Badge",
       icon: "/icons/badge.svg",
       route: "/admin/badges",
-      children: [
-        {
-          id: "badges-list",
-          label: "Gérer les badges",
-          icon: "/icons/list.svg",
-          route: "/admin/badges",
-        },
-        {
-          id: "badges-create",
-          label: "Créer un badge",
-          icon: "/icons/plus.svg",
-          route: "/admin/badges/create",
-        },
-      ],
     },
     {
       id: "cv",
       label: "CV",
       icon: "/icons/document.svg",
       route: "/admin/cv",
-      children: [
-        {
-          id: "cv-edit",
-          label: "Modifier le CV",
-          icon: "/icons/edit.svg",
-          route: "/admin/cv/edit",
-        },
-        {
-          id: "cv-upload",
-          label: "Upload CV",
-          icon: "/icons/upload.svg",
-          route: "/admin/cv/upload",
-        },
-      ],
     },
     {
       id: "projects",
@@ -220,5 +189,41 @@ export class AdminLayoutComponent {
     return isActive
       ? "bg-background hover:bg-accent text-text border border-accent mb-2"
       : "text-text hover:bg-accent hover:text-accent";
+  }
+
+  private syncFromUrl(url: string): void {
+    // Try to match child routes first
+    const pairs = this.sidebarItems.flatMap(p => (p.children ?? []).map(c => ({ parent: p, child: c })));
+    const childMatch = pairs.find(x => url.startsWith(x.child.route));
+    if (childMatch) {
+      this.activeSection.set(childMatch.parent.id);
+      this.activeSubSection.set(childMatch.child.id);
+      return;
+    }
+    // Then match top-level
+    const topMatch = this.sidebarItems.find(i => url.startsWith(i.route));
+    if (topMatch) {
+      this.activeSection.set(topMatch.id);
+      this.activeSubSection.set("");
+      return;
+    }
+    // Default: dashboard for /admin root
+    if (url === "/admin" || url.startsWith("/admin/")) {
+      this.activeSection.set("dashboard");
+      this.activeSubSection.set("");
+    }
+  }
+
+  ngOnInit(): void {
+    this.syncFromUrl(this.router.url);
+    this.routerSub = this.router.events.subscribe((ev) => {
+      if (ev instanceof NavigationEnd) {
+        this.syncFromUrl(ev.urlAfterRedirects);
+      }
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.routerSub?.unsubscribe();
   }
 }

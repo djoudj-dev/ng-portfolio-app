@@ -37,7 +37,7 @@ import {
 export class ButtonComponent {
   readonly buttonClick = output<MouseEvent>();
   readonly type = input<"button" | "submit" | "reset">("button");
-  readonly color = input<"primary" | "secondary" | "accent">("primary");
+  readonly color = input<"primary" | "secondary" | "accent" | "red">("primary");
   readonly disabled = input<boolean>(false);
   readonly noRounded = input<boolean>(false);
   readonly rounded = input<boolean>(true);
@@ -70,6 +70,8 @@ export class ButtonComponent {
       classes.push('bg-secondary', 'hover:bg-secondary/80', 'focus:bg-secondary/70', 'active:bg-secondary/90', 'text-white');
     } else if (color === 'accent') {
       classes.push('bg-accent', 'hover:bg-accent/80', 'focus:bg-accent/70', 'active:bg-accent/90', 'text-white');
+    } else if (color === 'red') {
+      classes.push('bg-red', 'hover:bg-red/80', 'focus:bg-red/70', 'active:bg-red/90', 'text-white');
     }
 
     if (this.rounded()) {

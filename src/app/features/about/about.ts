@@ -1,12 +1,13 @@
-import { Component, inject } from "@angular/core";
+import { Component, inject, ChangeDetectionStrategy } from "@angular/core";
 import { NgOptimizedImage } from "@angular/common";
 import { Router } from "@angular/router";
-import { AboutMain } from "./about-main/about-main";
+import { AboutMain } from "./components/about-main";
 
 @Component({
   selector: "app-about",
   imports: [AboutMain, NgOptimizedImage],
   templateUrl: "./about.html",
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class About {
   private readonly router = inject(Router);

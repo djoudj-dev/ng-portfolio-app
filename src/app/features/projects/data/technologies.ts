@@ -18,4 +18,5 @@ export const TECHNOLOGIES: Technology[] = [
   { name: 'Docker', icon: '/icons/docker.svg' },
   { name: 'Git', icon: '/icons/git.svg' },
   { name: 'Linux', icon: '/icons/linux.svg' },
+  { name: 'Bootstrap', icon: '/icons/bootstrap.svg' },
 ];
