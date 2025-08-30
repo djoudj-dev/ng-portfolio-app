@@ -7,13 +7,8 @@ import {
 } from "@angular/core";
 import { NgOptimizedImage } from "@angular/common";
 
-export interface SidebarItem {
-  id: string;
-  label: string;
-  icon: string;
-  route: string;
-  children?: SidebarItem[];
-}
+// SidebarItem centralisé dans @features/admin/models/sidebar-item
+import { SidebarItem } from "@features/admin/models/sidebar-item";
 
 @Component({
   selector: "app-sidebar-item",
@@ -24,7 +19,7 @@ export interface SidebarItem {
       <button
         (click)="onSelectSection()"
         [class]="buttonClasses()"
-        class="w-full flex items-center text-sm font-medium rounded-lg transition-all duration-200 group relative"
+        class="w-full flex items-center text-sm font-medium rounded-lg group relative"
         [attr.title]="tooltipText()"
       >
         <img
@@ -68,7 +63,7 @@ export interface SidebarItem {
               <img
                 [ngSrc]="child.icon"
                 [alt]="'Icône ' + child.label"
-                class="mr-2 w-4 h-4 icon-invert"
+                class="mr-2 w-8 h-8 icon-invert"
                 width="16"
                 height="16"
               />
@@ -112,21 +107,21 @@ export class SidebarItemComponent {
   buttonClasses = computed(() => {
     const baseClasses = this.sectionClasses();
     const layoutClasses = this.sidebarCollapsed()
-      ? "px-2 py-3 justify-center"
-      : "px-3 py-2";
+      ? "px-1 py-2 justify-center"
+      : "px-1 py-2";
     return `${baseClasses} ${layoutClasses}`;
   });
 
   iconClasses = computed(() => {
-    const baseClass =
-      "w-5 h-5 transition-transform group-hover:scale-110 icon-invert flex-shrink-0";
+    const sizeClass = this.sidebarCollapsed() ? "w-6 h-6" : "w-6 h-6";
+    const baseClass = `${sizeClass} icon-invert flex-shrink-0`;
     const marginClass = this.sidebarCollapsed() ? "" : " mr-3";
     return baseClass + marginClass;
   });
 
   arrowClasses = computed(() => {
     const baseClass =
-      "ml-auto w-4 h-4 icon-invert transition-transform flex-shrink-0";
+      "ml-auto w-6 h-6 icon-invert transition-transform flex-shrink-0";
     const rotationClass =
       this.activeSection() === this.item().id ? " rotate-90" : "";
     return baseClass + rotationClass;

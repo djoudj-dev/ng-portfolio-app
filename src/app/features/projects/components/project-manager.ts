@@ -1,9 +1,9 @@
-import { Component, signal, inject, ChangeDetectionStrategy } from "@angular/core";
+import { Component, signal, inject, ChangeDetectionStrategy, computed } from "@angular/core";
 import { toSignal } from "@angular/core/rxjs-interop";
 import { from } from "rxjs";
 import { NgOptimizedImage } from "@angular/common";
 import { ProjectService } from "@features/projects/services/project-service";
-import { ProjectData } from "@features/projects/interface/project-data";
+import { ProjectModel } from "@features/projects/models/project-model";
 import { ButtonComponent } from "@shared/ui/button/button";
 import { Router } from "@angular/router";
 
@@ -14,15 +14,14 @@ import { Router } from "@angular/router";
   template: `
     <div class="space-y-6">
       <!-- Header -->
-      <div class="border-b border-primary-200 dark:border-primary-700 pb-4">
+      <div class="border-b border-accent pb-4">
         <div class="flex items-center justify-between">
           <div>
             <h1 class="text-2xl font-bold text-text">Gestion des projets</h1>
-            <p class="text-secondary mt-1">Gérez votre portfolio de projets</p>
           </div>
           <app-button
             (buttonClick)="navigateToCreate()"
-            color="primary"
+            color="accent"
           >
             <div class="flex items-center">
               <img
@@ -41,7 +40,7 @@ import { Router } from "@angular/router";
       <!-- View Toggle -->
       <div class="flex items-center space-x-4">
         <span class="text-sm font-medium text-text">Vue:</span>
-        <div class="flex bg-primary-50 dark:bg-primary-900 rounded-lg p-1">
+        <div class="flex bg-background  rounded-lg p-1">
           <button
             (click)="setView('list')"
             [class]="getViewButtonClass('list')"
@@ -74,7 +73,7 @@ import { Router } from "@angular/router";
       </div>
 
       <!-- Projects List/Grid -->
-      <div class="bg-background rounded-xl border border-primary-200 dark:border-primary-700 p-6">
+      <div class="bg-background rounded-xl border border-accent p-6">
         <div class="flex items-center justify-between mb-6">
           <h2 class="text-lg font-semibold text-text">
             Projets ({{ projects().length }})
@@ -86,19 +85,19 @@ import { Router } from "@angular/router";
               <input
                 type="text"
                 placeholder="Rechercher un projet..."
-                class="pl-8 pr-4 py-2 border border-primary-200 dark:border-primary-700 rounded-lg bg-background text-text placeholder-secondary focus:ring-2 focus:ring-primary focus:border-transparent"
+                class="pl-8 pr-4 py-2 border border-accent  rounded-lg bg-background text-text placeholder-secondary focus:ring-2 focus:ring-primary focus:border-transparent"
               />
               <img
-                [ngSrc]="'/icons/search.svg'"
+                [ngSrc]="'icons/search.svg'"
                 alt="Rechercher"
-                class="absolute left-2 top-2.5 w-4 h-4 icon-invert"
+                class="absolute left-2 top-2.5 w-5 h-5 icon-invert"
                 width="16"
                 height="16"
               />
             </div>
 
             <!-- Filter -->
-            <select class="px-3 py-2 border border-primary-200 dark:border-primary-700 rounded-lg bg-background text-text focus:ring-2 focus:ring-primary focus:border-transparent">
+            <select class="px-3 py-2 border border-accent rounded-lg bg-background text-text focus:ring-2 focus:ring-primary focus:border-transparent">
               <option value="">Toutes catégories</option>
               <option value="web">Web</option>
               <option value="mobile">Mobile</option>
@@ -112,22 +111,22 @@ import { Router } from "@angular/router";
           <!-- List View -->
           <div class="space-y-4">
             @for (project of projects(); track project.id) {
-              <div class="flex items-center justify-between p-4 border border-primary-200 dark:border-primary-700 rounded-lg hover:shadow-md transition-shadow">
+              <div class="flex items-center justify-between p-4 border border-accent rounded-lg hover:shadow-md transition-shadow">
                 <div class="flex items-center space-x-4">
-                  @if (project.image_path) {
+                  @if (project.imagePath) {
                     <img
-                      [ngSrc]="project.image_path"
+                      [ngSrc]="projectService.getImageUrl(project.imagePath)"
                       [alt]="project.title"
                       class="w-12 h-12 rounded-lg object-cover"
                       width="48"
                       height="48"
                     />
                   } @else {
-                    <div class="w-12 h-12 bg-primary-100 dark:bg-primary-800 rounded-lg flex items-center justify-center">
+                    <div class="w-12 h-12 bg-accent rounded-lg flex items-center justify-center">
                       <img
                         [ngSrc]="'/icons/folder.svg'"
                         alt="Projet"
-                        class="w-6 h-6 icon-invert"
+                        class="w-12 h-12 icon-invert"
                         width="24"
                         height="24"
                       />
@@ -138,11 +137,11 @@ import { Router } from "@angular/router";
                     <h3 class="text-sm font-medium text-text">{{ project.title }}</h3>
                     <p class="text-xs text-secondary line-clamp-1">{{ project.description }}</p>
                     <div class="flex items-center mt-1 space-x-2">
-                      <span class="text-xs bg-primary-100 text-primary-800 dark:bg-primary-800 dark:text-primary-200 px-2 py-1 rounded-full">
+                      <span class="text-xs bg-accent text-text px-2 py-1 rounded-full">
                         {{ project.category }}
                       </span>
                       @if (project.featured) {
-                        <span class="text-xs bg-accent-100 text-accent-800 dark:bg-accent-800 dark:text-accent-200 px-2 py-1 rounded-full">
+                        <span class="text-xs bg-accent-100 text-accent-800 px-2 py-1 rounded-full">
                           ⭐ Mis en avant
                         </span>
                       }
@@ -151,8 +150,8 @@ import { Router } from "@angular/router";
                 </div>
 
                 <div class="flex items-center space-x-2">
-                  @if (project.demo_url) {
-                    <button class="p-2 hover:bg-accent-100 dark:hover:bg-accent-800 rounded-lg" title="Voir la démo">
+                  @if (project.demoUrl) {
+                    <button class="p-2 hover:bg-accent-100 rounded-lg" title="Voir la démo">
                       <img [ngSrc]="'/icons/external-link.svg'" alt="Démo" class="w-4 h-4 icon-invert" width="16" height="16" />
                     </button>
                   }
@@ -190,13 +189,14 @@ import { Router } from "@angular/router";
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             @for (project of projects(); track project.id) {
               <div class="border border-primary-200 dark:border-primary-700 rounded-lg overflow-hidden hover:shadow-lg transition-shadow">
-                @if (project.image_path) {
+                @if (project.imagePath) {
                   <img
-                    [ngSrc]="project.image_path"
+                    [ngSrc]="projectService.getImageUrl(project.imagePath)"
                     [alt]="project.title"
                     class="w-full h-40 object-cover"
-                    width="300"
-                    height="160"
+                    width="320"
+                    height="158"
+                    priority
                   />
                 } @else {
                   <div class="w-full h-40 bg-primary-100 dark:bg-primary-800 flex items-center justify-center">
@@ -226,7 +226,7 @@ import { Router } from "@angular/router";
                     </span>
 
                     <div class="flex space-x-1">
-                      @if (project.demo_url) {
+                      @if (project.demoUrl) {
                         <button class="p-1 hover:bg-accent-100 dark:hover:bg-accent-800 rounded" title="Voir la démo">
                           <img [ngSrc]="'/icons/external-link.svg'" alt="Démo" class="w-4 h-4 icon-invert" width="16" height="16" />
                         </button>
@@ -268,13 +268,14 @@ import { Router } from "@angular/router";
   `,
 })
 export class ProjectManagerComponent {
-  private readonly projectService = inject(ProjectService);
+  readonly projectService = inject(ProjectService);
   private readonly router = inject(Router);
 
   readonly currentView = signal<'list' | 'grid'>('grid');
-  readonly projects = toSignal(from(this.projectService.getProjects()), {
-    initialValue: [],
+  private readonly projectsResponse = toSignal(from(this.projectService.getAllProjects()), {
+    initialValue: { projects: [], total: 0, page: 1, limit: 10, totalPages: 0 },
   });
+  readonly projects = computed(() => this.projectsResponse()?.projects || []);
 
   setView(view: 'list' | 'grid'): void {
     this.currentView.set(view);
@@ -282,7 +283,7 @@ export class ProjectManagerComponent {
 
   getViewButtonClass(view: 'list' | 'grid'): string {
     return this.currentView() === view
-      ? 'bg-primary text-white shadow-sm'
+      ? 'bg-accent text-text shadow-sm'
       : 'text-secondary hover:text-primary';
   }
 
@@ -294,10 +295,10 @@ export class ProjectManagerComponent {
     this.router.navigate(['/admin/projects/edit', id]);
   }
 
-  async deleteProject(project: ProjectData): Promise<void> {
+  async deleteProject(project: ProjectModel): Promise<void> {
     if (confirm(`Êtes-vous sûr de vouloir supprimer le projet "${project.title}" ?`)) {
       try {
-        await this.projectService.deleteProject(project.id, project.image_path);
+        await this.projectService.deleteProject(project.id);
         // Refresh projects list
         window.location.reload();
       } catch (error) {

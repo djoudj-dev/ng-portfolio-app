@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { HeroSection } from "@features/landing/hero-section/hero-section";
-import { CardBadge } from "@features/landing/badge/components/card-badge/card-badge";
+import { CardBadge } from "@features/badge/components/card-badge/card-badge";
 
 @Component({
   selector: "app-landing",

@@ -1,10 +1,11 @@
-import { Component, inject } from "@angular/core";
+import { Component, inject, ChangeDetectionStrategy } from "@angular/core";
 import { ThemeService } from "@core/services/theme-service";
 import { NgOptimizedImage } from "@angular/common";
 
 @Component({
   selector: "app-button-dark-mode",
   imports: [NgOptimizedImage],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <button
       class="p-2 rounded-lg bg-background hover:bg-accent group"

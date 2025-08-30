@@ -46,6 +46,20 @@
   --color-accent-800: oklch(36% 0.09 55);
   --color-accent-900: oklch(22% 0.06 55);
   --color-accent-950: oklch(12% 0.03 55);
+
+  /* Couleur RED - Mode clair */
+  --color-red: oklch(60% 0.15 25);
+  --color-red-50: oklch(98% 0.01 25);
+  --color-red-100: oklch(95% 0.03 25);
+  --color-red-200: oklch(88% 0.06 25);
+  --color-red-300: oklch(80% 0.1 25);
+  --color-red-400: oklch(70% 0.13 25);
+  --color-red-500: oklch(60% 0.15 25);
+  --color-red-600: oklch(50% 0.15 25);
+  --color-red-700: oklch(40% 0.12 25);
+  --color-red-800: oklch(30% 0.09 25);
+  --color-red-900: oklch(20% 0.06 25);
+  --color-red-950: oklch(12% 0.04 25);
 }
 
 @layer base {
@@ -53,7 +67,7 @@
   html {
     background-color: oklch(100% 0 0); /* Mode clair par défaut */
   }
-  
+
   html[data-theme="dark"],
   html.dark {
     background-color: oklch(25% 0.005 260) !important; /* Mode dark immédiat */
@@ -101,6 +115,13 @@
 }
 
 @layer utilities {
+  /* Red utilities */
+  .bg-red { background-color: var(--color-red); }
+  .bg-red\/80 { background-color: color-mix(in oklab, var(--color-red) 80%, transparent); }
+  .bg-red\/90 { background-color: color-mix(in oklab, var(--color-red) 90%, transparent); }
+  .hover\:bg-red\/80:hover { background-color: color-mix(in oklab, var(--color-red) 80%, transparent); }
+  .focus\:bg-red\/70:focus { background-color: color-mix(in oklab, var(--color-red) 70%, transparent); }
+  .active\:bg-red\/90:active { background-color: color-mix(in oklab, var(--color-red) 90%, transparent); }
   [data-theme="dark"] .icon-invert,
   .dark .icon-invert {
     filter: invert(1);
@@ -383,7 +404,7 @@ html[data-view-transition="slide-to-home"] {
     animation-duration: var(--transition-duration-normal);
     animation-timing-function: var(--transition-easing);
   }
-  
+
   ::view-transition-new(root) {
     animation-name: slide-from-left;
     animation-duration: var(--transition-duration-normal);
@@ -398,7 +419,7 @@ html[data-view-transition="slide-from-home"] {
     animation-duration: var(--transition-duration-normal);
     animation-timing-function: var(--transition-easing);
   }
-  
+
   ::view-transition-new(root) {
     animation-name: slide-from-right;
     animation-duration: var(--transition-duration-normal);
@@ -413,7 +434,7 @@ html[data-view-transition="fade-transition"] {
     animation-duration: var(--transition-duration-fast);
     animation-timing-function: var(--transition-easing);
   }
-  
+
   ::view-transition-new(root) {
     animation-name: scale-in;
     animation-duration: var(--transition-duration-fast);
@@ -428,7 +449,7 @@ html[data-view-transition="float-transition"] {
     animation-duration: var(--transition-duration-normal);
     animation-timing-function: var(--transition-easing);
   }
-  
+
   ::view-transition-new(root) {
     animation-name: float-in;
     animation-duration: var(--transition-duration-normal);
@@ -442,7 +463,7 @@ html[data-view-transition="spiral-transition"] {
     animation-duration: var(--transition-duration-slow);
     animation-timing-function: var(--transition-easing);
   }
-  
+
   ::view-transition-new(root) {
     animation-name: spiral-in;
     animation-duration: var(--transition-duration-slow);
@@ -465,7 +486,7 @@ html[data-view-transition="admin-enter"] {
     animation-name: scale-out, fade-out;
     animation-duration: var(--transition-duration-fast);
   }
-  
+
   ::view-transition-new(root) {
     animation-name: spiral-in;
     animation-duration: var(--transition-duration-slow);
@@ -478,7 +499,7 @@ html[data-view-transition="admin-exit"] {
     animation-name: spiral-out;
     animation-duration: var(--transition-duration-normal);
   }
-  
+
   ::view-transition-new(root) {
     animation-name: float-in;
     animation-duration: var(--transition-duration-normal);

@@ -4,8 +4,9 @@ import {
   input,
   output,
 } from "@angular/core";
-import { ProjectCategory, ProjectFilter } from "../../interface/project-data";
 import { ButtonComponent } from "@shared/ui/button/button";
+import { ProjectFilter } from "@features/projects/models/project-model";
+import { ProjectCategory } from "@features/projects/enums/project-enum";
 
 @Component({
   selector: "app-project-search",
@@ -58,8 +59,8 @@ export class ProjectSearch {
   readonly searchQuery = input<string>("");
   readonly filters = input<ProjectFilter[]>([
     { label: "Tous", value: "all", active: true },
-    { label: "Frontend", value: "frontend", active: false },
-    { label: "Backend", value: "backend", active: false },
+    { label: "Frontend", value: ProjectCategory.FRONTEND, active: false },
+    { label: "Backend", value: ProjectCategory.BACKEND, active: false },
   ]);
 
   // Outputs

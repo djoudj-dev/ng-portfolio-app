@@ -1,12 +1,12 @@
-import { Component, signal } from "@angular/core";
+import { Component, signal, ChangeDetectionStrategy } from "@angular/core";
 import { NgOptimizedImage } from "@angular/common";
 import { SkillCategoryData } from "../interface/skill-data";
 import { SKILL_CATEGORIES } from "../data/skill-data";
-import { HoverClassBehaviorDirective } from "@shared/behaviors/hover-class";
 
 @Component({
   selector: "app-skills-groups-stacks",
-  imports: [NgOptimizedImage, HoverClassBehaviorDirective],
+  imports: [NgOptimizedImage],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <section
       class="grid grid-cols-1 gap-6 md:grid-cols-3"
@@ -14,8 +14,7 @@ import { HoverClassBehaviorDirective } from "@shared/behaviors/hover-class";
     >
       @for (category of skillCategories(); track category.id) {
         <article
-          class="bg-background shadow-text border-accent rounded-lg border p-6"
-          appHoverClass
+          class="bg-background  border-accent rounded-lg border p-6"
         >
           <div class="mb-4 flex items-center gap-2">
             @if (category.id === "frontend") {
@@ -51,19 +50,19 @@ import { HoverClassBehaviorDirective } from "@shared/behaviors/hover-class";
             </h2>
           </div>
           <ul
-            class="space-y-4"
+            class="grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-4"
             [attr.aria-labelledby]="category.id + '-section'"
           >
             @for (skill of category.skills; track skill.id) {
-              <li class="flex items-center gap-2">
+              <li class="flex items-center gap-1 sm:gap-2 border border-accent rounded-lg bg-background hover:bg-accent p-2 sm:p-1 min-w-0">
                 <img
                   [ngSrc]="skill.icon"
                   [alt]="'Logo ' + skill.title"
                   width="24"
                   height="24"
-                  class="h-6 w-6"
+                  class="h-5 w-5 sm:h-6 sm:w-6 flex-shrink-0"
                 />
-                <h3 class="text-xld">{{ skill.title }}</h3>
+                <h3 class="text-xs sm:text-sm font-medium text-text truncate min-w-0">{{ skill.title }}</h3>
               </li>
             }
           </ul>

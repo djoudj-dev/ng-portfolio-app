@@ -6,8 +6,10 @@ import {
 } from "@angular/core";
 import { ButtonComponent } from "@shared/ui/button/button";
 import { Router } from "@angular/router";
-import { BadgeService } from "@features/landing/badge/services/badge-service";
+import { BadgeService } from "@features/badge/services/badge-service";
 import { ProjectService } from "@features/projects/services/project-service";
+import { ProjectModel } from "@features/projects/models/project-model";
+import { BADGE_STATUS } from "@features/badge/models/badge-model";
 import { toSignal } from "@angular/core/rxjs-interop";
 import { from } from "rxjs";
 import { NgOptimizedImage } from "@angular/common";
@@ -25,71 +27,7 @@ import { NgOptimizedImage } from "@angular/common";
           Gérez votre portfolio depuis ce dashboard
         </p>
       </div>
-
-      <!-- Stats cards -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div class="bg-background rounded-xl p-6 border border-accent">
-          <div class="flex items-center">
-            <div class="flex-shrink-0">
-              <img
-                [ngSrc]="'/icons/badge.svg'"
-                alt="Badges"
-                class="w-8 h-8 icon-invert"
-                width="32"
-                height="32"
-              />
-            </div>
-            <div class="ml-4">
-              <p class="text-sm font-medium text-text">Badges actifs</p>
-              <p class="text-2xl font-semibold text-text">
-                {{ badgeStats().available }}
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div class="bg-background rounded-xl p-6 border border-accent">
-          <div class="flex items-center">
-            <div class="flex-shrink-0">
-              <img
-                [ngSrc]="'/icons/project.svg'"
-                alt="Projets"
-                class="w-8 h-8 icon-invert"
-                width="32"
-                height="32"
-              />
-            </div>
-            <div class="ml-4">
-              <p class="text-sm font-medium text-text">Projets</p>
-              <p class="text-2xl font-semibold text-text">
-                {{ projects().length }}
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div class="bg-background rounded-xl p-6 border border-accent">
-          <div class="flex items-center">
-            <div class="flex-shrink-0">
-              <img
-                [ngSrc]="'/icons/project.svg'"
-                alt="Projets mis en avant"
-                class="w-8 h-8 icon-invert"
-                width="32"
-                height="32"
-              />
-            </div>
-            <div class="ml-4">
-              <p class="text-sm font-medium text-text">Projets mis en avant</p>
-              <p class="text-2xl font-semibold text-text">
-                {{ featuredProjectsCount() }}
-              </p>
-            </div>
-          </div>
-        </div>
-
-      </div>
-
+      <!-- Stats -->
       <!-- Quick actions -->
       <div class="bg-background rounded-xl p-6 border border-accent p-6">
         <h2 class="text-lg font-semibold text-text mb-4">Actions rapides</h2>
@@ -101,8 +39,8 @@ import { NgOptimizedImage } from "@angular/common";
           >
             <div class="flex items-center">
               <img
-                [ngSrc]="'icons/plus.svg'"
-                alt="Ajouter"
+                [ngSrc]="'icons/edit.svg'"
+                alt="Modifier"
                 class="w-4 h-4 mr-2 icon-invert"
                 width="16"
                 height="16"
@@ -184,7 +122,7 @@ import { NgOptimizedImage } from "@angular/common";
                 >Dernier badge mis à jour</span
               >
               <span class="ml-auto text-xs text-text">{{
-                getRelativeTime(latestBadge()!.updated_at)
+                getRelativeTime(latestBadge()!.updatedAt.toISOString())
               }}</span>
             </div>
           }
@@ -239,8 +177,14 @@ export class AdminOverviewComponent {
   readonly latestBadge = this.badgeService.latestBadge;
 
   // Données des projets
-  readonly projects = toSignal(from(this.projectService.getProjects()), {
-    initialValue: [],
+  readonly projects = toSignal(from(this.projectService.getAllProjects()), {
+    initialValue: {
+      projects: [] as ProjectModel[],
+      total: 0,
+      page: 1,
+      limit: 10,
+      totalPages: 0
+    },
   });
 
 
@@ -249,24 +193,26 @@ export class AdminOverviewComponent {
     const badges = this.badges();
     return {
       total: badges.length,
-      available: badges.filter((b) => b.status === "AVAILABLE").length,
-      upcoming: badges.filter((b) => b.status === "UPCOMING").length,
-      unavailable: badges.filter((b) => b.status === "UNAVAILABLE").length,
+      available: badges.filter((b) => b.status === BADGE_STATUS.AVAILABLE).length,
+      upcoming: badges.filter((b) => b.status === BADGE_STATUS.AVAILABLE_FROM).length,
+      unavailable: badges.filter((b) => b.status === BADGE_STATUS.UNAVAILABLE).length,
     };
   });
 
   readonly featuredProjectsCount = computed(() => {
-    return this.projects().filter((p) => p.featured).length;
+    const projectsData = this.projects();
+    if (!projectsData?.projects) return 0;
+    return projectsData.projects.filter((p: ProjectModel) => p.featured).length;
   });
 
   readonly latestProject = computed(() => {
-    const projects = this.projects();
-    if (!projects.length) return null;
+    const projectsData = this.projects();
+    if (!projectsData?.projects?.length) return null;
     return (
-      projects
-        .filter((p) => p.date) // Filtrer les projets qui ont une date
+      projectsData.projects
+        .filter((p: ProjectModel) => p.date) // Filtrer les projets qui ont une date
         .sort(
-          (a, b) => new Date(b.date!).getTime() - new Date(a.date!).getTime(),
+          (a: ProjectModel, b: ProjectModel) => new Date(b.date!).getTime() - new Date(a.date!).getTime(),
         )[0] ?? null
     );
   });

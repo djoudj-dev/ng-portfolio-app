@@ -1,9 +1,10 @@
-import { Component, output } from "@angular/core";
-import { LoginFormComponent } from "@shared/ui/login/login-form/login-form";
+import { Component, output, ChangeDetectionStrategy } from "@angular/core";
+import { LoginFormComponent } from "@features/auth/login/login-form/login-form";
 
 @Component({
   selector: "app-login-modal",
   imports: [LoginFormComponent],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div
       class="flex fixed inset-0 z-50 justify-center items-center bg-opacity-50 bg-background"

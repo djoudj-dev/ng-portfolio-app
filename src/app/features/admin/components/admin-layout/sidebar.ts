@@ -8,13 +8,8 @@ import {
 import { NgOptimizedImage } from "@angular/common";
 import { SidebarItemComponent } from "./sidebar-item";
 
-export interface SidebarItem {
-  id: string;
-  label: string;
-  icon: string;
-  route: string;
-  children?: SidebarItem[];
-}
+// SidebarItem centralisé dans @features/admin/models/sidebar-item
+import { SidebarItem } from "@features/admin/models/sidebar-item";
 
 @Component({
   selector: "app-sidebar",
@@ -139,7 +134,7 @@ export class SidebarComponent {
 
   sidebarClasses = computed(() => {
     const topClass = this.isMobile() ? "top-32" : "top-16";
-    const baseClasses = `fixed ${topClass} bottom-0 left-0 z-40 bg-background shadow-text border-accent border-r transition-all duration-300 transform lg:translate-x-0`;
+    const baseClasses = `fixed ${topClass} bottom-0 left-0 z-40 bg-background shadow-text border-accent border-r transform lg:translate-x-0`;
     const widthClass = this.getWidthClass();
     const transformClass = this.getTransformClass();
     return `${baseClasses} ${widthClass} ${transformClass}`;
