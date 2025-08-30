@@ -33,14 +33,14 @@ IMPORTANT: Exécutez `pnpm lint` avant chaque commit.
 - TypeScript: configuration stricte
 
 ### Intégration Backend
-- Supabase pour authentification, base de données et stockage
+- NestJS pour authentification, base de données et stockage
 - Configuration par environnement dans `src/environments/`
-- Client Supabase configuré dans `src/app/core/services/supabase-client.ts`
+- Service d'authentification configuré dans `src/app/core/services/auth-service.ts`
 
 ### Structure Applicative
 - Core (`src/app/core/`) :
   - Guards: auth, admin
-  - Services: auth, thème, scroll, intégration supabase
+  - Services: auth, thème, scroll, intégration NestJS
 - Features (`src/app/features/`) :
   - Landing: Hero, badges (CRUD)
   - About: sections d’info, cartes réutilisables
