@@ -1,4 +1,5 @@
-import { ProjectData, ProjectFilter } from "../interface/project-data";
+import { ProjectData, ProjectFilter } from "@features/projects/models/project-model";
+import { ProjectCategory } from "@features/projects/enums/project-enum";
 
 export const PROJECTS: ProjectData[] = [
   {
@@ -7,13 +8,13 @@ export const PROJECTS: ProjectData[] = [
     description:
       "Portfolio personnel développé avec Angular 20 et TailwindCSS, utilisant une architecture moderne basée sur les signaux.",
     technologies: ["Angular", "TypeScript", "TailwindCSS", "Signals"],
-    image_path: "/projets/portfolio-angular.webp",
-    github_urls: {
+    imagePath: "/projets/portfolio-angular.webp",
+    githubUrls: {
       frontend: "https://github.com/username/portfolio",
       backend: "https://github.com/username/portfolio-api",
     },
-    demo_url: "https://portfolio.example.com",
-    category: "frontend",
+    demoUrl: "https://portfolio.example.com",
+    category: ProjectCategory.FRONTEND,
     featured: true,
     date: "2024-06",
   },
@@ -23,11 +24,11 @@ export const PROJECTS: ProjectData[] = [
     description:
       "API RESTful pour une plateforme e-commerce avec authentification JWT, gestion des produits et des commandes.",
     technologies: ["Node.js", "Express", "MongoDB", "JWT"],
-    image_path: "images/projects/ecommerce-api.jpg",
-    github_urls: {
+    imagePath: "images/projects/ecommerce-api.jpg",
+    githubUrls: {
       backend: "https://github.com/username/ecommerce-api",
     },
-    category: "backend",
+    category: ProjectCategory.BACKEND,
     featured: true,
     date: "2024-04",
   },
@@ -37,13 +38,13 @@ export const PROJECTS: ProjectData[] = [
     description:
       "Application complète de gestion de tâches avec fonctionnalités de collaboration et notifications en temps réel.",
     technologies: ["React", "Node.js", "Socket.io", "PostgreSQL"],
-    image_path: "images/projects/task-manager.jpg",
-    github_urls: {
+    imagePath: "images/projects/task-manager.jpg",
+    githubUrls: {
       frontend: "https://github.com/username/task-manager-frontend",
       backend: "https://github.com/username/task-manager-api",
     },
-    demo_url: "https://tasks.example.com",
-    category: "fullstack",
+    demoUrl: "https://tasks.example.com",
+    category: ProjectCategory.FULLSTACK,
     featured: false,
     date: "2024-02",
   },
@@ -53,11 +54,11 @@ export const PROJECTS: ProjectData[] = [
     description:
       "Script d'analyse de données pour traiter et visualiser des ensembles de données volumineux.",
     technologies: ["Python", "Pandas", "Matplotlib", "NumPy"],
-    image_path: "images/projects/data-analyzer.jpg",
-    github_urls: {
+    imagePath: "images/projects/data-analyzer.jpg",
+    githubUrls: {
       fullstack: "https://github.com/username/data-analyzer",
     },
-    category: "script",
+    category: ProjectCategory.SCRIPT,
     featured: false,
     date: "2023-11",
   },
@@ -67,12 +68,12 @@ export const PROJECTS: ProjectData[] = [
     description:
       "Application météo avec prévisions sur 5 jours et géolocalisation.",
     technologies: ["Vue.js", "Axios", "OpenWeatherAPI", "Geolocation API"],
-    image_path: "images/projects/weather-app.jpg",
-    github_urls: {
+    imagePath: "images/projects/weather-app.jpg",
+    githubUrls: {
       frontend: "https://github.com/username/weather-app",
     },
-    demo_url: "https://weather.example.com",
-    category: "frontend",
+    demoUrl: "https://weather.example.com",
+    category: ProjectCategory.FRONTEND,
     featured: false,
     date: "2023-09",
   },
@@ -82,11 +83,11 @@ export const PROJECTS: ProjectData[] = [
     description:
       "Microservice d'authentification avec support OAuth, MFA et gestion des sessions.",
     technologies: ["Java", "Spring Boot", "OAuth2", "Redis"],
-    image_path: "images/projects/auth-service.jpg",
-    github_urls: {
+    imagePath: "images/projects/auth-service.jpg",
+    githubUrls: {
       backend: "https://github.com/username/auth-service",
     },
-    category: "backend",
+    category: ProjectCategory.BACKEND,
     featured: false,
     date: "2023-07",
   },
@@ -94,8 +95,8 @@ export const PROJECTS: ProjectData[] = [
 
 export const PROJECT_FILTERS: ProjectFilter[] = [
   { label: "Tous", value: "all", active: true },
-  { label: "Frontend", value: "frontend", active: false },
-  { label: "Backend", value: "backend", active: false },
-  { label: "Fullstack", value: "fullstack", active: false },
-  { label: "Script", value: "script", active: false },
+  { label: "Frontend", value: ProjectCategory.FRONTEND, active: false },
+  { label: "Backend", value: ProjectCategory.BACKEND, active: false },
+  { label: "Fullstack", value: ProjectCategory.FULLSTACK, active: false },
+  { label: "Script", value: ProjectCategory.SCRIPT, active: false },
 ];
