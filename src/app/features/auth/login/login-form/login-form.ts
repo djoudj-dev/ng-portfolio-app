@@ -4,14 +4,13 @@ import {
   inject,
   output,
   signal,
-  computed,
+
 } from "@angular/core";
 import { FormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
-import { SupabaseService } from "@core/services/supabase-service";
+import { AuthService } from "@core/services/auth-service";
 import { ButtonComponent } from "@shared/ui/button/button";
 import { Router } from "@angular/router";
 import { ToastService } from "@shared/ui/toast/service/toast-service";
-import { SecurityService } from "@core/services/security-service";
 
 @Component({
   selector: "app-login-form",
@@ -21,21 +20,12 @@ import { SecurityService } from "@core/services/security-service";
 })
 export class LoginFormComponent {
   private readonly fb = inject(FormBuilder);
-  private readonly supabaseService = inject(SupabaseService);
+  private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
   private readonly toastService = inject(ToastService);
-  private readonly securityService = inject(SecurityService);
-  
   readonly loginSuccess = output<void>();
   readonly isLoading = signal(false);
   readonly errorMessage = signal<string | null>(null);
-  
-  // Computed pour l'état de rate limiting
-  readonly isRateLimited = computed(() => this.securityService.isRateLimited());
-  readonly rateLimitInfo = computed(() => {
-    const email = this.form.get('email')?.value ?? '';
-    return this.securityService.getBlockInfo(`login_${email}`);
-  });
 
   readonly form = this.fb.group({
     email: ["", [Validators.required, Validators.email]],
@@ -51,28 +41,30 @@ export class LoginFormComponent {
 
     const credentials = this.form.getRawValue();
 
-    try {
-      await this.supabaseService.signIn(
-        credentials.email!,
-        credentials.password!,
-      );
-      this.loginSuccess.emit();
-      this.toastService.show({
-        message: "Connexion réussie",
-        type: "success",
-      });
-      this.router.navigate(["/admin/dashboard"]);
-    } catch (err: unknown) {
-      if (err instanceof Error) {
-        this.errorMessage.set(err.message);
+    this.authService.login({
+      email: credentials.email!,
+      password: credentials.password!,
+    }).subscribe({
+      next: () => {
+        this.loginSuccess.emit();
         this.toastService.show({
-          message: `Échec de connexion: ${err.message}`,
-          type: "error",
-          duration: 5000,
+          message: "Connexion réussie",
+          type: "success",
         });
+        this.router.navigate(["/admin/dashboard"]);
+        this.isLoading.set(false);
+      },
+      error: (err: unknown) => {
+        if (err instanceof Error) {
+          this.errorMessage.set(err.message);
+          this.toastService.show({
+            message: `Échec de connexion: ${err.message}`,
+            type: "error",
+            duration: 5000,
+          });
+        }
+        this.isLoading.set(false);
       }
-    } finally {
-      this.isLoading.set(false);
-    }
+    });
   }
 }

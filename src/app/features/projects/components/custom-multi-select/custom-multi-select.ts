@@ -13,7 +13,6 @@ import { Technology } from "@features/projects/data/technologies";
   selector: "app-custom-multi-select",
   imports: [NgOptimizedImage],
   templateUrl: "./custom-multi-select.html",
-  styleUrls: ["./custom-multi-select.css"],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     {

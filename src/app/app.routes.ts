@@ -1,36 +1,42 @@
 import { Routes } from "@angular/router";
-import { publicGuard, adminGuard, crudGuard } from "@core/guards/access-guard";
+import { adminGuard } from "@core/guards/admin-guard";
 
 export const routes: Routes = [
   {
     path: "",
     loadComponent: () =>
       import("@features/landing/landing").then((m) => m.Landing),
-    canActivate: [publicGuard],
   },
   {
     path: "about",
-    loadComponent: () => 
+    loadComponent: () =>
       import("@features/about/about").then((m) => m.About),
-    canActivate: [publicGuard],
   },
   {
     path: "skills",
-    loadComponent: () => 
+    loadComponent: () =>
       import("@features/skills/skills").then((m) => m.Skills),
-    canActivate: [publicGuard],
   },
   {
     path: "projects",
-    loadComponent: () => 
+    loadComponent: () =>
       import("@features/projects/project").then((m) => m.Project),
-    canActivate: [publicGuard],
   },
   {
     path: "contact",
-    loadComponent: () => 
+    loadComponent: () =>
       import("@features/contact/contact").then((m) => m.Contact),
-    canActivate: [publicGuard],
+  },
+  // Routes d'authentification
+  {
+    path: "login",
+    loadComponent: () =>
+      import("@features/auth/login/login-form/login-form").then((m) => m.LoginFormComponent),
+  },
+  {
+    path: "unauthorized",
+    loadComponent: () =>
+      import("@features/unauthorized/unauthorized").then((m) => m.UnauthorizedComponent),
   },
   // Routes d'administration sécurisées
   {
@@ -53,13 +59,12 @@ export const routes: Routes = [
       {
         path: "badges",
         loadComponent: () =>
-          import("@features/admin/pages/badges/badge-manager").then((m) => m.BadgeManagerComponent),
+          import("@features/badge/components/edit-badge/edit-badge").then((m) => m.EditBadge),
       },
       {
         path: "badges/create",
         loadComponent: () =>
-          import("@features/landing/badge/components/edit-badge/edit-badge").then((m) => m.EditBadge),
-        canActivate: [crudGuard],
+          import("@features/badge/components/edit-badge/edit-badge").then((m) => m.EditBadge),
       },
       // Routes CV
       {
@@ -70,37 +75,34 @@ export const routes: Routes = [
       {
         path: "cv/edit",
         loadComponent: () =>
-          import("@features/admin/pages/cv/cv-manager").then((m) => m.CvManagerComponent),
+          import("@features/cv/admin/cv").then((m) => m.CvAdminPage),
       },
       {
         path: "cv/upload",
         loadComponent: () =>
-          import("@features/admin/pages/cv/edit-cv/edit-cv").then((m) => m.EditCvComponent),
-        canActivate: [crudGuard],
+          import("@features/cv/admin/cv").then((m) => m.CvAdminPage),
       },
       // Routes Projets
       {
         path: "projects",
         loadComponent: () =>
-          import("@features/admin/pages/projects/project-manager").then((m) => m.ProjectManagerComponent),
+          import("@features/projects/components/project-manager").then((m) => m.ProjectManagerComponent),
       },
       {
         path: "projects/create",
         loadComponent: () =>
           import("@features/projects/components/project-form/project-form").then((m) => m.ProjectFormComponent),
-        canActivate: [crudGuard],
       },
       {
         path: "projects/edit/:id",
         loadComponent: () =>
           import("@features/projects/components/project-form/project-form").then((m) => m.ProjectFormComponent),
-        canActivate: [crudGuard],
       },
       // Routes Messages
       {
         path: "contacts",
         loadComponent: () =>
-          import("@features/admin/pages/overview/overview").then((m) => m.AdminOverviewComponent), // Placeholder
+          import("@features/contact/admin/messages").then((m) => m.AdminMessagesPage),
       },
     ],
   },
