@@ -59,14 +59,6 @@ export class NavbarComponent {
     this.isDarkMode() ? 'Activer le mode clair' : 'Activer le mode sombre',
   );
 
-  // Auth icon computed properties
-  readonly authIcon = computed(() => ({
-    src: this.isLoggedIn() ? '/icons/navbar/logout.svg' : '/icons/navbar/login.svg',
-    alt: this.isLoggedIn() ? 'Déconnexion' : 'Connexion',
-    class: this.isDarkMode() ? 'w-5 h-5 icon-invert' : 'w-5 h-5',
-  }));
-
-  readonly authAriaLabel = computed(() => (this.isLoggedIn() ? 'Se déconnecter' : 'Se connecter'));
 
   // Mobile menu icon computed properties
   readonly menuIcon = computed(() => ({
@@ -120,25 +112,20 @@ export class NavbarComponent {
   }
 
   // Authentication management
-  toggleAuth(): void {
-    if (this.authService.isAuthenticated()) {
-      this.authService.logout().subscribe({
-        next: () => {
-          // Logout successful - state already updated in service
-          this.logoutCompleted.emit();
-        },
-        error: (error) => {
-          console.error('Erreur de déconnexion:', error);
-        },
-      });
-    } else {
-      // Emit event to show login form - to be handled by parent component
-      this.showLoginForm();
-    }
+  logout(): void {
+    this.authService.logout().subscribe({
+      next: () => {
+        // Logout successful - state already updated in service
+        this.logoutCompleted.emit();
+      },
+      error: (error) => {
+        console.error('Erreur de déconnexion:', error);
+      },
+    });
   }
 
-  private showLoginForm(): void {
-    this.showLogin.emit();
+  navigateToAdmin(): void {
+    this.router.navigate(['/admin']);
   }
 
   // Mobile menu management
