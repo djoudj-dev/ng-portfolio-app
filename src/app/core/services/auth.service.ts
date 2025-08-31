@@ -1,0 +1,192 @@
+import { Injectable, signal, computed, inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable, tap } from 'rxjs';
+import { environment } from '@environments/environment';
+
+export interface User {
+  readonly id: string;
+  readonly email: string;
+  readonly roles: string[];
+  readonly createdAt: string;
+  readonly updatedAt: string;
+}
+
+export interface LoginRequest {
+  readonly email: string;
+  readonly password: string;
+}
+
+export interface AuthResponse {
+  readonly user: User;
+  readonly message?: string;
+}
+
+export interface AuthState {
+  readonly user: User | null;
+  readonly isLoading: boolean;
+  readonly error: string | null;
+}
+
+@Injectable({
+  providedIn: 'root',
+})
+export class AuthService {
+  private readonly http = inject(HttpClient);
+  private readonly apiUrl = environment.apiUrl;
+
+  // État privé avec signaux
+  private readonly _authState = signal<AuthState>({
+    user: null,
+    isLoading: false,
+    error: null,
+  });
+
+  // Signaux publics (lecture seule)
+  readonly authState = this._authState.asReadonly();
+  readonly user = computed(() => this._authState().user);
+  readonly isLoading = computed(() => this._authState().isLoading);
+  readonly error = computed(() => this._authState().error);
+  readonly isAuthenticated = computed(() => this._authState().user !== null);
+  readonly isAdmin = computed(() => this.hasRole('admin'));
+
+  // Observables pour compatibilité avec le guide
+  readonly currentUser$ = computed(() => this._authState().user);
+  readonly isAuthenticated$ = computed(() => !!this._authState().user);
+
+  constructor() {
+    // Vérifier le statut d'authentification au démarrage
+    this.checkAuthStatus();
+  }
+
+  /**
+   * Connexion utilisateur avec cookies HTTP
+   */
+  login(credentials: LoginRequest): Observable<AuthResponse> {
+    this._authState.update((state) => ({
+      ...state,
+      isLoading: true,
+      error: null,
+    }));
+
+    return this.http
+      .post<AuthResponse>(`${this.apiUrl}/auth/login`, credentials, {
+        withCredentials: true, // Important : inclut les cookies dans les requêtes
+      })
+      .pipe(
+        tap((response) => {
+          this._authState.update((state) => ({
+            ...state,
+            user: response.user,
+            isLoading: false,
+            error: null,
+          }));
+        }),
+        tap({
+          error: (error) => {
+            this._authState.update((state) => ({
+              ...state,
+              isLoading: false,
+              error: error.error?.message ?? 'Erreur de connexion',
+            }));
+          },
+        }),
+      );
+  }
+
+  /**
+   * Déconnexion utilisateur
+   */
+  logout(): Observable<{ message: string }> {
+    this._authState.update((state) => ({
+      ...state,
+      isLoading: true,
+    }));
+
+    return this.http
+      .post<{ message: string }>(
+        `${this.apiUrl}/auth/logout`,
+        {},
+        {
+          withCredentials: true,
+        },
+      )
+      .pipe(
+        tap(() => {
+          this._authState.update(() => ({
+            user: null,
+            isLoading: false,
+            error: null,
+          }));
+        }),
+        tap({
+          error: (error) => {
+            this._authState.update((state) => ({
+              ...state,
+              isLoading: false,
+              error: error instanceof Error ? error.message : 'Erreur de déconnexion',
+            }));
+          },
+        }),
+      );
+  }
+
+  /**
+   * Rafraîchissement du token d'accès
+   */
+  refreshToken(): Observable<{ message: string }> {
+    return this.http.post<{ message: string }>(
+      `${this.apiUrl}/auth/refresh-token`,
+      {},
+      {
+        withCredentials: true,
+      },
+    );
+  }
+
+  /**
+   * Vérification du statut d'authentification
+   */
+  private checkAuthStatus(): void {
+    // Appel à un endpoint pour vérifier l'état d'authentification
+    this.http
+      .get<{ user: User }>(`${this.apiUrl}/auth/me`, {
+        withCredentials: true,
+      })
+      .subscribe({
+        next: (response) => {
+          this._authState.update((state) => ({
+            ...state,
+            user: response.user,
+          }));
+        },
+        error: () => {
+          this._authState.update((state) => ({
+            ...state,
+            user: null,
+          }));
+        },
+      });
+  }
+
+  /**
+   * Obtenir l'utilisateur actuel
+   */
+  getCurrentUser(): User | null {
+    return this._authState().user;
+  }
+
+  /**
+   * Vérifier si l'utilisateur a un rôle spécifique
+   */
+  hasRole(role: string): boolean {
+    const user = this.getCurrentUser();
+    return user ? user.roles.includes(role) : false;
+  }
+
+  clearError(): void {
+    this._authState.update((state) => ({
+      ...state,
+      error: null,
+    }));
+  }
+}
