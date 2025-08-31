@@ -1,11 +1,11 @@
 import { Component, ChangeDetectionStrategy, computed, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ToastComponent } from '@shared/ui';
+import { Toast } from '@shared/ui';
 import { ToastService } from '@shared/ui';
 
 @Component({
   selector: 'app-toast-container',
-  imports: [CommonModule, ToastComponent],
+  imports: [CommonModule, Toast],
   template: `
     @if (toastService.hasToasts()) {
       <div
@@ -24,7 +24,7 @@ import { ToastService } from '@shared/ui';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ToastContainerComponent {
+export class ToastContainer {
   readonly toastService = inject(ToastService);
 
   readonly containerPositionClasses = computed(() => {

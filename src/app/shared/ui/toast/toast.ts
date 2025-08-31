@@ -99,7 +99,7 @@ import { ToastService } from '@shared/ui';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ToastComponent {
+export class Toast {
   private readonly toastService = inject(ToastService);
 
   readonly toast = input.required<ToastData>();

@@ -1,9 +1,9 @@
 import { Component, signal, viewChild, inject } from '@angular/core';
-import { LoginModal, NavbarComponent, ToastContainerComponent, ToastService } from '@shared/ui';
+import { LoginModal, NavbarComponent, ToastContainer, ToastService } from '@shared/ui';
 
 @Component({
   selector: 'app-root',
-  imports: [NavbarComponent, LoginModal, ToastContainerComponent],
+  imports: [NavbarComponent, LoginModal, ToastContainer],
   templateUrl: './app.html',
   styleUrl: './app.css',
 })
