@@ -6,6 +6,10 @@ import { LoginModal, NavbarComponent, ToastContainer, ToastService } from '@shar
   imports: [NavbarComponent, LoginModal, ToastContainer],
   templateUrl: './app.html',
   styleUrl: './app.css',
+  host: {
+    '(keydown.control.alt.l)': 'onKeyboardShortcut($event)',
+    'tabindex': '0',
+  },
 })
 export class App {
   private readonly toastService = inject(ToastService);
@@ -16,6 +20,13 @@ export class App {
 
   onShowLogin(): void {
     this.loginModal()?.show();
+  }
+
+  onKeyboardShortcut(event: Event): void {
+    // Prevent default browser behavior for Ctrl+Alt+L
+    event.preventDefault();
+    // Open login modal
+    this.onShowLogin();
   }
 
   onLoginCompleted(): void {

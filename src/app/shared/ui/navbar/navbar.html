@@ -59,20 +59,38 @@
           />
         </button>
 
-        <!-- Admin Login/Logout -->
-        <button
-          (click)="toggleAuth()"
-          class="p-2 rounded-lg hover:bg-accent transition-colors duration-200"
-          [attr.aria-label]="authAriaLabel()"
-        >
-          <img
-            [ngSrc]="authIcon().src"
-            [alt]="authIcon().alt"
-            width="20"
-            height="20"
-            [class]="authIcon().class"
-          />
-        </button>
+        <!-- Admin Panel & Logout (Only when authenticated) -->
+        @if (isLoggedIn()) {
+          <!-- Admin Panel -->
+          <button
+            (click)="navigateToAdmin()"
+            class="p-2 rounded-lg hover:bg-accent transition-colors duration-200"
+            aria-label="Accéder au panneau d'administration"
+          >
+            <img
+              [ngSrc]="'/icons/navbar/admin.svg'"
+              alt="Admin"
+              width="20"
+              height="20"
+              [class]="isDarkMode() ? 'w-5 h-5 icon-invert' : 'w-5 h-5'"
+            />
+          </button>
+
+          <!-- Logout -->
+          <button
+            (click)="logout()"
+            class="p-2 rounded-lg hover:bg-accent transition-colors duration-200"
+            aria-label="Se déconnecter"
+          >
+            <img
+              [ngSrc]="'/icons/navbar/logout.svg'"
+              alt="Déconnexion"
+              width="20"
+              height="20"
+              [class]="isDarkMode() ? 'w-5 h-5 icon-invert' : 'w-5 h-5'"
+            />
+          </button>
+        }
 
         <!-- Mobile Menu Toggle -->
         <button
