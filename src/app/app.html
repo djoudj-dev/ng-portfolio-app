@@ -1,1 +1,8 @@
-<app-navbar />
+<app-navbar (showLogin)="onShowLogin()" />
+
+<!-- Login Modal -->
+<app-login-modal
+  #loginModal
+  (loginCompleted)="onLoginCompleted()"
+  (modalClosed)="onModalClosed()"
+/>

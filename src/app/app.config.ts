@@ -1,9 +1,10 @@
 import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
+import { provideHttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { provideClientHydration, withIncrementalHydration } from '@angular/platform-browser';
 
 import { routes } from './app.routes';
-import {provideClientHydration, withIncrementalHydration} from '@angular/platform-browser';
-import {provideHttpClient} from '@angular/common/http';
+import { AuthInterceptor } from '@core/interceptors/auth.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -11,6 +12,11 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
     provideClientHydration(withIncrementalHydration()),
-    provideHttpClient()
+    provideHttpClient(),
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    }
   ]
 };
