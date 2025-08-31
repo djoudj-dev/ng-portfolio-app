@@ -8,11 +8,19 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "vitest",
+    "test:run": "vitest run",
+    "test:watch": "vitest watch",
     "lint": "ng lint",
     "lint:fix": "ng lint --fix",
     "format": "prettier --write \"src/**/*.{ts,html,scss,json}\"",
     "format:check": "prettier --check \"src/**/*.{ts,html,scss,json}\"",
-    "code:check": "npm run lint && npm run format:check"
+    "prettier": "prettier --write \"src/**/*.{ts,html,scss,json}\"",
+    "prettier:check": "prettier --check \"src/**/*.{ts,html,scss,json}\"",
+    "code:check": "pnpm lint && pnpm format:check",
+    "pre-commit": "pnpm lint:fix && pnpm format",
+    "dev:fast": "ng serve --poll=2000 --live-reload",
+    "build:analyze": "ng build --stats-json && npx webpack-bundle-analyzer dist/stats.json",
+    "workflow:local": "pnpm code:check && pnpm test:run && pnpm build"
   },
   "prettier": {
     "printWidth": 100,
