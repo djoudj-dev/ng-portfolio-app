@@ -1,4 +1,4 @@
-<app-navbar (showLogin)="onShowLogin()" />
+<app-navbar (showLogin)="onShowLogin()" (logoutCompleted)="onLogoutCompleted()" />
 
 <!-- Login Modal -->
 <app-login-modal
@@ -6,3 +6,6 @@
   (loginCompleted)="onLoginCompleted()"
   (modalClosed)="onModalClosed()"
 />
+
+<!-- Toast Container -->
+<app-toast-container />

@@ -42,6 +42,30 @@
   --color-accent-800: oklch(36% 0.09 55);
   --color-accent-900: oklch(22% 0.06 55);
   --color-accent-950: oklch(12% 0.03 55);
+
+  --color-green-50: oklch(98% 0.01 142);
+  --color-green-100: oklch(95% 0.03 142);
+  --color-green-200: oklch(90% 0.06 142);
+  --color-green-300: oklch(82% 0.1 142);
+  --color-green-400: oklch(74% 0.15 142);
+  --color-green-500: oklch(65% 0.18 142);
+  --color-green-600: oklch(55% 0.16 142);
+  --color-green-700: oklch(45% 0.13 142);
+  --color-green-800: oklch(35% 0.1 142);
+  --color-green-900: oklch(25% 0.07 142);
+  --color-green-950: oklch(15% 0.04 142);
+
+  --color-red-50: oklch(98% 0.01 25);
+  --color-red-100: oklch(95% 0.03 25);
+  --color-red-200: oklch(90% 0.06 25);
+  --color-red-300: oklch(82% 0.1 25);
+  --color-red-400: oklch(74% 0.15 25);
+  --color-red-500: oklch(65% 0.18 25);
+  --color-red-600: oklch(55% 0.16 25);
+  --color-red-700: oklch(45% 0.13 25);
+  --color-red-800: oklch(35% 0.1 25);
+  --color-red-900: oklch(25% 0.07 25);
+  --color-red-950: oklch(15% 0.04 25);
 }
 
 /* ===== THÈME DARK (Mode sombre) ===== */
@@ -86,6 +110,28 @@
   --color-accent-700: oklch(38% 0.1 55);
   --color-accent-800: oklch(28% 0.06 55);
   --color-accent-900: oklch(18% 0.03 55);
+
+  /* Déclinaisons GREEN */
+  --color-green-100: oklch(92% 0.02 142);
+  --color-green-200: oklch(85% 0.04 142);
+  --color-green-300: oklch(78% 0.08 142);
+  --color-green-400: oklch(70% 0.12 142);
+  --color-green-500: oklch(62% 0.15 142);
+  --color-green-600: oklch(52% 0.13 142);
+  --color-green-700: oklch(42% 0.11 142);
+  --color-green-800: oklch(32% 0.08 142);
+  --color-green-900: oklch(22% 0.05 142);
+
+  /* Déclinaisons RED */
+  --color-red-100: oklch(92% 0.02 25);
+  --color-red-200: oklch(85% 0.04 25);
+  --color-red-300: oklch(78% 0.08 25);
+  --color-red-400: oklch(70% 0.12 25);
+  --color-red-500: oklch(62% 0.15 25);
+  --color-red-600: oklch(52% 0.13 25);
+  --color-red-700: oklch(42% 0.11 25);
+  --color-red-800: oklch(32% 0.08 25);
+  --color-red-900: oklch(22% 0.05 25);
 }
 
 /* Configuration du background pour éviter le flash */
