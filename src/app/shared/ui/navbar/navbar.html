@@ -1,5 +1,7 @@
 <nav
   class="fixed top-0 left-0 right-0 z-50 bg-background border-b border-accent backdrop-blur-sm"
+  role="navigation"
+  aria-label="Navigation principale"
 >
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex items-center justify-between h-16">
@@ -22,9 +24,10 @@
       <div class="hidden md:flex items-center space-x-8">
         @for (link of navLinks(); track link.route) {
           <a
-            [href]="link.route"
+            [routerLink]="link.route"
             class="flex items-center space-x-2 text-text hover:text-accent transition-all duration-300 group relative hover:font-bold"
             [class.text-accent]="isActiveRoute(link.route)"
+            [attr.aria-current]="isActiveRoute(link.route) ? 'page' : null"
           >
             <img
               [ngSrc]="'/icons/navbar/' + link.icon + '.svg'"
@@ -76,6 +79,8 @@
           (click)="toggleMobileMenu()"
           class="md:hidden p-2 rounded-lg hover:bg-accent-100 transition-colors duration-200"
           [attr.aria-label]="menuAriaLabel()"
+          [attr.aria-expanded]="isMobileMenuOpen()"
+          aria-controls="mobile-menu"
         >
           <img
             [ngSrc]="menuIcon().src"
@@ -90,14 +95,15 @@
 
     <!-- Mobile Menu (Hidden by default) -->
     @if (isMobileMenuOpen()) {
-      <div class="md:hidden border-t border-primary-200 py-4">
+      <div id="mobile-menu" class="md:hidden border-t border-primary-200 py-4">
         <div class="flex flex-col space-y-4">
           @for (link of navLinks(); track link.route) {
             <a
-              [href]="link.route"
+              [routerLink]="link.route"
               (click)="closeMobileMenu()"
               class="flex items-center space-x-3 text-text hover:text-accent transition-colors duration-200 px-4 py-2 rounded-lg hover:bg-accent"
               [class.text-accent]="isActiveRoute(link.route)"
+              [attr.aria-current]="isActiveRoute(link.route) ? 'page' : null"
             >
               <img
                 [ngSrc]="'/icons/navbar/' + link.icon + '.svg'"
