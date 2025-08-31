@@ -1,20 +1,32 @@
-import { Component, ChangeDetectionStrategy, signal, computed, inject } from '@angular/core';
+import {
+  Component,
+  ChangeDetectionStrategy,
+  signal,
+  computed,
+  inject,
+  output,
+} from '@angular/core';
 import { NgOptimizedImage } from '@angular/common';
-import { Router } from '@angular/router';
-import { NavLink } from '@shared/ui/navbar/interface/nav-link';
+import { Router, RouterLink } from '@angular/router';
+import { NavLink } from './interface/nav-link';
+import { AuthService } from '@core/services/auth.service';
 
 @Component({
   selector: 'app-navbar',
-  imports: [NgOptimizedImage],
+  imports: [NgOptimizedImage, RouterLink],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './navbar.html',
-  styleUrl: './components/navbar.css',
+  styleUrl: './navbar.css',
   host: {
     '[class.navbar-fixed]': 'true',
   },
 })
 export class NavbarComponent {
   private readonly router = inject(Router);
+  private readonly authService = inject(AuthService);
+
+  // Events
+  readonly showLogin = output<void>();
 
   // Navigation links with their corresponding icons
   readonly navLinks = signal<NavLink[]>([
@@ -27,13 +39,12 @@ export class NavbarComponent {
 
   // State signals
   private readonly _isDarkMode = signal(false);
-  private readonly _isLoggedIn = signal(false);
   private readonly _isMobileMenuOpen = signal(false);
   private readonly _currentRoute = signal('/');
 
   // Computed properties
   readonly isDarkMode = computed(() => this._isDarkMode());
-  readonly isLoggedIn = computed(() => this._isLoggedIn());
+  readonly isLoggedIn = computed(() => this.authService.isAuthenticated());
   readonly isMobileMenuOpen = computed(() => this._isMobileMenuOpen());
 
   // Theme icon computed properties
@@ -109,8 +120,23 @@ export class NavbarComponent {
 
   // Authentication management
   toggleAuth(): void {
-    this._isLoggedIn.update((current) => !current);
-    // Here you would typically integrate with your auth service
+    if (this.authService.isAuthenticated()) {
+      this.authService.logout().subscribe({
+        next: () => {
+          // Logout successful - state already updated in service
+        },
+        error: (error) => {
+          console.error('Erreur de déconnexion:', error);
+        },
+      });
+    } else {
+      // Emit event to show login form - to be handled by parent component
+      this.showLoginForm();
+    }
+  }
+
+  private showLoginForm(): void {
+    this.showLogin.emit();
   }
 
   // Mobile menu management
