@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy, signal, output } from '@angular/core';
-import { LoginForm } from '@shared/ui/login-form/login-form';
+import { LoginForm } from '@shared/ui/login/login-form/login-form';
 import { NgOptimizedImage } from '@angular/common';
 
 @Component({
