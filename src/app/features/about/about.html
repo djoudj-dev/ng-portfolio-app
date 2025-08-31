@@ -1,0 +1,22 @@
+<main id="about" class="text-text pb-4 pt-20 lg:pt-18">
+  <app-about-main />
+
+  <div class="fixed bottom-8 right-8 z-40">
+    <button
+      (click)="navigateToSkills()"
+      aria-label="Aller à la section Compétences"
+      title="Voir mes compétences"
+      class="p-2 rounded-full shadow-md transition-colors bg-accent hover:bg-accent-600 hover:shadow-lg"
+    >
+      <span class="relative flex-shrink-0 w-10 h-10">
+        <img
+          ngSrc="/icons/arrow-b.svg"
+          alt="Flèche vers les compétences"
+          class="object-contain inset-0 w-full h-full icon-invert"
+          width="24"
+          height="24"
+        />
+      </span>
+    </button>
+  </div>
+</main>
