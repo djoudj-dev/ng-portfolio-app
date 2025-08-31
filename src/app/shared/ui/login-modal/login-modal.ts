@@ -36,7 +36,7 @@ import { NgOptimizedImage } from '@angular/common';
               aria-label="Fermer la modal"
             >
               <img
-                [ngSrc]="'/icons/login/close.svg'"
+                [ngSrc]="'icons/login/close.svg'"
                 alt="Fermer"
                 width="16"
                 height="16"
