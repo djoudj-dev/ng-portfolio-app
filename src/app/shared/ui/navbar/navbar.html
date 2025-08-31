@@ -1,0 +1,117 @@
+<nav
+  class="fixed top-0 left-0 right-0 z-50 bg-background border-b border-accent backdrop-blur-sm"
+>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16">
+      <!-- Logo Section (Left) -->
+      <div class="flex items-center space-x-3">
+        <img
+          [ngSrc]="'/logo.svg'"
+          alt="Logo Julien.N"
+          width="32"
+          height="32"
+          priority
+          class="w-18 h-18"
+        />
+        <span class="text-xl lg:text-2xl font-bold text-text tracking-tight">
+          Julien<span class="text-accent bounce-dot">.</span>N
+        </span>
+      </div>
+
+      <!-- Navigation Links (Center) - Hidden on mobile -->
+      <div class="hidden md:flex items-center space-x-8">
+        @for (link of navLinks(); track link.route) {
+          <a
+            [href]="link.route"
+            class="flex items-center space-x-2 text-text hover:text-accent transition-all duration-300 group relative hover:font-bold"
+            [class.text-accent]="isActiveRoute(link.route)"
+          >
+            <img
+              [ngSrc]="'/icons/navbar/' + link.icon + '.svg'"
+              [alt]="link.label + ' icon'"
+              width="16"
+              height="16"
+              class="w-6 h-6 group-hover:scale-110 transition-transform duration-200"
+              [class.icon-invert]="isDarkMode()"
+            />
+            <span class="nav-link-hover">{{ link.label }}</span>
+          </a>
+        }
+      </div>
+
+      <!-- Action Icons (Right) -->
+      <div class="flex items-center space-x-4">
+        <!-- Theme Toggle -->
+        <button
+          (click)="toggleTheme()"
+          class="p-2 rounded-lg hover:bg-accent transition-colors duration-200"
+          [attr.aria-label]="themeAriaLabel()"
+        >
+          <img
+            [ngSrc]="themeIcon().src"
+            [alt]="themeIcon().alt"
+            width="20"
+            height="20"
+            [class]="themeIcon().class"
+          />
+        </button>
+
+        <!-- Admin Login/Logout -->
+        <button
+          (click)="toggleAuth()"
+          class="p-2 rounded-lg hover:bg-accent transition-colors duration-200"
+          [attr.aria-label]="authAriaLabel()"
+        >
+          <img
+            [ngSrc]="authIcon().src"
+            [alt]="authIcon().alt"
+            width="20"
+            height="20"
+            [class]="authIcon().class"
+          />
+        </button>
+
+        <!-- Mobile Menu Toggle -->
+        <button
+          (click)="toggleMobileMenu()"
+          class="md:hidden p-2 rounded-lg hover:bg-accent-100 transition-colors duration-200"
+          [attr.aria-label]="menuAriaLabel()"
+        >
+          <img
+            [ngSrc]="menuIcon().src"
+            [alt]="menuIcon().alt"
+            width="20"
+            height="20"
+            [class]="menuIcon().class"
+          />
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Menu (Hidden by default) -->
+    @if (isMobileMenuOpen()) {
+      <div class="md:hidden border-t border-primary-200 py-4">
+        <div class="flex flex-col space-y-4">
+          @for (link of navLinks(); track link.route) {
+            <a
+              [href]="link.route"
+              (click)="closeMobileMenu()"
+              class="flex items-center space-x-3 text-text hover:text-accent transition-colors duration-200 px-4 py-2 rounded-lg hover:bg-accent"
+              [class.text-accent]="isActiveRoute(link.route)"
+            >
+              <img
+                [ngSrc]="'/icons/navbar/' + link.icon + '.svg'"
+                [alt]="link.label + ' icon'"
+                width="16"
+                height="16"
+                class="w-6 h-6"
+                [class.icon-invert]="isDarkMode()"
+              />
+              <span class="font-medium">{{ link.label }}</span>
+            </a>
+          }
+        </div>
+      </div>
+    }
+  </div>
+</nav>
