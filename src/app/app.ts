@@ -1,13 +1,15 @@
-import { Component, signal, viewChild } from '@angular/core';
-import { LoginModal, NavbarComponent } from '@shared/ui';
+import { Component, signal, viewChild, inject } from '@angular/core';
+import { LoginModal, NavbarComponent, ToastContainerComponent, ToastService } from '@shared/ui';
 
 @Component({
   selector: 'app-root',
-  imports: [NavbarComponent, LoginModal],
+  imports: [NavbarComponent, LoginModal, ToastContainerComponent],
   templateUrl: './app.html',
   styleUrl: './app.css',
 })
 export class App {
+  private readonly toastService = inject(ToastService);
+
   protected readonly title = signal('ng-portfolio-app');
 
   readonly loginModal = viewChild<LoginModal>('loginModal');
@@ -17,10 +19,12 @@ export class App {
   }
 
   onLoginCompleted(): void {
-    console.log('Login completed successfully');
+    this.toastService.success('Connexion réussie', 'Vous êtes maintenant connecté à votre compte.');
   }
 
-  onModalClosed(): void {
-    console.log('Login modal closed');
+  onLogoutCompleted(): void {
+    this.toastService.success('Déconnexion réussie', 'Vous avez été déconnecté avec succès.');
   }
+
+  onModalClosed(): void {}
 }

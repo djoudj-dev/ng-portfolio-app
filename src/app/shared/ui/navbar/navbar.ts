@@ -27,6 +27,7 @@ export class NavbarComponent {
 
   // Events
   readonly showLogin = output<void>();
+  readonly logoutCompleted = output<void>();
 
   // Navigation links with their corresponding icons
   readonly navLinks = signal<NavLink[]>([
@@ -124,6 +125,7 @@ export class NavbarComponent {
       this.authService.logout().subscribe({
         next: () => {
           // Logout successful - state already updated in service
+          this.logoutCompleted.emit();
         },
         error: (error) => {
           console.error('Erreur de déconnexion:', error);
