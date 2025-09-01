@@ -1,9 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" class="h-32 w-32 mx-auto">
-  <!-- Envelope -->
-  <rect x="25" y="50" width="150" height="100" rx="5" fill="#f0f0f0" stroke="#cccccc" stroke-width="2"/>
-  <path d="M25,50 L100,100 L175,50" fill="none" stroke="#cccccc" stroke-width="2"/>
-
-  <!-- Green circle with check mark -->
-  <circle cx="150" cy="150" r="30" fill="#4CAF50" />
-  <path d="M135,150 L145,160 L165,140" fill="none" stroke="white" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"><path fill="#80ff00" d="M382-240 154-468l57-57 171 171 367-367 57 57-424 424Z"/></svg>
