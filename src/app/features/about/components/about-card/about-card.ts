@@ -1,11 +1,6 @@
 import { NgOptimizedImage } from '@angular/common';
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
-
-interface CardData {
-  title: string;
-  description: string;
-  icon: string;
-}
+import { CardData } from '@features/about/interface/card-data';
 
 @Component({
   selector: 'app-about-card',
