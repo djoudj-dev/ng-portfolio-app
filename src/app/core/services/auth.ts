@@ -2,30 +2,10 @@ import { Injectable, signal, computed, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
 import { environment } from '@environments/environment';
+import type { User, LoginRequest, AuthResponse, AuthState } from '@core/interfaces';
 
-export interface User {
-  readonly id: string;
-  readonly email: string;
-  readonly roles: string[];
-  readonly createdAt: string;
-  readonly updatedAt: string;
-}
-
-export interface LoginRequest {
-  readonly email: string;
-  readonly password: string;
-}
-
-export interface AuthResponse {
-  readonly user: User;
-  readonly message?: string;
-}
-
-export interface AuthState {
-  readonly user: User | null;
-  readonly isLoading: boolean;
-  readonly error: string | null;
-}
+// Re-export les types pour compatibilité
+export type { User, LoginRequest, AuthResponse, AuthState } from '@core/interfaces';
 
 @Injectable({
   providedIn: 'root',
