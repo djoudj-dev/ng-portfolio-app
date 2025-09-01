@@ -11,16 +11,8 @@ export const routes: Routes = [
     loadComponent: () => import('@features/about/about').then((m) => m.About),
   },
   {
-    path: 'badges/edit',
-    loadComponent: () =>
-      import('@features/badge/pages/badge-edit-page').then((m) => m.BadgeEditPageComponent),
-    canActivate: [adminGuard],
-  },
-  {
-    path: 'badges/edit/:id',
-    loadComponent: () =>
-      import('@features/badge/pages/badge-edit-page').then((m) => m.BadgeEditPageComponent),
-    canActivate: [adminGuard],
+    path: 'skills',
+    loadComponent: () => import('@features/skills').then((m) => m.SkillsComponent),
   },
   {
     path: 'admin',
@@ -34,8 +26,7 @@ export const routes: Routes = [
       },
       {
         path: 'cv',
-        loadComponent: () =>
-          import('@features/admin/pages/cv-admin/cv-admin').then((m) => m.CvAdminComponent),
+        loadComponent: () => import('@features/cv').then((m) => m.CvAdminComponent),
       },
       {
         path: 'badges',
@@ -45,12 +36,7 @@ export const routes: Routes = [
       {
         path: 'badges/edit',
         loadComponent: () =>
-          import('@features/badge/pages/badge-edit-admin').then((m) => m.BadgeEditAdmin),
-      },
-      {
-        path: 'badges/edit/:id',
-        loadComponent: () =>
-          import('@features/badge/pages/badge-edit-admin').then((m) => m.BadgeEditAdmin),
+          import('@features/badge/pages/badges-admin').then((m) => m.BadgesAdmin),
       },
       {
         path: 'users',

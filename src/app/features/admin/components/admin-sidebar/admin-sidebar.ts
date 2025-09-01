@@ -106,39 +106,6 @@ export interface SidebarLink {
       }
     </div>
 
-    <!-- Footer - User Info -->
-    <div class="mt-auto border-t border-primary/20 p-4 bg-gradient-to-r from-primary/5 to-accent/5">
-      <div
-        [class]="userInfoClasses()"
-        class="group hover:bg-primary/10 rounded-xl p-3 transition-all duration-300 cursor-pointer"
-      >
-        <div class="relative">
-          <div
-            class="w-10 h-10 bg-gradient-to-br from-primary to-accent rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300 shadow-md"
-          >
-            <span class="text-white text-sm font-bold">A</span>
-          </div>
-          <div
-            class="absolute -top-1 -right-1 w-3 h-3 bg-green-400 rounded-full border-2 border-background"
-          ></div>
-        </div>
-        @if (isOpen()) {
-          <div class="ml-3 min-w-0 flex-1">
-            <p
-              class="text-sm font-bold text-text truncate group-hover:text-primary transition-colors duration-300"
-            >
-              Admin
-            </p>
-            <p class="text-xs text-text/70 truncate">
-              {{ userEmail() }}
-            </p>
-          </div>
-          <div class="ml-auto opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-            <div class="w-2 h-2 bg-primary rounded-full"></div>
-          </div>
-        }
-      </div>
-    </div>
   `,
   styles: `
     @reference "tailwindcss";
@@ -207,7 +174,7 @@ export class AdminSidebar {
   readonly headerContainerClasses = computed(() => {
     const baseClasses = 'border-b border-primary/20 bg-gradient-to-r from-primary/5 to-accent/5';
     const paddingClasses = this.isOpen() ? 'p-6' : 'p-2';
-    
+
     return `${baseClasses} ${paddingClasses}`;
   });
 

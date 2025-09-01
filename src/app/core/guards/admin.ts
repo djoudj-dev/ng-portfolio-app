@@ -1,6 +1,6 @@
 import { CanActivateFn, Router } from '@angular/router';
 import { inject } from '@angular/core';
-import { AuthService } from '@core/services/auth';
+import { AuthService } from '@app/core';
 
 /**
  * Guard pour protéger les routes admin
