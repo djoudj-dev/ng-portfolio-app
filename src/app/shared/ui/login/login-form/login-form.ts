@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, signal, inject, output, effect } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { AuthService, LoginRequest } from '@core/services/auth.service';
+import { AuthService, LoginRequest } from '@core/services/auth';
 import { NgOptimizedImage } from '@angular/common';
 
 interface LoginFormControls {
