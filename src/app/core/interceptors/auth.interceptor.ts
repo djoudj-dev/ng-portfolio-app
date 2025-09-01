@@ -1,5 +1,11 @@
 import { Injectable, inject } from '@angular/core';
-import { HttpInterceptor, HttpRequest, HttpHandler, HttpErrorResponse, HttpEvent } from '@angular/common/http';
+import {
+  HttpInterceptor,
+  HttpRequest,
+  HttpHandler,
+  HttpErrorResponse,
+  HttpEvent,
+} from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, switchMap } from 'rxjs/operators';
 import { AuthService } from '@core/services/auth.service';
@@ -16,9 +22,9 @@ export class AuthInterceptor implements HttpInterceptor {
     if (req.url.includes('/api/')) {
       req = req.clone({
         setHeaders: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
-        withCredentials: true
+        withCredentials: true,
       });
     }
 
@@ -28,11 +34,14 @@ export class AuthInterceptor implements HttpInterceptor {
           return this.handle401Error(req, next);
         }
         return throwError(() => error);
-      })
+      }),
     );
   }
 
-  private handle401Error(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
+  private handle401Error(
+    req: HttpRequest<unknown>,
+    next: HttpHandler,
+  ): Observable<HttpEvent<unknown>> {
     if (this.isRefreshing) {
       // Si un rafraîchissement est déjà en cours, rediriger vers login
       this.router.navigate(['/login']);
@@ -53,7 +62,7 @@ export class AuthInterceptor implements HttpInterceptor {
         this.authService.logout().subscribe();
         this.router.navigate(['/login']);
         return throwError(() => error);
-      })
+      }),
     );
   }
 }

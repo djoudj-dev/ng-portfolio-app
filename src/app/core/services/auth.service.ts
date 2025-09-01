@@ -177,10 +177,16 @@ export class AuthService {
 
   /**
    * Vérifier si l'utilisateur a un rôle spécifique
+   * Vérification insensible à la casse pour plus de robustesse
    */
   hasRole(role: string): boolean {
     const user = this.getCurrentUser();
-    return user ? user.roles.includes(role) : false;
+    if (!user) {
+      return false;
+    }
+
+    // Vérification insensible à la casse pour gérer 'admin', 'ADMIN', etc.
+    return user.roles.some((userRole) => userRole.toLowerCase() === role.toLowerCase());
   }
 
   clearError(): void {
@@ -188,5 +194,16 @@ export class AuthService {
       ...state,
       error: null,
     }));
+  }
+
+  /**
+   * Récupérer le token depuis les cookies (pour compatibilité)
+   * Note: Avec l'auth basée sur les cookies, cette méthode n'est pas nécessaire
+   * mais elle est fournie pour la compatibilité avec d'autres services
+   */
+  getToken(): string | null {
+    // Dans notre cas, les tokens sont dans les cookies HTTP-only
+    // Cette méthode retourne null car nous utilisons withCredentials
+    return null;
   }
 }
