@@ -2,10 +2,10 @@ import { Injectable, signal, computed, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
 import { environment } from '@environments/environment';
-import type { User, LoginRequest, AuthResponse, AuthState } from '@core/interfaces';
+import type { User, LoginRequest, AuthResponse, AuthState } from '@app/core';
 
 // Re-export les types pour compatibilité
-export type { User, LoginRequest, AuthResponse, AuthState } from '@core/interfaces';
+export type { User, LoginRequest, AuthResponse, AuthState } from '../interfaces';
 
 @Injectable({
   providedIn: 'root',
