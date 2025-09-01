@@ -1,13 +1,13 @@
-import { NgOptimizedImage } from "@angular/common";
-import { ChangeDetectionStrategy, Component, inject } from "@angular/core";
-import { Router } from "@angular/router";
-import { LaptopView } from "@features/landing/laptop-view/laptop-view";
-import { ButtonComponent } from "@shared/ui/button/button";
+import { NgOptimizedImage } from '@angular/common';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { Router } from '@angular/router';
+import { LaptopView } from '@features/landing/laptop-view/laptop-view';
+import { ButtonComponent } from '@shared/ui/button/button';
 
 @Component({
-  selector: "app-hero-section",
+  selector: 'app-hero-section',
   imports: [LaptopView, ButtonComponent, NgOptimizedImage],
-  templateUrl: "./hero-section.html",
+  templateUrl: './hero-section.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   styles: `
     @keyframes halo {
@@ -25,15 +25,15 @@ import { ButtonComponent } from "@shared/ui/button/button";
 })
 export class HeroSection {
   private readonly router = inject(Router);
-  
+
   navigateToProjects(): void {
     this.router.navigate(['/projects']);
   }
-  
+
   navigateToContact(): void {
     this.router.navigate(['/contact']);
   }
-  
+
   navigateToAbout(): void {
     this.router.navigate(['/about']);
   }
