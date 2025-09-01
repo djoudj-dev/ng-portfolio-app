@@ -19,7 +19,7 @@ import { Badge, BadgeStatus } from '../models/badge.model';
       <!-- Available from date if unavailable -->
       @if (badge()?.status === badgeStatus.UNAVAILABLE && badge()?.availableFrom) {
         <span class="text-xs text-secondary">
-          (disponible le {{ formatDate(badge()!.availableFrom!) }})
+          {{ formatDate(badge()!.availableFrom!) }}
         </span>
       }
     </div>
@@ -40,6 +40,8 @@ export class BadgeStatusComponent {
         return 'Disponible';
       case BadgeStatus.UNAVAILABLE:
         return 'Indisponible';
+      case BadgeStatus.AVAILABLE_FROM:
+        return 'Bientôt disponible';
       default:
         return 'Statut inconnu';
     }
@@ -68,6 +70,8 @@ export class BadgeStatusComponent {
         return 'text-green-700';
       case BadgeStatus.UNAVAILABLE:
         return 'text-red-700';
+      case BadgeStatus.AVAILABLE_FROM:
+        return 'text-accent-700';
       default:
         return 'text-gray-600';
     }
