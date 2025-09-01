@@ -71,7 +71,7 @@ import { ToastService } from '@shared/ui';
           aria-label="Fermer la notification"
         >
           <img
-            [ngSrc]="'/icons/toast/close.svg'"
+            [ngSrc]="'icons/toast/close.svg'"
             alt="Fermer"
             class="w-4 h-4"
             height="16"
