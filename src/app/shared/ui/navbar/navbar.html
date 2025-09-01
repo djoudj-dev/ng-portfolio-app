@@ -25,7 +25,7 @@
         @for (link of navLinks(); track link.route) {
           <a
             [routerLink]="link.route"
-            class="flex items-center space-x-2 text-text hover:text-accent transition-all duration-300 group relative hover:font-bold"
+            class="flex items-center space-x-2 text-text hover:text-accent group relative hover:font-bold"
             [class.text-accent]="isActiveRoute(link.route)"
             [attr.aria-current]="isActiveRoute(link.route) ? 'page' : null"
           >
@@ -44,6 +44,25 @@
 
       <!-- Action Icons (Right) -->
       <div class="flex items-center space-x-4">
+        <!-- CV Download Button -->
+        <app-button
+          color="accent"
+          [customClass]="'!w-auto !px-3 !py-2 !rounded-lg !text-xs !font-semibold hover:!scale-105 !shadow-md hover:!shadow-lg !transition-all !duration-300'"
+          (buttonClick)="downloadCV()"
+          aria-label="Télécharger mon CV"
+        >
+          <div class="flex items-center gap-2">
+            <img
+              [ngSrc]="'/icons/download.svg'"
+              alt="CV"
+              width="16"
+              height="16"
+              class="w-4 h-4 icon-invert brightness-0 invert"
+            />
+            <span>Mon CV</span>
+          </div>
+        </app-button>
+
         <!-- Theme Toggle -->
         <button
           (click)="toggleTheme()"
@@ -59,9 +78,8 @@
           />
         </button>
 
-        <!-- Admin Panel & Logout (Only when authenticated) -->
-        @if (isLoggedIn()) {
-          <!-- Admin Panel -->
+        <!-- Admin Panel (Only for admin users) -->
+        @if (isAdmin()) {
           <button
             (click)="navigateToAdmin()"
             class="p-2 rounded-lg hover:bg-accent transition-colors duration-200"
@@ -75,8 +93,10 @@
               [class]="isDarkMode() ? 'w-5 h-5 icon-invert' : 'w-5 h-5'"
             />
           </button>
+        }
 
-          <!-- Logout -->
+        <!-- Logout (Only when authenticated) -->
+        @if (isLoggedIn()) {
           <button
             (click)="logout()"
             class="p-2 rounded-lg hover:bg-accent transition-colors duration-200"

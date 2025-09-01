@@ -1,5 +1,8 @@
 <app-navbar (showLogin)="onShowLogin()" (logoutCompleted)="onLogoutCompleted()" />
 
+<!-- Main Content -->
+<router-outlet />
+
 <!-- Login Modal -->
 <app-login-modal
   #loginModal

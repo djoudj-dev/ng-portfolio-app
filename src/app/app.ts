@@ -1,14 +1,15 @@
 import { Component, signal, viewChild, inject } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
 import { LoginModal, NavbarComponent, ToastContainer, ToastService } from '@shared/ui';
 
 @Component({
   selector: 'app-root',
-  imports: [NavbarComponent, LoginModal, ToastContainer],
+  imports: [RouterOutlet, NavbarComponent, LoginModal, ToastContainer],
   templateUrl: './app.html',
   styleUrl: './app.css',
   host: {
     '(keydown.control.alt.l)': 'onKeyboardShortcut($event)',
-    'tabindex': '0',
+    tabindex: '0',
   },
 })
 export class App {

@@ -10,10 +10,11 @@ import { NgOptimizedImage } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { NavLink } from './interface/nav-link';
 import { AuthService } from '@core/services/auth.service';
+import { ButtonComponent } from '@shared/ui/button/button';
 
 @Component({
   selector: 'app-navbar',
-  imports: [NgOptimizedImage, RouterLink],
+  imports: [NgOptimizedImage, RouterLink, ButtonComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './navbar.html',
   styleUrl: './navbar.css',
@@ -46,6 +47,7 @@ export class NavbarComponent {
   // Computed properties
   readonly isDarkMode = computed(() => this._isDarkMode());
   readonly isLoggedIn = computed(() => this.authService.isAuthenticated());
+  readonly isAdmin = computed(() => this.authService.isAdmin());
   readonly isMobileMenuOpen = computed(() => this._isMobileMenuOpen());
 
   // Theme icon computed properties
@@ -58,7 +60,6 @@ export class NavbarComponent {
   readonly themeAriaLabel = computed(() =>
     this.isDarkMode() ? 'Activer le mode clair' : 'Activer le mode sombre',
   );
-
 
   // Mobile menu icon computed properties
   readonly menuIcon = computed(() => ({
@@ -117,6 +118,8 @@ export class NavbarComponent {
       next: () => {
         // Logout successful - state already updated in service
         this.logoutCompleted.emit();
+        // Redirect to home page after successful logout
+        this.router.navigate(['/']);
       },
       error: (error) => {
         console.error('Erreur de déconnexion:', error);
@@ -140,5 +143,17 @@ export class NavbarComponent {
   // Route checking
   isActiveRoute(route: string): boolean {
     return this._currentRoute() === route;
+  }
+
+  // CV download functionality
+  downloadCV(): void {
+    // Create a link element and trigger download
+    const link = document.createElement('a');
+    link.href = 'http://localhost:3000/api/cv/download';
+    link.target = '_blank';
+    link.download = 'CV-Julien-NEDELLEC.pdf';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   }
 }

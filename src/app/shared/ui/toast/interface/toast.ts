@@ -10,7 +10,13 @@ export interface ToastData {
 }
 
 export interface ToastConfig {
-  position?: 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left' | 'top-center' | 'bottom-center';
+  position?:
+    | 'top-right'
+    | 'top-left'
+    | 'bottom-right'
+    | 'bottom-left'
+    | 'top-center'
+    | 'bottom-center';
   defaultDuration?: number;
   maxToasts?: number;
 }
