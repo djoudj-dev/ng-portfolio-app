@@ -1,8 +1,8 @@
-import { NgOptimizedImage } from "@angular/common";
-import { ChangeDetectionStrategy, Component } from "@angular/core";
-import { AboutCard } from "../about-card/about-card";
-import { SOCIAL_BADGES } from "../../data/social-badges.data";
-import { SocialBadge } from "../../interface/social-badge";
+import { NgOptimizedImage } from '@angular/common';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { AboutCard } from '../about-card/about-card';
+import { SOCIAL_BADGES } from '../../data/social-badges.data';
+import { SocialBadge } from '../../interface/social-badge';
 
 @Component({
   selector: 'app-about-main',
