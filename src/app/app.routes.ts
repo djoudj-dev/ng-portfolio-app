@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { adminGuard } from '@core/guards/admin.guard';
+import { adminGuard } from '@core/guards/admin';
 
 export const routes: Routes = [
   {

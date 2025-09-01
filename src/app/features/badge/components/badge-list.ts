@@ -2,7 +2,7 @@ import { Component, signal, inject, OnInit, ChangeDetectionStrategy } from '@ang
 import { CommonModule } from '@angular/common';
 import { Badge, BadgeStatus } from '../models/badge.model';
 import { BadgeService } from '../services/badge-service';
-import { AuthService } from '@core/services/auth.service';
+import { AuthService } from '@core/services/auth';
 
 @Component({
   selector: 'app-badge-list',

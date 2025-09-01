@@ -13,7 +13,7 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { Badge, BadgeStatus, UpdateBadgeRequest } from '../models/badge.model';
 import { BadgeService } from '../services/badge-service';
-import { AuthService } from '@core/services/auth.service';
+import { AuthService } from '@core/services/auth';
 
 @Component({
   selector: 'app-badge-edit',

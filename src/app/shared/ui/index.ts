@@ -6,9 +6,9 @@ export { Toast } from './toast/toast';
 export { ToastContainer } from './toast/toast-container';
 
 // Export services
-export { AuthService } from '../../core/services/auth.service';
+export { AuthService } from '../../core/services/auth';
 export { ToastService } from './toast/service/toast-service';
 
 // Export types
-export type { LoginRequest, User, AuthState } from '../../core/services/auth.service';
+export type { LoginRequest, User, AuthState, AuthResponse, CvMetadata, UploadCvResponse } from '../../core/interfaces';
 export type { ToastData, ToastType, ToastConfig } from './toast/interface/toast';

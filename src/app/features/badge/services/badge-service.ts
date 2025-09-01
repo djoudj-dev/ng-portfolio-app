@@ -8,7 +8,7 @@ import {
   CreateBadgeRequest,
   BadgeResponse,
 } from '../models/badge.model';
-import { AuthService } from '@core/services/auth.service';
+import { AuthService } from '@core/services/auth';
 import { environment } from '@environments/environment';
 
 @Injectable({

@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, inject, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { AuthService } from '@core/services/auth.service';
+import { AuthService } from '@core/services/auth';
 import { AdminSidebar } from '@features/admin/components/admin-sidebar/admin-sidebar';
 import { BadgeEditComponent } from '../components/badge-edit';
 import { Badge } from '../models/badge.model';
