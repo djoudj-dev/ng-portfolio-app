@@ -19,75 +19,160 @@ import { BadgeService } from '../services/badge-service';
   template: `
     @if (currentBadge()) {
       <div
-        class="items-center space-x-3 px-4 py-2 bg-background border border-accent rounded-lg shadow-lg flex justify-around cursor-pointer hover:bg-accent/20 transition-colors"
+        class="group relative items-center space-x-4 px-6 py-4 from-background border border-accent rounded-b-lg shadow-xl hover:shadow-2xl flex justify-between cursor-pointer transition-all duration-500 hover:scale-105 hover:border-accent/50 backdrop-blur-sm"
         (click)="onBadgeClick()"
       >
-        <!-- Logo Angular -->
-        <img
-          [ngSrc]="'/icons/skills/angular.webp'"
-          alt="Angular"
-          class="w-12 h-12 rounded"
-          height="860"
-          width="860"
-        />
-
-        <!-- Texte "Développeur Angular" -->
-        <span class="text-xl font-medium text-text"> Développeur Angular </span>
-
-        <!-- Badge de statut avec dot -->
         <div
-          class="inline-flex items-center space-x-2 px-2 py-1 rounded-full"
-          [ngClass]="badgeClasses()"
-        >
-          <!-- Status dot -->
-          <div class="relative">
-            <div
-              class="w-4 h-4 rounded-full border-2 border-white shadow-sm"
-              [ngClass]="dotClasses()"
-            ></div>
-            @if (currentBadge()!.status === badgeStatus.AVAILABLE_FROM) {
-              <div
-                class="absolute -top-1 -right-1 w-2 h-2 bg-background rounded-full animate-ping shadow-sm"
-              ></div>
-            }
+          class="absolute inset-0 bg-gradient-to-r from-transparent via-accent/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 rounded-2xl"
+        ></div>
+        <div class="relative z-10">
+          <div
+            class="w-14 h-14 rounded-xl bg-gradient-to-br from-accent/10 to-primary/10 p-1 group-hover:scale-110 transition-transform duration-300"
+          >
+            <img
+              [ngSrc]="'/icons/skills/angular.webp'"
+              alt="Angular"
+              class="w-full h-full rounded-lg shadow-md group-hover:shadow-lg transition-shadow duration-300"
+              height="860"
+              width="860"
+            />
           </div>
-
-          <!-- Status text -->
-          <span class="text-sm font-semibold" [ngClass]="textClasses()">
-            {{ statusText() }}
-          </span>
+          <div
+            class="absolute inset-0 w-14 h-14 rounded-xl bg-gradient-to-br from-accent/20 to-primary/20 blur-lg opacity-0 group-hover:opacity-60 transition-opacity duration-500"
+          ></div>
         </div>
 
-        <!-- Info supplémentaire si disponible -->
+        <!-- Texte avec gradient moderne -->
+        <div class="flex-1 text-center relative z-10">
+          <h3
+            class="text-2xl font-bold bg-gradient-to-r from-text via-accent to-primary bg-clip-text text-transparent group-hover:from-accent group-hover:to-primary transition-all duration-300"
+          >
+            Développeur Angular
+          </h3>
+        </div>
+
+        <!-- Badge de statut moderne avec glassmorphism -->
+        <div class="relative z-10">
+          <div
+            class="inline-flex items-center space-x-3 px-4 py-2 rounded-4xl border  border-text shadow-lg backdrop-blur-sm"
+            [ngClass]="modernBadgeClasses()"
+          >
+            <!-- Status dot avec animations -->
+            <div class="relative flex items-center justify-center w-6 h-6">
+              <!-- Dot principal centré -->
+              <div
+                class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-3 h-3 rounded-full shadow-lg transition-all duration-300 group-hover:scale-110 z-10"
+                [ngClass]="modernDotClasses()"
+              ></div>
+
+              <!-- Animations pour AVAILABLE_FROM -->
+              @if (currentBadge()!.status === badgeStatus.AVAILABLE_FROM) {
+                <div
+                  class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-3 h-3 rounded-full animate-ping opacity-70 bg-amber-400/40"
+                ></div>
+                <div
+                  class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-5 h-5 rounded-full animate-pulse opacity-25 bg-amber-400/20"
+                ></div>
+              }
+
+              <!-- Animations pour AVAILABLE -->
+              @if (currentBadge()!.status === badgeStatus.AVAILABLE) {
+                <div
+                  class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-5 h-5 rounded-full bg-emerald-400/30 animate-pulse"
+                ></div>
+                <div
+                  class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-emerald-400/15 animate-ping"
+                ></div>
+              }
+
+              <!-- Animations pour UNAVAILABLE -->
+              @if (currentBadge()!.status === badgeStatus.UNAVAILABLE) {
+                <div
+                  class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-red-400/15 animate-pulse"
+                ></div>
+              }
+            </div>
+
+            <!-- Status text avec effet -->
+            <div class="flex flex-col items-center space-y-1">
+              <span class="text-sm font-bold tracking-wide" [ngClass]="modernTextClasses()">
+                {{ statusText() }}
+              </span>
+              @if (
+                currentBadge()!.status === badgeStatus.AVAILABLE_FROM &&
+                currentBadge()!.availableFrom
+              ) {
+                <span
+                  class="text-xs text-text font-medium opacity-80"
+                  [ngClass]="modernTextClasses()"
+                >
+                  Pour le {{ formatDate(currentBadge()!.availableFrom!) }}
+                </span>
+              }
+            </div>
+          </div>
+        </div>
+
+        <!-- Info supplémentaire avec style moderne -->
         @if (availabilityInfo(); as info) {
-          <span class="text-xs text-secondary ml-2">
-            {{ info }}
-          </span>
+          <div
+            class="absolute -bottom-6 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-all duration-300 delay-200"
+          >
+            <span
+              class="text-xs text-secondary/70 bg-background/80 backdrop-blur-sm px-3 py-1 rounded-full border border-accent/20"
+            >
+              {{ info }}
+            </span>
+          </div>
         }
       </div>
     } @else if (isLoading()) {
       <div
-        class="inline-flex items-center space-x-3 px-4 py-2 bg-surface border border-accent rounded-lg shadow-lg"
+        class="relative items-center space-x-4 px-6 py-4 bg-gradient-to-r from-background/50 to-background/30 border border-accent/20 rounded-2xl shadow-lg backdrop-blur-sm"
       >
-        <div class="w-6 h-6 bg-gray-300 rounded animate-ping"></div>
-        <span class="text-sm text-secondary">Chargement...</span>
-        <div class="w-16 h-6 bg-gray-300 rounded-full animate-ping"></div>
+        <div class="flex items-center justify-center space-x-4">
+          <div
+            class="w-14 h-14 bg-gradient-to-br from-accent/20 to-primary/20 rounded-xl animate-pulse"
+          ></div>
+          <div class="flex-1 space-y-2">
+            <div
+              class="h-4 bg-gradient-to-r from-accent/20 to-primary/20 rounded animate-pulse"
+            ></div>
+            <div
+              class="h-3 bg-gradient-to-r from-accent/10 to-primary/10 rounded animate-pulse w-3/4"
+            ></div>
+          </div>
+          <div
+            class="w-20 h-8 bg-gradient-to-r from-accent/20 to-primary/20 rounded-full animate-pulse"
+          ></div>
+        </div>
       </div>
     } @else {
       <div
-        class="inline-flex items-center space-x-3 px-4 py-2 bg-surface border border-accent rounded-lg shadow-lg"
+        class="items-center space-x-4 px-6 py-4 bg-gradient-to-r from-background/70 to-background/50 border border-accent/20 rounded-2xl shadow-md backdrop-blur-sm opacity-60"
       >
-        <img
-          [ngSrc]="'/icons/skills/angular.webp'"
-          alt="Angular"
-          class="w-6 h-6 rounded opacity-50"
-          height="860"
-          width="860"
-        />
-        <span class="text-sm text-text">Développeur Angular</span>
-        <div class="inline-flex items-center space-x-2 px-2 py-1 bg-background rounded-full">
-          <div class="w-4 h-4 bg-background rounded-full border-2 border-accent shadow-sm"></div>
-          <span class="text-sm font-semibold text-text">Indisponible</span>
+        <div class="flex items-center justify-between w-full">
+          <div
+            class="w-14 h-14 rounded-xl bg-gradient-to-br from-gray-100 to-gray-200 p-1 flex items-center justify-center"
+          >
+            <img
+              [ngSrc]="'/icons/skills/angular.webp'"
+              alt="Angular"
+              class="w-8 h-8 rounded-lg opacity-40"
+              height="860"
+              width="860"
+            />
+          </div>
+          <div class="flex-1 text-center">
+            <h3 class="text-xl font-medium text-text/60">Développeur Angular</h3>
+            <p class="text-sm text-secondary/50">Non configuré</p>
+          </div>
+          <div
+            class="inline-flex items-center space-x-2 px-4 py-2 bg-gray-100/50 rounded-full border border-gray-200/50"
+          >
+            <div class="w-3 h-3 bg-gray-300 rounded-full"></div>
+            <span class="text-sm font-medium text-gray-500">Indisponible</span>
+          </div>
         </div>
       </div>
     }
@@ -130,51 +215,52 @@ export class BadgeDisplayComponent implements OnInit {
     }
   });
 
-  readonly dotClasses = computed(() => {
+  // Nouvelles méthodes pour le design moderne
+  readonly modernBadgeClasses = computed(() => {
+    const badge = this.badge() ?? this.currentBadge();
+    if (!badge) return 'bg-gray-50/50';
+
+    switch (badge.status) {
+      case BadgeStatus.AVAILABLE:
+        return 'bg-background/50 border-background/20';
+      case BadgeStatus.UNAVAILABLE:
+        return 'bg-gradient-to-r from-red-50/80 to-rose-50/80 border-red-200/50';
+      case BadgeStatus.AVAILABLE_FROM:
+        return 'bg-gradient-to-r from-accent/10 to-primary/10 border-accent/30';
+      default:
+        return 'bg-gray-50/50 border-gray-200/50';
+    }
+  });
+
+  readonly modernDotClasses = computed(() => {
     const badge = this.badge() ?? this.currentBadge();
     if (!badge) return 'bg-gray-400';
 
     switch (badge.status) {
       case BadgeStatus.AVAILABLE:
-        return 'bg-green-600';
+        return 'bg-gradient-to-br from-emerald-400 to-green-500 shadow-lg shadow-emerald-200/50 ring-2 ring-emerald-300/20';
       case BadgeStatus.UNAVAILABLE:
-        return 'bg-red-500';
+        return 'bg-gradient-to-br from-red-500 to-rose-600 shadow-lg shadow-red-200/50 ring-2 ring-red-300/20';
       case BadgeStatus.AVAILABLE_FROM:
-        return 'bg-accent-500';
+        return 'bg-gradient-to-br from-amber-400 to-orange-500 shadow-lg shadow-amber-200/50 ring-2 ring-amber-300/20';
       default:
         return 'bg-gray-400';
     }
   });
 
-  readonly badgeClasses = computed(() => {
+  readonly modernTextClasses = computed(() => {
     const badge = this.badge() ?? this.currentBadge();
-    if (!badge) return 'bg-gray-100';
+    if (!badge) return 'text-gray-600';
 
     switch (badge.status) {
       case BadgeStatus.AVAILABLE:
-        return 'bg-green-100';
+        return 'text-emerald-600 font-semibold drop-shadow-sm';
       case BadgeStatus.UNAVAILABLE:
-        return 'bg-red-100';
+        return 'text-red-600 font-semibold drop-shadow-sm';
       case BadgeStatus.AVAILABLE_FROM:
-        return 'bg-accent-100';
+        return 'text-amber-600 font-semibold drop-shadow-sm';
       default:
-        return 'bg-gray-100';
-    }
-  });
-
-  readonly textClasses = computed(() => {
-    const badge = this.badge() ?? this.currentBadge();
-    if (!badge) return 'text-gray-500';
-
-    switch (badge.status) {
-      case BadgeStatus.AVAILABLE:
-        return 'text-text';
-      case BadgeStatus.UNAVAILABLE:
-        return 'text-text';
-      case BadgeStatus.AVAILABLE_FROM:
-        return 'text-text';
-      default:
-        return 'text-gray-500';
+        return 'text-gray-600';
     }
   });
 
@@ -189,7 +275,6 @@ export class BadgeDisplayComponent implements OnInit {
       if (date > now) {
         return `Dès le ${this.formatDate(date)}`;
       } else {
-        // If the date has passed, it should probably be AVAILABLE now
         return 'Disponible maintenant';
       }
     }
@@ -203,13 +288,12 @@ export class BadgeDisplayComponent implements OnInit {
   });
 
   ngOnInit(): void {
-    // Charger les badges depuis le service si autoLoad est activé
     if (this.autoLoad()) {
       this.badgeService.loadBadges();
     }
   }
 
-  private formatDate(date: Date): string {
+  formatDate(date: Date): string {
     return new Date(date).toLocaleDateString('fr-FR', {
       day: 'numeric',
       month: 'short',

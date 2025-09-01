@@ -3,7 +3,6 @@ import {
   input,
   output,
   signal,
-  computed,
   ChangeDetectionStrategy,
   inject,
   OnInit,
@@ -132,13 +131,9 @@ export class BadgeEditComponent implements OnInit {
     availableFrom: [''],
   });
 
-  readonly showAvailableFromField = computed(() => {
-    const status = this.form.get('status')?.value;
-    return status === BadgeStatus.UNAVAILABLE || status === BadgeStatus.AVAILABLE_FROM;
-  });
+  readonly showAvailableFromField = signal(false);
 
   ngOnInit(): void {
-    this.initializeForm();
     this.setupFormValidation();
 
     const id = this.route.snapshot.params['id'] ?? this.badgeId();
@@ -159,14 +154,21 @@ export class BadgeEditComponent implements OnInit {
           ? new Date(badge.availableFrom).toISOString().slice(0, 16)
           : '',
       });
+
+      // Initialize signal based on current status
+      this.showAvailableFromField.set(badge.status === BadgeStatus.AVAILABLE_FROM);
     }
   }
 
   private setupFormValidation(): void {
     this.form.get('status')?.valueChanges.subscribe((status) => {
       const availableFromControl = this.form.get('availableFrom');
+      const shouldShowField = status === BadgeStatus.AVAILABLE_FROM;
 
-      if (status === BadgeStatus.UNAVAILABLE || status === BadgeStatus.AVAILABLE_FROM) {
+      // Update signal for template reactivity
+      this.showAvailableFromField.set(shouldShowField);
+
+      if (shouldShowField) {
         availableFromControl?.setValidators([Validators.required]);
       } else {
         availableFromControl?.clearValidators();
