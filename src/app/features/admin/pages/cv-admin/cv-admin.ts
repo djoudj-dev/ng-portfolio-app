@@ -2,20 +2,8 @@ import { Component, ChangeDetectionStrategy, signal, computed, inject } from '@a
 import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { ButtonComponent } from '@shared/ui/button/button';
 import { ToastService } from '@shared/ui';
-import { CvService } from '../../../services/cv.service';
-
-export interface CvMetadata {
-  id: string;
-  userId: string;
-  fileName: string;
-  originalName?: string;
-  filePath: string;
-  fileSize: number;
-  mimeType: string;
-  version: string | null;
-  downloadCount: number;
-  createdAt: string;
-}
+import { CvService } from '../../../services/cv';
+import type { CvMetadata } from '@core/interfaces';
 
 @Component({
   selector: 'app-cv-admin',
@@ -279,9 +267,7 @@ export interface CvMetadata {
       </div>
     </div>
   `,
-  styles: `
-    @tailwind utilities;
-  `,
+  styles: ``,
 })
 export class CvAdminComponent {
   private readonly cvService = inject(CvService);

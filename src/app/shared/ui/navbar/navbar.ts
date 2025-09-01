@@ -9,7 +9,7 @@ import {
 import { NgOptimizedImage } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { NavLink } from './interface/nav-link';
-import { AuthService } from '@core/services/auth.service';
+import { AuthService } from '@core/services/auth';
 import { ButtonComponent } from '@shared/ui/button/button';
 
 @Component({
