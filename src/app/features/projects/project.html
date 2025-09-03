@@ -1,0 +1,189 @@
+<main id="projects" class="pb-4 pt-16 lg:pb-20 lg:pt-18">
+  <header class="mb-6 px-4 lg:mb-4">
+    <h1
+      id="projects-heading"
+      class="text-text decoration-accent flex justify-center text-xl font-bold underline sm:text-2xl md:text-3xl lg:text-5xl pt-2 sm:pt-4 lg:pt-6"
+    >
+      {{ projectTitle() }}
+    </h1>
+    <p class="text-text/80 mx-auto mb-4 max-w-3xl text-center text-base sm:text-lg lg:mb-8">
+      {{ projectSubTitle() }}
+    </p>
+  </header>
+
+  <div class="container mx-auto px-4">
+    <!-- Search and filter section -->
+    @defer (on viewport) {
+      <app-project-search
+        [searchQuery]="searchQuery()"
+        [filters]="filters()"
+        (searchChange)="onSearch($event)"
+        (clearSearchEvent)="clearSearch()"
+        (filterChange)="setFilter($event)"
+      />
+    } @placeholder {
+      <section class="mb-8" aria-labelledby="search-filter-section">
+        <h2 id="search-filter-section" class="sr-only">Recherche et filtres</h2>
+        <div class="flex flex-col justify-center gap-4 sm:flex-row">
+          <div class="relative w-full sm:w-72">
+            <div class="bg-background text-text border-primary w-full rounded-lg border px-4 py-2 h-10 animate-pulse"></div>
+          </div>
+        </div>
+        <div class="mt-4 flex flex-wrap justify-center gap-2">
+          <div class="bg-accent rounded px-3 py-1 text-sm w-16 h-8 animate-pulse"></div>
+          <div class="bg-accent rounded px-3 py-1 text-sm w-20 h-8 animate-pulse"></div>
+          <div class="bg-accent rounded px-3 py-1 text-sm w-18 h-8 animate-pulse"></div>
+        </div>
+      </section>
+    }
+
+    <!-- Projects grid -->
+    <section aria-labelledby="projects-list-section">
+      <h2 id="projects-list-section" class="sr-only">Liste des projets</h2>
+
+      @if (allProjects().length) {
+        <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+          @for (project of allProjects(); track project.id) {
+            <article
+              class="bg-background shadow-text border-accent rounded-lg border p-4 transition-all duration-300"
+              [class.opacity-50]="!isProjectHydrated(project.id)"
+              [class.grayscale]="!isProjectHydrated(project.id)"
+              (mouseenter)="hydrateProject(project.id)"
+              (mouseleave)="dehydrateProject(project.id)"
+              (focusin)="hydrateProject(project.id)"
+              (focusout)="dehydrateProject(project.id)"
+              (click)="hydrateProject(project.id)"
+              tabindex="0"
+              [attr.aria-label]="'Projet ' + project.title"
+            >
+              <header>
+                <div class="relative mb-4 h-48 overflow-hidden rounded">
+                  <img
+                    [ngSrc]="getProjectImageUrl(project.imagePath)"
+                    [alt]="'Capture d ecran du projet ' + project.title"
+                    [fill]="true"
+                    priority
+                    class="h-full w-full object-cover"
+                  />
+                  <div class="absolute top-2 right-2">
+                    <span
+                      class="bg-accent text-background rounded px-2 py-1 text-xs font-semibold"
+                    >
+                      {{ project.category }}
+                    </span>
+                  </div>
+                </div>
+
+                <div class="flex justify-between items-start mb-2">
+                  <h3
+                    class="text-text decoration-accent text-lg font-bold underline sm:text-xl"
+                  >
+                    {{ project.title }}
+                  </h3>
+                  <div class="text-text text-xs underline decoration-accent pt-2">
+                    Publié le : {{ project.date | date: 'dd/MM/yyyy' }}
+                  </div>
+                </div>
+              </header>
+
+              <p class="text-text/80 mb-4 text-sm">
+                {{ project.description }}
+              </p>
+
+              <div class="mb-4 flex flex-wrap gap-2">
+                @for (tech of project.technologies; track tech) {
+                  @if (getTechnologyWithIcon(tech)) {
+                    <span class="bg-background text-text rounded-full border border-accent px-2 py-1 text-xs flex items-center gap-1">
+                      <img
+                        [ngSrc]="getTechnologyWithIcon(tech)!.icon"
+                        [alt]="tech + ' logo'"
+                        width="16"
+                        height="16"
+                        class="w-4 h-4 object-contain"
+                      />
+                      {{ tech }}
+                    </span>
+                  } @else {
+                    <span class="bg-background-200 text-text/70 rounded-full px-2 py-1 text-xs">
+                      {{ tech }}
+                    </span>
+                  }
+                }
+              </div>
+
+              <footer class="mt-4 flex justify-between">
+
+                <div class="flex flex-wrap gap-2 sm:gap-2">
+                  @for (link of getAllProjectLinks(project); track link.href) {
+                    <a
+                      [href]="link.href"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="bg-accent text-text rounded-full px-2 py-1 text-xs font-medium flex items-center gap-1 hover:bg-accent/90 transition-colors min-h-auto sm:px-3 sm:py-2 sm:text-sm sm:gap-2 sm:min-h-[44px]"
+                      [attr.aria-label]="link.ariaLabel"
+                    >
+                      <img
+                        [ngSrc]="link.icon"
+                        [alt]="link.label + ' icon'"
+                        width="16"
+                        height="16"
+                        class="w-3.5 h-3.5 object-contain icon-invert sm:w-4 sm:h-4"
+                      />
+                      {{ link.label }}
+                    </a>
+                  }
+                </div>
+              </footer>
+            </article>
+          }
+        </div>
+
+        <!-- Pagination controls -->
+        @defer (on viewport; prefetch on idle) {
+          <app-project-pagination
+            [currentPage]="currentPage()"
+            [totalPages]="totalPages()"
+            (pageChange)="goToPage($event)"
+          />
+        } @placeholder {
+          <div class="mt-8 flex items-center justify-center space-x-2">
+            <div class="bg-accent rounded px-3 py-1 text-sm w-8 h-8 animate-pulse"></div>
+            <div class="bg-accent rounded px-3 py-1 text-sm w-8 h-8 animate-pulse"></div>
+            <div class="bg-accent rounded px-3 py-1 text-sm w-8 h-8 animate-pulse"></div>
+            <div class="bg-accent rounded px-3 py-1 text-sm w-8 h-8 animate-pulse"></div>
+          </div>
+        }
+      } @else {
+        <div class="py-12 text-center">
+          <p class="text-text/70 text-lg">
+            Aucun projet ne correspond à votre recherche.
+          </p>
+          <button
+            (click)="clearSearch(); setFilter('all')"
+            class="text-accent mt-4 hover:underline"
+          >
+            Réinitialiser les filtres
+          </button>
+        </div>
+      }
+    </section>
+  </div>
+  <div class="fixed bottom-4 right-4 z-40 sm:bottom-8 sm:right-8">
+    <button
+      (click)="navigateToContact()"
+      aria-label="Aller à la section Contact"
+      title="Me contacter"
+      class="p-2 rounded-full shadow-md transition-colors bg-accent hover:bg-accent-600 hover:shadow-lg sm:p-3"
+    >
+      <span class="relative flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12">
+        <img
+          ngSrc="/icons/arrow-b.svg"
+          alt="Flèche vers le contact"
+          class="object-contain inset-0 w-full h-full icon-invert"
+          width="24"
+          height="24"
+        />
+      </span>
+    </button>
+  </div>
+</main>
