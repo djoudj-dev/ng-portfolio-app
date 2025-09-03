@@ -87,6 +87,25 @@ export class CvService {
     }
   }
 
+  async openCvInNewTab(userId?: string): Promise<void> {
+    try {
+      const blob = await this.downloadCv(userId);
+
+      const url = window.URL.createObjectURL(blob);
+      window.open(url, '_blank');
+
+      // Clean up the blob URL after a short delay to ensure the tab has loaded
+      setTimeout(() => {
+        window.URL.revokeObjectURL(url);
+      }, 1000);
+
+      this._cvDownloaded.next();
+    } catch (error: unknown) {
+      console.error('Erreur ouverture CV:', error);
+      throw new Error(this.getErrorMessage(error));
+    }
+  }
+
   private getErrorMessage(error: unknown): string {
     if (
       error &&

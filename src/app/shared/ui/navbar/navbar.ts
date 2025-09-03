@@ -10,8 +10,8 @@ import { NgOptimizedImage } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { NavLink } from './interface/nav-link';
 import { AuthService } from '@core/services/auth';
+import { CvService } from '@features/cv/services/cv';
 import { ButtonComponent } from '@shared/ui/button/button';
-import { environment } from '@environments/environment';
 
 @Component({
   selector: 'app-navbar',
@@ -26,6 +26,7 @@ import { environment } from '@environments/environment';
 export class NavbarComponent {
   private readonly router = inject(Router);
   private readonly authService = inject(AuthService);
+  private readonly cvService = inject(CvService);
 
   readonly showLogin = output<void>();
   readonly logoutCompleted = output<void>();
@@ -131,13 +132,11 @@ export class NavbarComponent {
     return this._currentRoute() === route;
   }
 
-  downloadCV(): void {
-    const link = document.createElement('a');
-    link.href = `${environment.apiUrl}/cv/download`;
-    link.target = '_blank';
-    link.download = 'CV-Julien-NEDELLEC.pdf';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+  async openCV(): Promise<void> {
+    try {
+      await this.cvService.openCvInNewTab();
+    } catch (error) {
+      console.error('Erreur lors de l\'ouverture du CV:', error);
+    }
   }
 }

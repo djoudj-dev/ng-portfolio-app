@@ -1,0 +1,276 @@
+/* Modern Angular route animations using CSS classes */
+
+/* Slide animations from right */
+.slide-enter-from-right {
+  animation: slideInFromRight 400ms ease-out forwards;
+}
+
+.slide-leave-to-right {
+  animation: slideOutToRight 400ms ease-out forwards;
+}
+
+@keyframes slideInFromRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOutToRight {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+/* Slide animations from left */
+.slide-enter-from-left {
+  animation: slideInFromLeft 400ms ease-out forwards;
+}
+
+.slide-leave-to-left {
+  animation: slideOutToLeft 400ms ease-out forwards;
+}
+
+@keyframes slideInFromLeft {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOutToLeft {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+}
+
+/* Slide animations from bottom */
+.slide-enter-from-bottom {
+  animation: slideInFromBottom 500ms cubic-bezier(0.35, 0, 0.25, 1) forwards;
+}
+
+.slide-leave-to-bottom {
+  animation: slideOutToBottom 350ms ease-in forwards;
+}
+
+@keyframes slideInFromBottom {
+  from {
+    transform: translateY(100px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOutToBottom {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(100px);
+    opacity: 0;
+  }
+}
+
+/* Slide animations from top */
+.slide-enter-from-top {
+  animation: slideInFromTop 400ms 150ms ease-out both;
+}
+
+.slide-leave-to-top {
+  animation: slideOutToTop 300ms ease-in forwards;
+}
+
+@keyframes slideInFromTop {
+  from {
+    transform: translateY(-100px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOutToTop {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(-100px);
+    opacity: 0;
+  }
+}
+
+/* Fade animations */
+.fade-enter {
+  animation: fadeIn 300ms 100ms ease-out both;
+}
+
+.fade-leave {
+  animation: fadeOut 200ms ease-in forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateX(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(-15px);
+  }
+}
+
+/* Scale animations */
+.scale-enter {
+  animation: scaleIn 500ms cubic-bezier(0.35, 0, 0.25, 1) forwards;
+}
+
+.scale-leave {
+  animation: scaleOut 350ms ease-in forwards;
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes scaleOut {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0.3;
+    transform: scale(0.9);
+  }
+}
+
+/* Combined slide and scale effects */
+.slide-scale-enter {
+  animation: slideScaleIn 500ms cubic-bezier(0.35, 0, 0.25, 1) forwards;
+}
+
+.slide-scale-leave {
+  animation: slideScaleOut 350ms ease-in forwards;
+}
+
+@keyframes slideScaleIn {
+  from {
+    opacity: 0;
+    transform: translateY(100%) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes slideScaleOut {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(100%) scale(0.9);
+  }
+}
+
+/* Admin specific animations */
+.admin-enter {
+  animation: adminIn 600ms cubic-bezier(0.35, 0, 0.25, 1) forwards;
+}
+
+.admin-leave {
+  animation: adminOut 400ms ease-in forwards;
+}
+
+@keyframes adminIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.8) rotate(-2deg);
+  }
+  30% {
+    opacity: 0.5;
+    transform: scale(0.95) rotate(-1deg);
+  }
+  70% {
+    opacity: 0.8;
+    transform: scale(1.02) rotate(0deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+@keyframes adminOut {
+  from {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0px);
+  }
+  to {
+    opacity: 0;
+    transform: scale(1.1);
+    filter: blur(5px);
+  }
+}
+
+/* General positioning for route animations */
+.route-animation-container {
+  position: relative;
+}
+
+.route-animation-container > * {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+
+/* Smooth transitions for all animations */
+.route-animation-container * {
+  transition-timing-function: cubic-bezier(0.35, 0, 0.25, 1);
+}
