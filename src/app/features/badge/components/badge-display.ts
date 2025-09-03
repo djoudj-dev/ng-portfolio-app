@@ -21,11 +21,9 @@ import { BadgeService } from '../services/badge-service';
       <div
         class="relative px-3 sm:px-4 md:px-6 py-1 sm:py-4 from-background border border-accent rounded-lg shadow-sm"
       >
-        <!-- Layout principal - Logo et titre toujours en bandeau horizontal -->
         <div
           class="flex items-center space-x-1.5 sm:space-x-3 md:space-x-4 relative z-10 min-h-[3rem] sm:min-h-0"
         >
-          <!-- Logo section -->
           <div class="flex-shrink-0">
             <div class="w-12 h-12 sm:w-12 sm:h-12 md:w-14 md:h-14 p-1">
               <img
@@ -38,9 +36,7 @@ import { BadgeService } from '../services/badge-service';
             </div>
           </div>
 
-          <!-- Section titre avec alternance mobile -->
           <div class="flex-1 min-w-0 pr-1 relative">
-            <!-- Titre - alternance en mobile -->
             <div
               class="transition-opacity duration-500 ease-in-out sm:opacity-100"
               [class.opacity-100]="showTitle()"
@@ -53,9 +49,8 @@ import { BadgeService } from '../services/badge-service';
               </h3>
             </div>
 
-            <!-- Badge status mobile -->
             <div
-              class="transition-opacity duration-500 ease-in-out absolute inset-0 flex items-center sm:hidden flex justify-center"
+              class="transition-opacity duration-500 ease-in-out absolute inset-0 flex items-center sm:hidden justify-center"
               [class.opacity-100]="!showTitle()"
               [class.opacity-0]="showTitle()"
             >
@@ -85,7 +80,6 @@ import { BadgeService } from '../services/badge-service';
             </div>
           </div>
 
-          <!-- Badge de statut - desktop (inchangé) -->
           <div class="flex flex-shrink-0 sm:flex">
             <div
               class="hidden sm:inline-flex items-center space-x-2 md:space-x-3 px-3 md:px-4 py-1.5 md:py-2 rounded-full border border-text shadow-sm"
@@ -177,11 +171,9 @@ export class BadgeDisplayComponent implements OnInit, OnDestroy {
   readonly autoLoad = input<boolean>(true);
 
   readonly currentBadge = computed(() => {
-    // Si un badge est passé en input, l'utiliser
     const inputBadge = this.badge();
     if (inputBadge) return inputBadge;
 
-    // Sinon, utiliser le premier badge disponible du service
     const badges = this.badgeService.badgeList();
     return badges.length > 0 ? badges[0] : null;
   });
@@ -207,7 +199,6 @@ export class BadgeDisplayComponent implements OnInit, OnDestroy {
     }
   });
 
-  // Nouvelles méthodes pour le design moderne
   readonly modernBadgeClasses = computed(() => {
     const badge = this.badge() ?? this.currentBadge();
     if (!badge) return 'bg-gray-50';
@@ -261,7 +252,6 @@ export class BadgeDisplayComponent implements OnInit, OnDestroy {
       this.badgeService.loadBadges();
     }
 
-    // Démarrer l'alternance uniquement en mobile
     this.startAlternation();
   }
 
@@ -272,10 +262,9 @@ export class BadgeDisplayComponent implements OnInit, OnDestroy {
   }
 
   private startAlternation(): void {
-    // Alterner toutes les 3 secondes
     this.intervalId = window.setInterval(() => {
       this.showTitle.update((current) => !current);
-    }, 3000);
+    }, 2000);
   }
 
   formatDate(date: Date): string {

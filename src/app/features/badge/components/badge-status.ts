@@ -8,15 +8,12 @@ import { Badge, BadgeStatus } from '../models/badge.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="inline-flex items-center space-x-2">
-      <!-- Status indicator -->
       <div class="w-3 h-3 rounded-full" [ngClass]="statusIndicatorClasses()"></div>
 
-      <!-- Status text -->
       <span class="text-sm font-medium" [ngClass]="statusTextClasses()">
         {{ statusText() }}
       </span>
 
-      <!-- Available from date if unavailable -->
       @if (badge()?.status === badgeStatus.UNAVAILABLE && badge()?.availableFrom) {
         <span class="text-xs text-secondary">
           {{ formatDate(badge()!.availableFrom!) }}

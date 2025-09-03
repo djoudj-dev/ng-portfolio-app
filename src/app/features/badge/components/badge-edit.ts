@@ -8,7 +8,7 @@ import {
   OnInit,
 } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { Badge, BadgeStatus, UpdateBadgeRequest } from '../models/badge.model';
 import { BadgeService } from '../services/badge-service';
@@ -16,14 +16,16 @@ import { AuthService } from '@core/services/auth';
 
 @Component({
   selector: 'app-badge-edit',
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule, NgOptimizedImage],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="space-y-6">
       @if (isLoading()) {
         <div class="flex items-center justify-center py-12">
           <div class="text-center space-y-4">
-            <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-primary mx-auto"></div>
+            <div
+              class="animate-spin rounded-full h-10 w-10 border-b-2 border-primary mx-auto"
+            ></div>
             <p class="text-secondary font-medium">Chargement du badge...</p>
           </div>
         </div>
@@ -37,10 +39,10 @@ import { AuthService } from '@core/services/auth';
           </div>
         </div>
       } @else {
-        <!-- Enhanced Form -->
         <form [formGroup]="form" (ngSubmit)="onSubmit()" class="space-y-8">
-          <!-- Form Header -->
-          <div class="bg-gradient-to-r from-primary/5 to-accent/5 rounded-xl p-6 border border-accent/20">
+          <div
+            class="bg-gradient-to-r from-primary/5 to-accent/5 rounded-xl p-6 border border-accent/20"
+          >
             <div class="flex items-center gap-4">
               <div class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center">
                 <span class="text-2xl">🏷️</span>
@@ -56,9 +58,7 @@ import { AuthService } from '@core/services/auth';
             </div>
           </div>
 
-          <!-- Form Fields -->
           <div class="bg-background rounded-xl border border-accent/20 p-6 space-y-6">
-            <!-- Status Field -->
             <div class="space-y-3">
               <label for="status" class="block text-sm font-semibold text-text">
                 Statut de disponibilité
@@ -71,13 +71,18 @@ import { AuthService } from '@core/services/auth';
                   class="w-full px-4 py-3 border border-accent/30 rounded-xl bg-background text-text focus:ring-2 focus:ring-primary focus:border-primary/30 transition-all duration-200 appearance-none cursor-pointer"
                 >
                   @for (option of statusOptions; track option.value) {
-                    <option [value]="option.value" class="bg-background text-text">{{ option.label }}</option>
+                    <option [value]="option.value" class="bg-background text-text">
+                      {{ option.label }}
+                    </option>
                   }
                 </select>
                 <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                  <svg class="w-5 h-5 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                  </svg>
+                  <img
+                    [ngSrc]="'/icons/arrow-b.svg'"
+                    alt="Chevron Down"
+                    class="w-5 h-5 text-secondary"
+                    fill
+                  />
                 </div>
               </div>
               @if (form.get('status')?.invalid && form.get('status')?.touched) {
@@ -88,7 +93,6 @@ import { AuthService } from '@core/services/auth';
               }
             </div>
 
-            <!-- Available From Field (Conditional) -->
             @if (showAvailableFromField()) {
               <div class="space-y-3 animate-in fade-in duration-300">
                 <label for="availableFrom" class="block text-sm font-semibold text-text">
@@ -102,10 +106,15 @@ import { AuthService } from '@core/services/auth';
                     formControlName="availableFrom"
                     class="w-full px-4 py-3 border border-accent/30 rounded-xl bg-background text-text focus:ring-2 focus:ring-primary focus:border-primary/30 transition-all duration-200"
                   />
-                  <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                    <svg class="w-5 h-5 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                    </svg>
+                  <div
+                    class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none"
+                  >
+                    <img
+                      [ngSrc]="'/icons/calendar.svg'"
+                      alt="Calendar"
+                      class="w-5 h-5 text-secondary"
+                      fill
+                    />
                   </div>
                 </div>
                 @if (form.get('availableFrom')?.invalid && form.get('availableFrom')?.touched) {
@@ -121,7 +130,6 @@ import { AuthService } from '@core/services/auth';
             }
           </div>
 
-          <!-- Form Actions -->
           <div class="flex flex-col sm:flex-row gap-3 sm:justify-end">
             <button
               type="button"
@@ -187,7 +195,6 @@ export class BadgeEditComponent implements OnInit {
     if (id) {
       this.loadBadge(id);
     } else {
-      // Load the first available badge or create a default one
       this.loadFirstBadge();
     }
   }
@@ -202,7 +209,6 @@ export class BadgeEditComponent implements OnInit {
           : '',
       });
 
-      // Initialize signal based on current status
       this.showAvailableFromField.set(badge.status === BadgeStatus.AVAILABLE_FROM);
     }
   }
@@ -212,7 +218,6 @@ export class BadgeEditComponent implements OnInit {
       const availableFromControl = this.form.get('availableFrom');
       const shouldShowField = status === BadgeStatus.AVAILABLE_FROM;
 
-      // Update signal for template reactivity
       this.showAvailableFromField.set(shouldShowField);
 
       if (shouldShowField) {
@@ -253,7 +258,6 @@ export class BadgeEditComponent implements OnInit {
           this.badge.set(badges[0]);
           this.initializeForm();
         } else {
-          // If no badges exist, create a default badge state
           this.badge.set({
             id: 'default',
             status: BadgeStatus.AVAILABLE,
@@ -280,9 +284,10 @@ export class BadgeEditComponent implements OnInit {
       const formValue = this.form.value;
       const request: UpdateBadgeRequest = {
         status: formValue.status,
-        availableFrom: formValue.availableFrom && formValue.availableFrom.trim() !== ''
-          ? formValue.availableFrom
-          : undefined,
+        availableFrom:
+          formValue.availableFrom && formValue.availableFrom.trim() !== ''
+            ? formValue.availableFrom
+            : undefined,
       };
 
       this.badgeService.update(this.badge()!.id, request).subscribe({

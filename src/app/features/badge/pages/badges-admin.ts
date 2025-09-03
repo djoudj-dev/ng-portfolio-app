@@ -21,8 +21,9 @@ import { ToastService } from '@shared/ui/toast/service/toast-service';
   template: `
     <app-badge-admin-layout [pageTitle]="'Modification du badge'" [showBackButton]="false">
       <div class="max-w-7xl mx-auto p-6 space-y-8">
-        <!-- Enhanced Header Section -->
-        <header class="bg-gradient-to-r from-primary/5 to-accent/5 rounded-2xl p-6 border border-accent/20 shadow-sm">
+        <header
+          class="bg-gradient-to-r from-primary/5 to-accent/5 rounded-2xl p-6 border border-accent/20 shadow-sm"
+        >
           <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
             <div class="space-y-2">
               <div class="flex items-center gap-3">
@@ -37,11 +38,20 @@ import { ToastService } from '@shared/ui/toast/service/toast-service';
             </div>
 
             <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-              <!-- Status Indicator -->
               @if (currentBadge(); as badge) {
-                <div class="bg-background/80 backdrop-blur-sm px-4 py-2 rounded-xl border border-accent/30 shadow-sm">
+                <div
+                  class="bg-background/80 backdrop-blur-sm px-4 py-2 rounded-xl border border-accent/30 shadow-sm"
+                >
                   <div class="flex items-center gap-2">
-                    <div [class]="badge.status === 'AVAILABLE' ? 'w-2 h-2 bg-green-500 rounded-full' : badge.status === 'UNAVAILABLE' ? 'w-2 h-2 bg-red-500 rounded-full' : 'w-2 h-2 bg-yellow-500 rounded-full animate-pulse'"></div>
+                    <div
+                      [class]="
+                        badge.status === 'AVAILABLE'
+                          ? 'w-2 h-2 bg-green-500 rounded-full'
+                          : badge.status === 'UNAVAILABLE'
+                            ? 'w-2 h-2 bg-red-500 rounded-full'
+                            : 'w-2 h-2 bg-yellow-500 rounded-full animate-pulse'
+                      "
+                    ></div>
                     <span class="text-sm font-medium text-text">
                       {{ getStatusLabel(badge.status) }}
                     </span>
@@ -49,7 +59,6 @@ import { ToastService } from '@shared/ui/toast/service/toast-service';
                 </div>
               }
 
-              <!-- Actions -->
               <button
                 (click)="refreshBadges()"
                 class="flex items-center gap-2 bg-accent hover:bg-accent/90 text-white px-6 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 shadow-sm hover:shadow-md"
@@ -60,32 +69,39 @@ import { ToastService } from '@shared/ui/toast/service/toast-service';
           </div>
         </header>
 
-        <!-- Content Section -->
         <main class="space-y-6">
           @if (isLoading()) {
             <div class="flex items-center justify-center py-24 text-text">
               <div class="text-center space-y-4">
-                <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
+                <div
+                  class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"
+                ></div>
                 <p class="text-secondary font-medium">Chargement du badge...</p>
               </div>
             </div>
           } @else {
             @if (currentBadge(); as badge) {
-              <!-- Enhanced Badge Card -->
-              <article class="bg-background rounded-2xl border border-accent/20 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden max-w-4xl mx-auto">
+              <article
+                class="bg-background rounded-2xl border border-accent/20 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden max-w-4xl mx-auto"
+              >
                 @if (!isEditing()) {
-                  <!-- Display Mode -->
                   <div class="p-6">
                     <div class="space-y-6">
-                      <!-- Badge Header -->
                       <div class="flex items-start justify-between gap-4">
                         <div class="flex items-start gap-4">
-                          <div class="w-16 h-16 bg-gradient-to-br from-primary/20 to-accent/20 rounded-2xl flex items-center justify-center border border-accent/30">
+                          <div
+                            class="w-16 h-16 bg-gradient-to-br from-primary/20 to-accent/20 rounded-2xl flex items-center justify-center border border-accent/30"
+                          >
                             <span class="text-3xl">🏷️</span>
                           </div>
                           <div class="space-y-2">
                             <h2 class="text-2xl font-bold text-text">Badge de Disponibilité</h2>
-                            <p class="text-secondary">ID: <code class="bg-accent/10 px-2 py-1 rounded font-mono text-sm">{{ badge.id }}</code></p>
+                            <p class="text-secondary">
+                              ID:
+                              <code class="bg-accent/10 px-2 py-1 rounded font-mono text-sm">{{
+                                badge.id
+                              }}</code>
+                            </p>
                           </div>
                         </div>
                         <button
@@ -96,17 +112,31 @@ import { ToastService } from '@shared/ui/toast/service/toast-service';
                         </button>
                       </div>
 
-                      <!-- Status Display -->
-                      <div class="bg-gradient-to-r from-accent/5 to-primary/5 rounded-xl p-6 border border-accent/20">
+                      <div
+                        class="bg-gradient-to-r from-accent/5 to-primary/5 rounded-xl p-6 border border-accent/20"
+                      >
                         <div class="space-y-4">
                           <h3 class="text-lg font-semibold text-text">Statut Actuel</h3>
                           <div class="flex flex-wrap items-center gap-4">
-                            <span [class]="getStatusBadgeClass(badge.status)" class="inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold rounded-full">
-                              <div [class]="badge.status === 'AVAILABLE' ? 'w-2 h-2 bg-green-500 rounded-full' : badge.status === 'UNAVAILABLE' ? 'w-2 h-2 bg-red-500 rounded-full' : 'w-2 h-2 bg-yellow-500 rounded-full animate-pulse'"></div>
+                            <span
+                              [class]="getStatusBadgeClass(badge.status)"
+                              class="inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold rounded-full"
+                            >
+                              <div
+                                [class]="
+                                  badge.status === 'AVAILABLE'
+                                    ? 'w-2 h-2 bg-green-500 rounded-full'
+                                    : badge.status === 'UNAVAILABLE'
+                                      ? 'w-2 h-2 bg-red-500 rounded-full'
+                                      : 'w-2 h-2 bg-yellow-500 rounded-full animate-pulse'
+                                "
+                              ></div>
                               {{ getStatusLabel(badge.status) }}
                             </span>
                             @if (badge.availableFrom) {
-                              <div class="flex items-center gap-2 text-sm text-secondary bg-background/60 px-3 py-2 rounded-lg border border-accent/20">
+                              <div
+                                class="flex items-center gap-2 text-sm text-secondary bg-background/60 px-3 py-2 rounded-lg border border-accent/20"
+                              >
                                 📅 Disponible à partir du {{ formatDate(badge.availableFrom) }}
                               </div>
                             }
@@ -114,7 +144,6 @@ import { ToastService } from '@shared/ui/toast/service/toast-service';
                         </div>
                       </div>
 
-                      <!-- Metadata -->
                       <div class="pt-4 border-t border-accent/20">
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs text-secondary">
                           <div class="flex items-center gap-2">
@@ -130,11 +159,12 @@ import { ToastService } from '@shared/ui/toast/service/toast-service';
                     </div>
                   </div>
                 } @else {
-                  <!-- Edit Mode -->
                   <div class="p-6">
                     <div class="space-y-4">
                       <div class="flex items-center gap-3 pb-4 border-b border-accent/20">
-                        <div class="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center">
+                        <div
+                          class="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center"
+                        >
                           ✏️
                         </div>
                         <h3 class="text-xl font-semibold text-text">Modification du Badge</h3>
@@ -150,15 +180,19 @@ import { ToastService } from '@shared/ui/toast/service/toast-service';
                 }
               </article>
             } @else {
-              <!-- Empty State -->
               <div class="text-center py-24">
-                <div class="bg-background rounded-2xl border border-accent/20 p-12 max-w-md mx-auto">
-                  <div class="w-20 h-20 bg-accent/10 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                <div
+                  class="bg-background rounded-2xl border border-accent/20 p-12 max-w-md mx-auto"
+                >
+                  <div
+                    class="w-20 h-20 bg-accent/10 rounded-2xl flex items-center justify-center mx-auto mb-6"
+                  >
                     <span class="text-4xl opacity-60">🏷️</span>
                   </div>
                   <h3 class="text-xl font-semibold text-text mb-2">Aucun badge configuré</h3>
                   <p class="text-secondary">
-                    Le badge de disponibilité sera créé automatiquement lors de la première configuration.
+                    Le badge de disponibilité sera créé automatiquement lors de la première
+                    configuration.
                   </p>
                 </div>
               </div>

@@ -9,7 +9,6 @@ import { AuthService } from '@core/services/auth';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="min-h-screen bg-background">
-      <!-- Header -->
       <header class="bg-background border-b border-accent">
         <div class="px-6 py-4">
           <div class="flex justify-between items-center">
@@ -28,7 +27,6 @@ import { AuthService } from '@core/services/auth';
         </div>
       </header>
 
-      <!-- Content -->
       <main class="p-0">
         <ng-content />
       </main>
@@ -39,12 +37,10 @@ export class BadgeAdminLayout {
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
 
-  // Inputs pour personnaliser le layout
   readonly pageTitle = input<string>('Gestion des Badges');
   readonly showBackButton = input<boolean>(true);
   readonly backButtonText = input<string>('Retour');
 
-  // Computed pour l'utilisateur actuel
   readonly currentUser = this.authService.user;
 
   logout(): void {
