@@ -1,15 +1,23 @@
 # ---- Étape de build ----
-FROM node:18-alpine AS build
+# Utilise Node.js 20 avec Alpine comme image de base pour le build
+FROM node:20-alpine AS build
 
+# Définit le répertoire de travail dans le conteneur
 WORKDIR /app
 
+# Installer pnpm globalement
 RUN npm install -g pnpm
 
+# Copie les fichiers package.json et pnpm-lock.yaml
 COPY package*.json pnpm-lock.yaml* ./
+
+# Installe les dépendances
 RUN pnpm install --frozen-lockfile
 
+# Copie tout le code source
 COPY . .
 
+# Créer le fichier d'environnement de production pour la liaison backend
 ARG API_URL
 ENV API_URL=${API_URL:-https://api.nedellec-julien.fr/api}
 
@@ -19,11 +27,14 @@ RUN mkdir -p src/environments && \
     echo "  apiUrl: '${API_URL}'," >> src/environments/environment.ts && \
     echo "};" >> src/environments/environment.ts
 
+# Build l'application Angular en mode production
 RUN pnpm run build --configuration production
 
 # ---- Étape de production ----
+# Utilise Nginx Alpine comme image finale légère
 FROM nginx:alpine
 
+# Copie les fichiers buildés depuis l'étape de build
 COPY --from=build /app/dist/ng-portfolio-app/browser/ /usr/share/nginx/html/
 
 # Configuration Nginx basique mais efficace
