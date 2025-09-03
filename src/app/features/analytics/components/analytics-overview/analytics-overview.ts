@@ -9,7 +9,6 @@ import type { AnalyticsOverview, TrafficSource } from '@features/analytics';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="space-y-6">
-      <!-- Analytics Header -->
       <header class="flex items-center justify-between">
         <div class="flex items-center gap-3">
           <div class="w-8 h-8 bg-accent rounded-lg flex items-center justify-center">
@@ -38,7 +37,6 @@ import type { AnalyticsOverview, TrafficSource } from '@features/analytics';
           </div>
         </div>
       } @else if (analytics()) {
-        <!-- Stats Cards -->
         <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
           <!-- Total Visits -->
           <div class="bg-background rounded-xl border border-accent p-4">
@@ -55,7 +53,6 @@ import type { AnalyticsOverview, TrafficSource } from '@features/analytics';
             </div>
           </div>
 
-          <!-- Unique Visitors -->
           <div class="bg-background rounded-xl border border-accent p-4">
             <div class="flex items-center gap-3">
               <div class="w-10 h-10 bg-accent-500/20 rounded-lg flex items-center justify-center">
@@ -70,7 +67,6 @@ import type { AnalyticsOverview, TrafficSource } from '@features/analytics';
             </div>
           </div>
 
-          <!-- Human Visits -->
           <div class="bg-background rounded-xl border border-accent p-4">
             <div class="flex items-center gap-3">
               <div class="w-10 h-10 bg-accent-500/20 rounded-lg flex items-center justify-center">
@@ -85,7 +81,6 @@ import type { AnalyticsOverview, TrafficSource } from '@features/analytics';
             </div>
           </div>
 
-          <!-- Bot Visits -->
           <div class="bg-background rounded-xl border border-accent p-4">
             <div class="flex items-center gap-3">
               <div class="w-10 h-10 bg-accent-500/20 rounded-lg flex items-center justify-center">
@@ -101,7 +96,6 @@ import type { AnalyticsOverview, TrafficSource } from '@features/analytics';
           </div>
         </div>
 
-        <!-- Traffic Sources & Top Pages -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <!-- Traffic Sources -->
           <div class="bg-background rounded-xl border border-accent p-6">
@@ -130,7 +124,6 @@ import type { AnalyticsOverview, TrafficSource } from '@features/analytics';
             </div>
           </div>
 
-          <!-- Top Pages -->
           <div class="bg-background rounded-xl border border-accent p-6">
             <h3 class="text-lg font-semibold text-text mb-4 flex items-center gap-2">
               <span>📄</span>
@@ -233,7 +226,6 @@ import type { AnalyticsOverview, TrafficSource } from '@features/analytics';
             }
           </div>
 
-          <!-- GORGEOUS LEGEND -->
           <div class="mt-6 flex justify-center space-x-6">
             <div
               class="flex items-center space-x-3 bg-background px-6 py-3 rounded-full border border-accent hover:shadow-lg transition-shadow"
@@ -306,25 +298,20 @@ export class AnalyticsOverviewComponent implements OnInit {
     return lastSegment.charAt(0).toUpperCase() + lastSegment.slice(1);
   }
 
-  // 🎉 VOTRE MAGNIFIQUE FONCTION DE GRAPHIQUE ! 🎉
   chartData() {
     const timeline = this.analytics()?.timeline ?? [];
     if (timeline.length === 0) return [];
 
-    // Prendre les 7 derniers jours
     const last7Days = timeline.slice(-7);
     const maxVisits = Math.max(...last7Days.map((d) => d.visitCount));
     const maxHeight = 180;
 
-    // Vérifier si toutes les dates sont identiques (problème API)
     const uniqueDates = new Set(last7Days.map((d) => new Date(d.date).toDateString()));
     const hasIdenticalDates = uniqueDates.size === 1;
 
-    // Si les dates sont identiques, générer les 7 derniers jours réels
     if (hasIdenticalDates && last7Days.length > 0) {
       const today = new Date();
       return last7Days.map((day, index) => {
-        // Générer une date pour chacun des 7 derniers jours
         const date = new Date(today);
         date.setDate(date.getDate() - (last7Days.length - 1 - index));
 
@@ -346,7 +333,6 @@ export class AnalyticsOverviewComponent implements OnInit {
       });
     }
 
-    // Utiliser les dates originales si elles sont différentes
     return last7Days.map((day) => {
       const visitHeight =
         maxVisits > 0 ? Math.max(20, (day.visitCount / maxVisits) * maxHeight) : 20;
