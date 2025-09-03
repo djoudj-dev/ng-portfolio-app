@@ -25,20 +25,15 @@ import { NgOptimizedImage } from '@angular/common';
             aria-labelledby="modal-title"
             tabindex="-1"
           >
-            <button
-              type="button"
+            <img
+              [ngSrc]="'icons/close.svg'"
+              alt="Fermer"
+              width="16"
+              height="16"
+              class="absolute right-4 top-4 z-10 h-4 w-4 cursor-pointer hover:opacity-70 transition-opacity"
               (click)="closeModal()"
-              class="absolute right-4 top-4 z-10 rounded-full p-2 text-secondary hover:text-text hover:bg-primary-100 transition-colors"
-              aria-label="Fermer la modal"
-            >
-              <img
-                [ngSrc]="'icons/close.svg'"
-                alt="Fermer"
-                width="16"
-                height="16"
-                class="h-4 w-4"
-              />
-            </button>
+              [attr.aria-label]="'Fermer la modal'"
+            />
 
             <app-login-form (loginSuccess)="onLoginSuccess()" (loginCancel)="onLoginCancel()" />
           </div>
