@@ -1,8 +1,8 @@
-import { ChangeDetectionStrategy, Component, input, output } from "@angular/core";
-import { ButtonComponent } from "@shared/ui/button/button";
+import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
+import { ButtonComponent } from '@shared/ui/button/button';
 
 @Component({
-  selector: "app-project-pagination",
+  selector: 'app-project-pagination',
   imports: [ButtonComponent],
   template: `
     @if (totalPages() > 1) {
@@ -44,14 +44,11 @@ import { ButtonComponent } from "@shared/ui/button/button";
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProjectPagination {
-  // Inputs
   readonly currentPage = input<number>(1);
   readonly totalPages = input<number>(1);
 
-  // Outputs
   readonly pageChange = output<number>();
 
-  // Methods
   goToPage(page: number): void {
     if (page >= 1 && page <= this.totalPages()) {
       this.pageChange.emit(page);
@@ -70,7 +67,6 @@ export class ProjectPagination {
     }
   }
 
-  // Generate array of page numbers for pagination UI
   getPageNumbers(): number[] {
     return Array.from({ length: this.totalPages() }, (_, i) => i + 1);
   }

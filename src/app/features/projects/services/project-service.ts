@@ -63,10 +63,6 @@ export class ProjectService {
     }
   }
 
-  /**
-   * Crée un nouveau projet avec upload d'image optionnel.
-   * Authentication is handled automatically by the auth interceptor.
-   */
   async createProject(projectData: CreateProjectDto, imageFile?: File): Promise<ProjectModel> {
     const formData = this.buildFormData(projectData, imageFile);
 
@@ -80,10 +76,6 @@ export class ProjectService {
     }
   }
 
-  /**
-   * Met à jour un projet existant.
-   * Authentication is handled automatically by the auth interceptor.
-   */
   async updateProject(
     id: string,
     projectData: UpdateProjectDto,
@@ -101,10 +93,6 @@ export class ProjectService {
     }
   }
 
-  /**
-   * Supprime un projet.
-   * Authentication is handled automatically by the auth interceptor.
-   */
   async deleteProject(id: string): Promise<void> {
     try {
       await firstValueFrom(
@@ -116,68 +104,42 @@ export class ProjectService {
     }
   }
 
-  /**
-   * Construit un FormData à partir des données du projet et du fichier image.
-   */
   private buildFormData(
     projectData: CreateProjectDto | UpdateProjectDto,
     imageFile?: File,
   ): FormData {
     const formData = new FormData();
 
-    // Log des données avant construction
-    console.log('Building FormData with project data:', projectData);
-    console.log('Image file:', imageFile);
-
-    // Ajouter les champs du projet
     Object.entries(projectData).forEach(([key, value]) => {
       if (value !== undefined && value !== null) {
         if (key === 'technologies' && Array.isArray(value)) {
           formData.append(key, JSON.stringify(value));
-          console.log(`FormData - ${key}:`, JSON.stringify(value));
         } else if (typeof value === 'boolean') {
           formData.append(key, value.toString());
-          console.log(`FormData - ${key}:`, value.toString());
         } else if (key === 'category') {
-          // Convert category to uppercase to match backend enum
           const uppercaseCategory = value.toString().toUpperCase();
           formData.append(key, uppercaseCategory);
-          console.log(`FormData - ${key}:`, uppercaseCategory);
         } else {
           formData.append(key, value.toString());
-          console.log(`FormData - ${key}:`, value.toString());
         }
       }
     });
 
-    // Ajouter le fichier image si présent
     if (imageFile) {
       formData.append('image', imageFile, imageFile.name);
-      console.log('FormData - image:', imageFile.name, imageFile.type, imageFile.size);
     }
-
-    // Log du FormData final
-    console.log('Final FormData entries:');
-    for (const [key, value] of formData.entries()) {
-      console.log(`  ${key}:`, value);
-    }
-
     return formData;
   }
-  /**
-   * Génère une URL publique pour les images (fallback pour le développement).
-   */
+
   getImageUrl(imagePath?: string | null): string {
     if (!imagePath) {
       return 'https://via.placeholder.com/400x300?text=No+Image';
     }
 
-    // Si c'est déjà une URL complète, la retourner telle quelle
     if (imagePath.startsWith('http')) {
       return imagePath;
     }
 
-    // Construire l'URL complète avec l'API et ajouter un timestamp pour éviter le cache
     const cleanPath = imagePath.replace(/^\/+/, '');
     const timestamp = new Date().getTime();
     return `${environment.apiUrl}/${cleanPath}?t=${timestamp}`;

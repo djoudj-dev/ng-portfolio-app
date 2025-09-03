@@ -5,36 +5,41 @@
 
   <form [formGroup]="projectForm" (ngSubmit)="onSubmit()" class="space-y-6">
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <!-- Title Field -->
       <div>
         <label for="title" class="block text-sm font-medium text-text/90 mb-2">Titre du projet</label>
         <input id="title" type="text" formControlName="title"
                class="w-full px-4 py-2 bg-background-200 border border-primary-300 rounded-lg text-text placeholder-text/50 focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all duration-200" />
       </div>
 
-      <!-- Image Upload Field -->
       <div>
         <label for="image" class="block text-sm font-medium text-text/90 mb-2">
           Image du projet {{ !isEditMode() ? '(requis)' : '(optionnel)' }}
         </label>
         <input id="image" type="file" (change)="onFileSelected($event)" accept="image/*"
                class="w-full text-sm text-text file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:font-semibold file:bg-accent file:text-white hover:file:bg-accent/90" />
-        @if (imagePreview()) {
-          <div class="mt-4">
-            <img [src]="imagePreview()!" alt="Aperçu de l'image" class="rounded-lg max-h-48 w-auto shadow-md"/>
-          </div>
-        }
+        <div class="flex space-x-4 mt-4">
+          @if (currentImageUrl()) {
+            <div>
+              <span class="block text-sm font-medium text-text/70 mb-2">Image actuelle :</span>
+              <img [ngSrc]="currentImageUrl()!" alt="Image actuelle" width="128" height="128" class="rounded-lg h-32 w-32 object-cover shadow-md"/>
+            </div>
+          }
+          @if (imagePreview()) {
+            <div>
+              <span class="block text-sm font-medium text-text/70 mb-2">Nouvel aperçu :</span>
+              <img [ngSrc]="imagePreview()!" alt="Aperçu de l'image" width="128" height="128" class="rounded-lg h-32 w-32 object-cover shadow-md"/>
+            </div>
+          }
+        </div>
       </div>
     </div>
 
-    <!-- Description Field -->
     <div>
       <label for="description" class="block text-sm font-medium text-text/90 mb-2">Description</label>
       <textarea id="description" formControlName="description" rows="4"
                 class="w-full px-4 py-2 bg-background-200 border border-primary-300 rounded-lg text-text placeholder-text/50 focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all duration-200"></textarea>
     </div>
 
-    <!-- Technologies, Category, and Featured Fields -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-start">
       <div class="md:col-span-1">
         <label for="technologies" class="block text-sm font-medium text-text/90 mb-2">Technologies</label>
@@ -58,7 +63,6 @@
       </div>
     </div>
 
-    <!-- GitHub URLs -->
     <div class="space-y-4 p-4 border border-primary-300/50 rounded-lg" formGroupName="github_urls">
       <h3 class="text-lg font-medium text-text">Liens GitHub</h3>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -81,13 +85,11 @@
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <!-- Demo URL -->
       <div>
         <label for="demo_url" class="block text-sm font-medium text-text/90 mb-2">URL de la démo</label>
         <input id="demo_url" type="text" formControlName="demo_url"
                class="w-full px-4 py-2 bg-background-200 border border-primary-300 rounded-lg text-text placeholder-text/50 focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all duration-200" />
       </div>
-      <!-- Date -->
       <div>
         <label for="date" class="block text-sm font-medium text-text/90 mb-2">Date de réalisation</label>
         <input id="date" type="date" formControlName="date"

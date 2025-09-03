@@ -1,15 +1,10 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  input,
-  output,
-} from "@angular/core";
-import { ButtonComponent } from "@shared/ui/button/button";
-import { ProjectFilter } from "@features/projects/models/project-model";
-import { ProjectCategory } from "@features/projects/enums/project-enum";
+import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
+import { ButtonComponent } from '@shared/ui/button/button';
+import { ProjectFilter } from '@features/projects/models/project-model';
+import { ProjectCategory } from '@features/projects/enums/project-enum';
 
 @Component({
-  selector: "app-project-search",
+  selector: 'app-project-search',
   imports: [ButtonComponent],
   template: `
     <section class="mb-8" aria-labelledby="search-filter-section">
@@ -37,7 +32,6 @@ import { ProjectCategory } from "@features/projects/enums/project-enum";
         </div>
       </div>
 
-      <!-- Filter buttons -->
       <div class="mt-4 flex flex-wrap justify-center gap-2">
         @for (filter of filters(); track filter.value) {
           <app-button
@@ -55,20 +49,17 @@ import { ProjectCategory } from "@features/projects/enums/project-enum";
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProjectSearch {
-  // Inputs
-  readonly searchQuery = input<string>("");
+  readonly searchQuery = input<string>('');
   readonly filters = input<ProjectFilter[]>([
-    { label: "Tous", value: "all", active: true },
-    { label: "Frontend", value: ProjectCategory.FRONTEND, active: false },
-    { label: "Backend", value: ProjectCategory.BACKEND, active: false },
+    { label: 'Tous', value: 'all', active: true },
+    { label: 'Frontend', value: ProjectCategory.FRONTEND, active: false },
+    { label: 'Backend', value: ProjectCategory.BACKEND, active: false },
   ]);
 
-  // Outputs
   readonly searchChange = output<string>();
   readonly clearSearchEvent = output<void>();
-  readonly filterChange = output<ProjectCategory | "all">();
+  readonly filterChange = output<ProjectCategory | 'all'>();
 
-  // Methods
   onSearch(event: Event): void {
     const input = event.target as HTMLInputElement;
     this.searchChange.emit(input.value);
@@ -78,7 +69,7 @@ export class ProjectSearch {
     this.clearSearchEvent.emit();
   }
 
-  setFilter(filter: ProjectCategory | "all"): void {
+  setFilter(filter: ProjectCategory | 'all'): void {
     this.filterChange.emit(filter);
   }
 }
