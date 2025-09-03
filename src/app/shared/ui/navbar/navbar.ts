@@ -12,6 +12,7 @@ import { NavLink } from './interface/nav-link';
 import { AuthService } from '@core/services/auth';
 import { CvService } from '@features/cv/services/cv';
 import { ButtonComponent } from '@shared/ui/button/button';
+import { ToastService } from '@shared/ui/toast/service/toast-service';
 
 @Component({
   selector: 'app-navbar',
@@ -27,6 +28,7 @@ export class NavbarComponent {
   private readonly router = inject(Router);
   private readonly authService = inject(AuthService);
   private readonly cvService = inject(CvService);
+  private readonly toastService = inject(ToastService);
 
   readonly showLogin = output<void>();
   readonly logoutCompleted = output<void>();
@@ -137,6 +139,10 @@ export class NavbarComponent {
       await this.cvService.openCvInNewTab();
     } catch (error) {
       console.error('Erreur lors de l\'ouverture du CV:', error);
+      this.toastService.danger(
+        'CV indisponible',
+        'Le CV est temporairement indisponible. Veuillez réessayer plus tard ou contacter l\'administrateur.'
+      );
     }
   }
 }
