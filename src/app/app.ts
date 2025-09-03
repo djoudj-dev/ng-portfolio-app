@@ -9,7 +9,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
   selector: 'app-root',
   imports: [RouterOutlet, NavbarComponent, LoginModal, ToastContainer, FooterComponent],
   templateUrl: './app.html',
-  styleUrl: './app.css',
+  styleUrls: ['./app.css', './shared/animations/route-animations.css'],
   host: {
     '(keydown.control.alt.l)': 'onKeyboardShortcut($event)',
     tabindex: '0',
