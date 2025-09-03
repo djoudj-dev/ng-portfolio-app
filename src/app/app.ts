@@ -24,9 +24,7 @@ export class App {
   }
 
   onKeyboardShortcut(event: Event): void {
-    // Prevent default browser behavior for Ctrl+Alt+L
     event.preventDefault();
-    // Open login modal
     this.onShowLogin();
   }
 
