@@ -11,7 +11,9 @@ import { ToastService } from '@shared/ui/toast/service/toast-service';
   template: `
     <div class="max-w-7xl mx-auto p-6 space-y-8">
       <!-- Header Section with Enhanced Design -->
-      <header class="bg-gradient-to-r from-primary/5 to-accent/5 rounded-2xl p-6 border border-accent/20 shadow-sm">
+      <header
+        class="bg-gradient-to-r from-primary/5 to-accent/5 rounded-2xl p-6 border border-accent/20 shadow-sm"
+      >
         <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
           <div class="space-y-2">
             <div class="flex items-center gap-3">
@@ -32,28 +34,26 @@ import { ToastService } from '@shared/ui/toast/service/toast-service';
           </div>
 
           <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-            <!-- Stats Badge -->
             <div class="flex items-center gap-4">
-              <div class="bg-background/80 backdrop-blur-sm px-4 py-2 rounded-xl border border-accent/30 shadow-sm">
+              <div
+                class="bg-background/80 backdrop-blur-sm px-4 py-2 rounded-xl border border-accent/30 shadow-sm"
+              >
                 <div class="flex items-center gap-2">
                   <div class="w-2 h-2 bg-red rounded-full animate-pulse"></div>
-                  <span class="text-sm font-medium text-text">
-                    {{ unreadCount() }} non lus
-                  </span>
+                  <span class="text-sm font-medium text-text"> {{ unreadCount() }} non lus </span>
                 </div>
               </div>
 
-              <div class="bg-background/80 backdrop-blur-sm px-4 py-2 rounded-xl border border-accent/30 shadow-sm">
+              <div
+                class="bg-background/80 backdrop-blur-sm px-4 py-2 rounded-xl border border-accent/30 shadow-sm"
+              >
                 <div class="flex items-center gap-2">
                   <div class="w-2 h-2 bg-green-600 rounded-full"></div>
-                  <span class="text-sm font-medium text-text">
-                    {{ messages().length }} total
-                  </span>
+                  <span class="text-sm font-medium text-text"> {{ messages().length }} total </span>
                 </div>
               </div>
             </div>
 
-            <!-- Actions -->
             <app-button (buttonClick)="refresh()" color="accent" [customClass]="'px-6 py-2.5'">
               Actualiser
             </app-button>
@@ -61,19 +61,22 @@ import { ToastService } from '@shared/ui/toast/service/toast-service';
         </div>
       </header>
 
-      <!-- Content Section -->
       <main class="space-y-6">
         @if (loading()) {
           <div class="flex items-center justify-center py-24 text-text">
             <div class="text-center space-y-4">
-              <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
+              <div
+                class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"
+              ></div>
               <p class="text-secondary font-medium">Chargement des messages...</p>
             </div>
           </div>
         } @else if (messages().length === 0) {
           <div class="text-center py-24">
             <div class="bg-background rounded-2xl border border-accent/20 p-12 max-w-md mx-auto">
-              <div class="w-20 h-20 bg-accent/10 rounded-2xl flex items-center justify-center mx-auto mb-6">
+              <div
+                class="w-20 h-20 bg-accent/10 rounded-2xl flex items-center justify-center mx-auto mb-6"
+              >
                 <img
                   [ngSrc]="'/icons/inbox.svg'"
                   alt="Aucun message"
@@ -89,13 +92,13 @@ import { ToastService } from '@shared/ui/toast/service/toast-service';
             </div>
           </div>
         } @else {
-          <!-- Messages Grid -->
           <div class="space-y-4">
             @for (msg of messages(); track msg.id) {
-              <article class="bg-background rounded-2xl border border-accent/20 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden">
+              <article
+                class="bg-background rounded-2xl border border-accent/20 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden"
+              >
                 <div class="p-6">
                   <div class="flex items-start gap-4">
-                    <!-- Status Indicator -->
                     <div class="flex-shrink-0 pt-1">
                       <div class="relative">
                         <span
@@ -103,12 +106,13 @@ import { ToastService } from '@shared/ui/toast/service/toast-service';
                           [class]="msg.isRead ? 'bg-green-500' : 'bg-red-500'"
                         ></span>
                         @if (!msg.isRead) {
-                          <span class="absolute -top-0.5 -right-0.5 w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
+                          <span
+                            class="absolute -top-0.5 -right-0.5 w-2 h-2 bg-red-500 rounded-full animate-pulse"
+                          ></span>
                         }
                       </div>
                     </div>
 
-                    <!-- Message Content -->
                     <div class="flex-1 min-w-0 space-y-3">
                       <div class="flex flex-wrap items-start justify-between gap-3">
                         <div class="space-y-1">
@@ -117,7 +121,9 @@ import { ToastService } from '@shared/ui/toast/service/toast-service';
                               {{ msg.subject }}
                             </h2>
                             @if (!msg.isRead) {
-                              <span class="bg-red-500/10 text-red-600 text-xs font-medium px-2.5 py-1 rounded-full border border-red-500/20">
+                              <span
+                                class="bg-red-500/10 text-red-600 text-xs font-medium px-2.5 py-1 rounded-full border border-red-500/20"
+                              >
                                 Nouveau
                               </span>
                             }
@@ -137,7 +143,6 @@ import { ToastService } from '@shared/ui/toast/service/toast-service';
                       </p>
                     </div>
 
-                    <!-- Actions -->
                     <div class="flex-shrink-0">
                       <div class="flex flex-col sm:flex-row gap-2">
                         @if (!msg.isRead) {
@@ -167,13 +172,16 @@ import { ToastService } from '@shared/ui/toast/service/toast-service';
                     </div>
                   </div>
 
-                  <!-- Expanded Content -->
                   @if (expandedId() === msg.id) {
                     <div class="mt-6 pt-6 border-t border-accent/20">
                       <div class="bg-accent/5 rounded-xl p-4 space-y-4">
                         <div class="space-y-2">
-                          <h4 class="text-sm font-semibold text-text uppercase tracking-wide">Message complet</h4>
-                          <div class="text-text whitespace-pre-wrap leading-relaxed bg-background rounded-lg p-4 border border-accent/20">
+                          <h4 class="text-sm font-semibold text-text uppercase tracking-wide">
+                            Message complet
+                          </h4>
+                          <div
+                            class="text-text whitespace-pre-wrap leading-relaxed bg-background rounded-lg p-4 border border-accent/20"
+                          >
                             {{ msg.message }}
                           </div>
                         </div>
@@ -182,7 +190,9 @@ import { ToastService } from '@shared/ui/toast/service/toast-service';
                           <div class="flex flex-wrap gap-6 text-xs text-secondary">
                             <div class="flex items-center gap-2">
                               <span class="font-medium">ID:</span>
-                              <code class="bg-accent/10 px-2 py-1 rounded font-mono">{{ msg.id }}</code>
+                              <code class="bg-accent/10 px-2 py-1 rounded font-mono">{{
+                                msg.id
+                              }}</code>
                             </div>
                             <div class="flex items-center gap-2">
                               <span class="font-medium">Reçu le:</span>
