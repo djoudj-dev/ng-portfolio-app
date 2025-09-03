@@ -6,4 +6,3 @@ export * from './interfaces/analytics.interface';
 
 // Components
 export * from './components/analytics-overview/analytics-overview';
-export * from './components/timeline-chart/timeline-chart';

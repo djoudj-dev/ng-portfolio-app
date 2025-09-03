@@ -6,7 +6,7 @@ import { RecentActivityComponent } from '@features/admin/components/recent-activ
 
 @Component({
   selector: 'app-admin-dashboard',
-  imports: [CommonModule, AnalyticsOverviewComponent, CounterAdmin, RecentActivityComponent],
+  imports: [CommonModule, CounterAdmin, RecentActivityComponent, AnalyticsOverviewComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="max-w-7xl mx-auto p-6 space-y-8">

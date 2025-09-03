@@ -1,9 +1,11 @@
 import { ChangeDetectorRef, Component, inject, signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { type Activity, ActivityType } from '@features/admin/interfaces/activity.interface';
 import { ActivityService } from '@features/admin/services/activity-service';
 
 @Component({
   selector: 'app-recent-activity',
+  imports: [CommonModule],
   template: `
     <div class="p-6 space-y-6">
       <div class="flex items-center justify-between">
