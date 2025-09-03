@@ -1,59 +1,59 @@
-<main id="skills" class="text-text pb-6 pt-16 lg:pb-8 lg:pt-18">
-  <header class="mb-6 px-4 lg:mb-10">
+<main id="skills" class="text-text pb-4 pt-16 sm:pb-6 sm:pt-16 md:pb-8 md:pt-18">
+  <header class="mb-4 px-3 sm:mb-6 sm:px-4 md:mb-8 lg:mb-10">
     <h1
       id="skills-heading"
-      class="text-text decoration-accent mb-3 flex justify-center text-2xl font-bold underline sm:text-3xl lg:text-5xl mt-4 lg:mt-12"
+      class="text-text decoration-accent mb-2 flex justify-center text-xl font-bold underline sm:text-2xl sm:mb-3 md:text-3xl lg:text-5xl mt-2 sm:mt-4 lg:mt-12"
     >
       {{ skillsTitle() }}
     </h1>
-    <p class="text-text/80 mx-auto mb-4 max-w-3xl text-center text-base sm:text-lg">
+    <p class="text-text/80 mx-auto mb-3 max-w-3xl text-center text-sm px-2 sm:text-base sm:mb-4 sm:px-0 md:text-lg">
       {{ skillsSubTitle() }}
     </p>
   </header>
 
-  <div class="container mx-auto px-4">
+  <div class="container mx-auto px-3 sm:px-4">
     <app-skills-groups-stacks />
     @defer (on viewport; prefetch on idle) {
       <app-skills-certification />
     } @placeholder {
-      <section class="mt-12">
-        <div class="mb-6">
-          <div class="bg-background-200 rounded h-8 w-48 mx-auto animate-pulse"></div>
+      <section class="mt-8 sm:mt-10 md:mt-12">
+        <div class="mb-4 sm:mb-6">
+          <div class="bg-background-200 rounded h-6 w-32 mx-auto animate-pulse sm:h-8 sm:w-48"></div>
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <div class="bg-background shadow-text border-accent rounded-lg border p-6">
-            <div class="h-32 animate-pulse">
-              <div class="bg-background-200 rounded-full w-16 h-16 mx-auto mb-4"></div>
-              <div class="bg-background-200 rounded h-5 w-3/4 mx-auto mb-2"></div>
-              <div class="bg-background-200 rounded h-4 w-full"></div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 md:gap-6">
+          <div class="bg-background shadow-text border-accent rounded-lg border p-4 sm:p-6">
+            <div class="h-28 sm:h-32 animate-pulse">
+              <div class="bg-background-200 rounded-full w-12 h-12 mx-auto mb-3 sm:w-16 sm:h-16 sm:mb-4"></div>
+              <div class="bg-background-200 rounded h-4 w-3/4 mx-auto mb-2 sm:h-5"></div>
+              <div class="bg-background-200 rounded h-3 w-full sm:h-4"></div>
             </div>
           </div>
-          <div class="bg-background shadow-text border-accent rounded-lg border p-6">
-            <div class="h-32 animate-pulse">
-              <div class="bg-background-200 rounded-full w-16 h-16 mx-auto mb-4"></div>
-              <div class="bg-background-200 rounded h-5 w-3/4 mx-auto mb-2"></div>
-              <div class="bg-background-200 rounded h-4 w-full"></div>
+          <div class="bg-background shadow-text border-accent rounded-lg border p-4 sm:p-6">
+            <div class="h-28 sm:h-32 animate-pulse">
+              <div class="bg-background-200 rounded-full w-12 h-12 mx-auto mb-3 sm:w-16 sm:h-16 sm:mb-4"></div>
+              <div class="bg-background-200 rounded h-4 w-3/4 mx-auto mb-2 sm:h-5"></div>
+              <div class="bg-background-200 rounded h-3 w-full sm:h-4"></div>
             </div>
           </div>
-          <div class="bg-background shadow-text border-accent rounded-lg border p-6">
-            <div class="h-32 animate-pulse">
-              <div class="bg-background-200 rounded-full w-16 h-16 mx-auto mb-4"></div>
-              <div class="bg-background-200 rounded h-5 w-3/4 mx-auto mb-2"></div>
-              <div class="bg-background-200 rounded h-4 w-full"></div>
+          <div class="bg-background shadow-text border-accent rounded-lg border p-4 sm:p-6 sm:col-span-2 lg:col-span-1">
+            <div class="h-28 sm:h-32 animate-pulse">
+              <div class="bg-background-200 rounded-full w-12 h-12 mx-auto mb-3 sm:w-16 sm:h-16 sm:mb-4"></div>
+              <div class="bg-background-200 rounded h-4 w-3/4 mx-auto mb-2 sm:h-5"></div>
+              <div class="bg-background-200 rounded h-3 w-full sm:h-4"></div>
             </div>
           </div>
         </div>
       </section>
     }
   </div>
-  <div class="fixed bottom-4 right-4 z-40 sm:bottom-8 sm:right-8">
+  <div class="fixed bottom-3 right-3 z-40 sm:bottom-4 sm:right-4 md:bottom-8 md:right-8">
     <button
       (click)="navigateToProjects()"
       aria-label="Aller à la section Projets"
       title="Voir mes projets"
-      class="p-3 rounded-full shadow-md transition-colors bg-accent hover:bg-accent-600 hover:shadow-lg sm:p-2"
+      class="p-2.5 rounded-full shadow-md transition-colors bg-accent hover:bg-accent-600 hover:shadow-lg sm:p-3 md:p-2"
     >
-      <span class="relative flex-shrink-0 w-12 h-12 sm:w-10 sm:h-10">
+      <span class="relative flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 md:w-10 md:h-10">
         <img
           ngSrc="/icons/arrow-b.svg"
           alt="Flèche vers les projets"

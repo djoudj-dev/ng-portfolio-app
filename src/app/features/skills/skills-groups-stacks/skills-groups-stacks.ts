@@ -17,7 +17,7 @@ import { SKILL_CATEGORIES } from '../data/skill-data';
           <div class="mb-4 flex items-center gap-2">
             @if (category.id === 'frontend') {
               <img
-                [ngSrc]="'/icons/skills/frontend.svg'"
+                [ngSrc]="'/icons/frontend.svg'"
                 alt="Icône développement frontend"
                 width="24"
                 height="24"
@@ -25,7 +25,7 @@ import { SKILL_CATEGORIES } from '../data/skill-data';
               />
             } @else if (category.id === 'backend') {
               <img
-                [ngSrc]="'/icons/skills/backend.svg'"
+                [ngSrc]="'/icons/backend.svg'"
                 alt="Icône développement backend"
                 width="24"
                 height="24"
@@ -33,7 +33,7 @@ import { SKILL_CATEGORIES } from '../data/skill-data';
               />
             } @else if (category.id === 'tools') {
               <img
-                [ngSrc]="'/icons/skills/devops.svg'"
+                [ngSrc]="'/icons/devops.svg'"
                 alt="Icône outils de développement"
                 width="24"
                 height="24"
