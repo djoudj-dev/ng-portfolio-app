@@ -15,6 +15,14 @@ export const routes: Routes = [
     loadComponent: () => import('@features/skills').then((m) => m.SkillsComponent),
   },
   {
+    path: 'projects',
+    loadComponent: () => import('@features/projects').then((m) => m.ProjectsComponent),
+  },
+  {
+    path: 'contact',
+    loadComponent: () => import('@features/contact/contact').then((m) => m.Contact),
+  },
+  {
     path: 'admin',
     loadComponent: () => import('@features/admin/admin').then((m) => m.Admin),
     canActivate: [adminGuard],
@@ -38,20 +46,32 @@ export const routes: Routes = [
         loadComponent: () =>
           import('@features/badge/pages/badges-admin').then((m) => m.BadgesAdmin),
       },
-      {
-        path: 'users',
-        loadComponent: () =>
-          import('@features/admin/pages/dashboard/dashboard').then((m) => m.AdminDashboard),
-      },
+
       {
         path: 'projects',
         loadComponent: () =>
-          import('@features/admin/pages/dashboard/dashboard').then((m) => m.AdminDashboard),
+          import('@features/projects/components/project-manager').then(
+            (m) => m.ProjectManagerComponent,
+          ),
       },
       {
-        path: 'skills',
+        path: 'projects/create',
         loadComponent: () =>
-          import('@features/admin/pages/dashboard/dashboard').then((m) => m.AdminDashboard),
+          import('@features/projects/components/project-form/project-form').then(
+            (m) => m.ProjectFormComponent,
+          ),
+      },
+      {
+        path: 'projects/edit/:id',
+        loadComponent: () =>
+          import('@features/projects/components/project-form/project-form').then(
+            (m) => m.ProjectFormComponent,
+          ),
+      },
+      {
+        path: 'contacts',
+        loadComponent: () =>
+          import('@features/contact/admin/messages').then((m) => m.AdminMessagesPage),
       },
       {
         path: 'settings',

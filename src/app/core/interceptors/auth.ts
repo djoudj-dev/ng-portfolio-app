@@ -20,10 +20,15 @@ export class AuthInterceptor implements HttpInterceptor {
   intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     // Assurez-vous que withCredentials est défini pour toutes les requêtes API
     if (req.url.includes('/api/')) {
+      const headers: { [key: string]: string } = {};
+      
+      // Ne pas définir Content-Type pour FormData (multipart), le navigateur le fait automatiquement
+      if (!(req.body instanceof FormData)) {
+        headers['Content-Type'] = 'application/json';
+      }
+      
       req = req.clone({
-        setHeaders: {
-          'Content-Type': 'application/json',
-        },
+        setHeaders: headers,
         withCredentials: true,
       });
     }

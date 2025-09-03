@@ -3,38 +3,38 @@
   role="navigation"
   aria-label="Navigation principale"
 >
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+  <div class="mx-auto px-3 sm:px-4 md:px-6 lg:max-w-7xl lg:px-8">
     <div class="flex items-center justify-between h-16">
       <!-- Logo Section (Left) -->
-      <div class="flex items-center space-x-3">
+      <div class="flex items-center space-x-2 sm:space-x-3" [routerLink]="['/']">
         <img
           [ngSrc]="'/logo.svg'"
           alt="Logo Julien.N"
-          width="32"
-          height="32"
+          width="24"
+          height="24"
           priority
           class="w-18 h-18"
         />
-        <span class="text-xl lg:text-2xl font-bold text-text tracking-tight">
+        <span class="text-2xl font-bold text-text tracking-tight">
           Julien<span class="text-accent bounce-dot">.</span>N
         </span>
       </div>
 
       <!-- Navigation Links (Center) - Hidden on mobile -->
-      <div class="hidden md:flex items-center space-x-8">
+      <div class="hidden lg:flex items-center space-x-6 xl:space-x-8">
         @for (link of navLinks(); track link.route) {
           <a
             [routerLink]="link.route"
-            class="flex items-center space-x-2 text-text hover:text-accent group relative hover:font-bold"
+            class="flex items-center space-x-2 text-sm xl:text-base text-text hover:text-accent group relative hover:font-bold"
             [class.text-accent]="isActiveRoute(link.route)"
             [attr.aria-current]="isActiveRoute(link.route) ? 'page' : null"
           >
             <img
-              [ngSrc]="'/icons/navbar/' + link.icon + '.svg'"
+              [ngSrc]="'/icons/' + link.icon + '.svg'"
               [alt]="link.label + ' icon'"
               width="16"
               height="16"
-              class="w-6 h-6 group-hover:scale-110 transition-transform duration-200"
+              class="w-4 h-4 xl:w-5 xl:h-5 group-hover:scale-110 transition-transform duration-200"
               [class.icon-invert]="isDarkMode()"
             />
             <span class="nav-link-hover">{{ link.label }}</span>
@@ -43,38 +43,40 @@
       </div>
 
       <!-- Action Icons (Right) -->
-      <div class="flex items-center space-x-4">
+      <div class="flex items-center space-x-2 sm:space-x-3">
         <!-- CV Download Button -->
         <app-button
           color="accent"
-          [customClass]="'!w-auto !px-3 !py-2 !rounded-lg !text-xs !font-semibold hover:!scale-105 !shadow-md hover:!shadow-lg !transition-all !duration-300'"
+          [customClass]="'!w-auto !px-2 !py-1.5 sm:!px-3 sm:!py-2 !rounded-lg !text-xs sm:!text-sm !font-semibold hover:!scale-105 !shadow-md hover:!shadow-lg !transition-all !duration-300'"
           (buttonClick)="downloadCV()"
           aria-label="Télécharger mon CV"
         >
-          <div class="flex items-center gap-2">
+          <div class="flex items-center gap-1 sm:gap-2">
             <img
               [ngSrc]="'/icons/download.svg'"
               alt="CV"
-              width="16"
-              height="16"
-              class="w-4 h-4 icon-invert brightness-0 invert"
+              width="14"
+              height="14"
+              class="w-3.5 h-3.5 sm:w-4 sm:h-4 icon-invert brightness-0 invert"
             />
-            <span>Mon CV</span>
+            <span class="hidden xs:inline sm:inline">Mon CV</span>
+            <span class="xs:hidden sm:hidden">CV</span>
           </div>
         </app-button>
 
         <!-- Theme Toggle -->
         <button
           (click)="toggleTheme()"
-          class="p-2 rounded-lg hover:bg-accent transition-colors duration-200"
+          class="p-1.5 sm:p-2 rounded-lg hover:bg-accent transition-colors duration-200"
           [attr.aria-label]="themeAriaLabel()"
         >
           <img
             [ngSrc]="themeIcon().src"
             [alt]="themeIcon().alt"
-            width="20"
-            height="20"
-            [class]="themeIcon().class"
+            width="18"
+            height="18"
+            class="w-4.5 h-4.5 sm:w-5 sm:h-5"
+            [class.icon-invert]="isDarkMode()"
           />
         </button>
 
@@ -82,15 +84,16 @@
         @if (isAdmin()) {
           <button
             (click)="navigateToAdmin()"
-            class="p-2 rounded-lg hover:bg-accent transition-colors duration-200"
+            class="p-1.5 sm:p-2 rounded-lg hover:bg-accent transition-colors duration-200"
             aria-label="Accéder au panneau d'administration"
           >
             <img
-              [ngSrc]="'/icons/navbar/admin.svg'"
+              [ngSrc]="'/icons/admin.svg'"
               alt="Admin"
-              width="20"
-              height="20"
-              [class]="isDarkMode() ? 'w-5 h-5 icon-invert' : 'w-5 h-5'"
+              width="18"
+              height="18"
+              class="w-4.5 h-4.5 sm:w-5 sm:h-5"
+              [class.icon-invert]="isDarkMode()"
             />
           </button>
         }
@@ -99,15 +102,16 @@
         @if (isLoggedIn()) {
           <button
             (click)="logout()"
-            class="p-2 rounded-lg hover:bg-accent transition-colors duration-200"
+            class="p-1.5 sm:p-2 rounded-lg hover:bg-accent transition-colors duration-200"
             aria-label="Se déconnecter"
           >
             <img
-              [ngSrc]="'/icons/navbar/logout.svg'"
+              [ngSrc]="'/icons/logout.svg'"
               alt="Déconnexion"
-              width="20"
-              height="20"
-              [class]="isDarkMode() ? 'w-5 h-5 icon-invert' : 'w-5 h-5'"
+              width="18"
+              height="18"
+              class="w-4.5 h-4.5 sm:w-5 sm:h-5"
+              [class.icon-invert]="isDarkMode()"
             />
           </button>
         }
@@ -115,7 +119,7 @@
         <!-- Mobile Menu Toggle -->
         <button
           (click)="toggleMobileMenu()"
-          class="md:hidden p-2 rounded-lg hover:bg-accent-100 transition-colors duration-200"
+          class="lg:hidden p-1.5 sm:p-2 rounded-lg hover:bg-accent-100 transition-colors duration-200"
           [attr.aria-label]="menuAriaLabel()"
           [attr.aria-expanded]="isMobileMenuOpen()"
           aria-controls="mobile-menu"
@@ -125,7 +129,8 @@
             [alt]="menuIcon().alt"
             width="20"
             height="20"
-            [class]="menuIcon().class"
+            class="w-5 h-5 sm:w-6 sm:h-6"
+            [class.icon-invert]="isDarkMode()"
           />
         </button>
       </div>
@@ -133,22 +138,23 @@
 
     <!-- Mobile Menu (Hidden by default) -->
     @if (isMobileMenuOpen()) {
-      <div id="mobile-menu" class="md:hidden border-t border-primary-200 py-4">
-        <div class="flex flex-col space-y-4">
+      <div id="mobile-menu" class="lg:hidden border-t border-primary-200 py-3 sm:py-4">
+        <div class="flex flex-col space-y-2 sm:space-y-3">
           @for (link of navLinks(); track link.route) {
             <a
               [routerLink]="link.route"
               (click)="closeMobileMenu()"
-              class="flex items-center space-x-3 text-text hover:text-accent transition-colors duration-200 px-4 py-2 rounded-lg hover:bg-accent"
+              class="flex items-center space-x-3 text-base sm:text-lg text-text hover:text-accent transition-colors duration-200 px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg hover:bg-accent active:bg-accent-200"
               [class.text-accent]="isActiveRoute(link.route)"
+              [class.bg-accent-50]="isActiveRoute(link.route)"
               [attr.aria-current]="isActiveRoute(link.route) ? 'page' : null"
             >
               <img
-                [ngSrc]="'/icons/navbar/' + link.icon + '.svg'"
+                [ngSrc]="'/icons/' + link.icon + '.svg'"
                 [alt]="link.label + ' icon'"
-                width="16"
-                height="16"
-                class="w-6 h-6"
+                width="20"
+                height="20"
+                class="w-5 h-5 sm:w-6 sm:h-6"
                 [class.icon-invert]="isDarkMode()"
               />
               <span class="font-medium">{{ link.label }}</span>

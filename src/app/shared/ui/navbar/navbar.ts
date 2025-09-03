@@ -11,6 +11,7 @@ import { Router, RouterLink } from '@angular/router';
 import { NavLink } from './interface/nav-link';
 import { AuthService } from '@core/services/auth';
 import { ButtonComponent } from '@shared/ui/button/button';
+import { environment } from '@environments/environment';
 
 @Component({
   selector: 'app-navbar',
@@ -52,7 +53,7 @@ export class NavbarComponent {
 
   // Theme icon computed properties
   readonly themeIcon = computed(() => ({
-    src: this.isDarkMode() ? '/icons/navbar/sun.svg' : '/icons/navbar/moon.svg',
+    src: this.isDarkMode() ? '/icons/sun.svg' : '/icons/moon.svg',
     alt: this.isDarkMode() ? 'Mode clair' : 'Mode sombre',
     class: this.isDarkMode() ? 'w-5 h-5 icon-invert' : 'w-5 h-5',
   }));
@@ -63,7 +64,7 @@ export class NavbarComponent {
 
   // Mobile menu icon computed properties
   readonly menuIcon = computed(() => ({
-    src: this.isMobileMenuOpen() ? '/icons/navbar/close.svg' : '/icons/navbar/open.svg',
+    src: this.isMobileMenuOpen() ? '/icons/close.svg' : '/icons/open.svg',
     alt: this.isMobileMenuOpen() ? 'Fermer menu' : 'Ouvrir menu',
     class: this.isDarkMode() ? 'w-6 h-6 icon-invert' : 'w-6 h-6',
   }));
@@ -149,7 +150,7 @@ export class NavbarComponent {
   downloadCV(): void {
     // Create a link element and trigger download
     const link = document.createElement('a');
-    link.href = 'http://localhost:3000/api/cv/download';
+    link.href = `${environment.apiUrl}/cv/download`;
     link.target = '_blank';
     link.download = 'CV-Julien-NEDELLEC.pdf';
     document.body.appendChild(link);

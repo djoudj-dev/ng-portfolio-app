@@ -6,7 +6,7 @@ import { BadgeDisplayComponent } from '@features/badge/components/badge-display'
   selector: 'app-landing',
   imports: [HeroSection, BadgeDisplayComponent],
   template: `
-    <main class="pt-24">
+    <main class="pt-24 lg:pt-38">
       <!-- Badge Status centré en haut de page -->
       <div class="fixed top-15 left-1/2 transform -translate-x-1/2 z-40">
         <app-badge-display />

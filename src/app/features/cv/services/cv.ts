@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, Subject } from 'rxjs';
 import type { CvMetadata, UploadCvResponse } from '@features/cv';
 import { environment } from '@environments/environment';
 
@@ -10,6 +10,9 @@ import { environment } from '@environments/environment';
 export class CvService {
   private readonly http = inject(HttpClient);
   private readonly baseUrl = `${environment.apiUrl}/cv`;
+
+  private readonly _cvDownloaded = new Subject<void>();
+  public readonly cvDownloaded$ = this._cvDownloaded.asObservable();
 
   async uploadCv(file: File, userId?: string): Promise<UploadCvResponse> {
     const formData = new FormData();
@@ -62,6 +65,30 @@ export class CvService {
 
   getDownloadUrl(userId?: string): string {
     return userId ? `${this.baseUrl}/download/${userId}` : `${this.baseUrl}/download`;
+  }
+
+  async downloadCvAndNotify(userId?: string): Promise<void> {
+    try {
+      const blob = await this.downloadCv(userId);
+
+      // Créer un lien de téléchargement
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'CV.pdf';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+
+
+
+      // Notifier que le CV a été téléchargé
+      this._cvDownloaded.next();
+    } catch (error: unknown) {
+      console.error('Erreur téléchargement CV:', error);
+      throw new Error(this.getErrorMessage(error));
+    }
   }
 
   private getErrorMessage(error: unknown): string {
