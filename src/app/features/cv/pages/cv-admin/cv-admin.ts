@@ -12,14 +12,12 @@ import type { CvMetadata } from '@features/cv';
   template: `
     <div class="container mx-auto p-6 max-w-4xl">
       <div class="bg-background rounded-lg shadow-lg border border-accent">
-        <!-- Header -->
         <div class="p-6 border-b border-accent bg-gradient-to-r from-accent/100 to-accent/20">
           <h1 class="text-2xl font-bold text-text mb-2">Gestion du CV</h1>
           <p class="text-text">Téléchargez et gérez votre CV professionnel</p>
         </div>
 
         <div class="p-6 space-y-6">
-          <!-- Current CV Info -->
           @if (currentCv(); as cv) {
             <div class="bg-background rounded-xl p-6 border border-accent">
               <h2 class="text-lg font-semibold text-text mb-4 flex items-center gap-2">
@@ -136,7 +134,6 @@ import type { CvMetadata } from '@features/cv';
             </div>
           }
 
-          <!-- Upload Section -->
           <div
             class="border-2 border-dashed border-primary/20 rounded-xl p-8 text-center bg-primary/2"
             [class.border-accent]="isDragOver()"
@@ -255,7 +252,6 @@ import type { CvMetadata } from '@features/cv';
             }
           </div>
 
-          <!-- File Input (Hidden) -->
           <input
             #fileInput
             type="file"
@@ -272,14 +268,11 @@ import type { CvMetadata } from '@features/cv';
 export class CvAdminComponent {
   private readonly cvService = inject(CvService);
   private readonly toastService = inject(ToastService);
-
-  // State signals
   private readonly _currentCv = signal<CvMetadata | null>(null);
   private readonly _selectedFile = signal<File | null>(null);
   private readonly _isUploading = signal(false);
   private readonly _isDragOver = signal(false);
 
-  // Computed properties
   readonly currentCv = computed(() => this._currentCv());
   readonly selectedFile = computed(() => this._selectedFile());
   readonly isUploading = computed(() => this._isUploading());
@@ -387,7 +380,8 @@ export class CvAdminComponent {
       await this.cvService.downloadCvAndNotify();
     } catch (error: unknown) {
       console.error('Erreur téléchargement CV:', error);
-      const errorMessage = error instanceof Error ? error.message : 'Erreur lors du téléchargement du CV';
+      const errorMessage =
+        error instanceof Error ? error.message : 'Erreur lors du téléchargement du CV';
       this.toastService.danger(errorMessage);
     }
   }

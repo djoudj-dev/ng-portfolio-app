@@ -25,7 +25,7 @@ export class CvService {
     try {
       return await firstValueFrom(
         this.http.put<UploadCvResponse>(`${this.baseUrl}/edit`, formData, {
-          withCredentials: true, // Utilise les cookies pour l'authentification
+          withCredentials: true,
         }),
       );
     } catch (error: unknown) {
@@ -71,7 +71,6 @@ export class CvService {
     try {
       const blob = await this.downloadCv(userId);
 
-      // Créer un lien de téléchargement
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
@@ -81,9 +80,6 @@ export class CvService {
       document.body.removeChild(link);
       window.URL.revokeObjectURL(url);
 
-
-
-      // Notifier que le CV a été téléchargé
       this._cvDownloaded.next();
     } catch (error: unknown) {
       console.error('Erreur téléchargement CV:', error);
