@@ -13,8 +13,9 @@ import { Router } from '@angular/router';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="max-w-7xl mx-auto p-6 space-y-8">
-      <!-- Enhanced Header Section -->
-      <header class="bg-gradient-to-r from-primary/5 to-accent/5 rounded-2xl p-6 border border-accent/20 shadow-sm">
+      <header
+        class="bg-gradient-to-r from-primary/5 to-accent/5 rounded-2xl p-6 border border-accent/20 shadow-sm"
+      >
         <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
           <div class="space-y-2">
             <div class="flex items-center gap-3">
@@ -30,23 +31,26 @@ import { Router } from '@angular/router';
               <h1 class="text-3xl font-bold text-text">Gestion des projets</h1>
             </div>
             <p class="text-secondary text-base max-w-2xl">
-              Gérez et organisez votre portfolio de projets avec des outils de création, modification et suppression.
+              Gérez et organisez votre portfolio de projets avec des outils de création,
+              modification et suppression.
             </p>
           </div>
 
           <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-            <!-- Stats Badge -->
-            <div class="bg-background/80 backdrop-blur-sm px-4 py-2 rounded-xl border border-accent/30 shadow-sm">
+            <div
+              class="bg-background/80 backdrop-blur-sm px-4 py-2 rounded-xl border border-accent/30 shadow-sm"
+            >
               <div class="flex items-center gap-2">
                 <div class="w-2 h-2 bg-primary rounded-full"></div>
-                <span class="text-sm font-medium text-text">
-                  {{ projects().length }} projets
-                </span>
+                <span class="text-sm font-medium text-text"> {{ projects().length }} projets </span>
               </div>
             </div>
 
-            <!-- Create Button -->
-            <app-button (buttonClick)="navigateToCreate()" color="accent" [customClass]="'px-6 py-3'">
+            <app-button
+              (buttonClick)="navigateToCreate()"
+              color="accent"
+              [customClass]="'px-6 py-3'"
+            >
               <div class="flex items-center gap-2">
                 <img
                   [ngSrc]="'/icons/plus.svg'"
@@ -62,10 +66,8 @@ import { Router } from '@angular/router';
         </div>
       </header>
 
-      <!-- Controls Section -->
       <section class="bg-background rounded-2xl border border-accent/20 shadow-sm p-6">
         <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
-          <!-- View Toggle -->
           <div class="flex items-center gap-4">
             <span class="text-sm font-medium text-text">Affichage:</span>
             <div class="flex bg-accent/5 rounded-xl p-1 border border-accent/20">
@@ -100,9 +102,7 @@ import { Router } from '@angular/router';
             </div>
           </div>
 
-          <!-- Search and Filters -->
           <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
-            <!-- Search -->
             <div class="relative">
               <input
                 type="text"
@@ -118,8 +118,9 @@ import { Router } from '@angular/router';
               />
             </div>
 
-            <!-- Filter -->
-            <select class="px-4 py-2.5 border border-accent/30 rounded-xl bg-background text-text focus:ring-2 focus:ring-primary focus:border-primary/30 transition-all duration-200">
+            <select
+              class="px-4 py-2.5 border border-accent/30 rounded-xl bg-background text-text focus:ring-2 focus:ring-primary focus:border-primary/30 transition-all duration-200"
+            >
               <option value="">Toutes catégories</option>
               <option value="web">Web</option>
               <option value="mobile">Mobile</option>
@@ -130,13 +131,13 @@ import { Router } from '@angular/router';
         </div>
       </section>
 
-      <!-- Content Section -->
       <main class="space-y-6">
         @if (currentView() === 'list') {
-          <!-- Enhanced List View -->
           <div class="space-y-4">
             @for (project of projects(); track project.id) {
-              <article class="bg-background rounded-2xl border border-accent/20 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden">
+              <article
+                class="bg-background rounded-2xl border border-accent/20 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden"
+              >
                 <div class="p-6">
                   <div class="flex items-center gap-6">
                     <!-- Project Image -->
@@ -150,7 +151,9 @@ import { Router } from '@angular/router';
                           height="64"
                         />
                       } @else {
-                        <div class="w-16 h-16 bg-accent/10 rounded-xl flex items-center justify-center border border-accent/20">
+                        <div
+                          class="w-16 h-16 bg-accent/10 rounded-xl flex items-center justify-center border border-accent/20"
+                        >
                           <img
                             [ngSrc]="'/icons/folder.svg'"
                             alt="Projet"
@@ -162,31 +165,37 @@ import { Router } from '@angular/router';
                       }
                     </div>
 
-                    <!-- Project Info -->
                     <div class="flex-1 min-w-0 space-y-2">
                       <div class="flex items-start justify-between gap-4">
                         <div class="space-y-1">
                           <div class="flex items-center gap-3">
-                            <h3 class="text-lg font-semibold text-text truncate">{{ project.title }}</h3>
+                            <h3 class="text-lg font-semibold text-text truncate">
+                              {{ project.title }}
+                            </h3>
                             @if (project.featured) {
-                              <span class="bg-accent/10 text-accent text-xs font-medium px-2.5 py-1 rounded-full border border-accent/20 flex items-center gap-1">
+                              <span
+                                class="bg-accent/10 text-accent text-xs font-medium px-2.5 py-1 rounded-full border border-accent/20 flex items-center gap-1"
+                              >
                                 <span>⭐</span>
                                 Mis en avant
                               </span>
                             }
                           </div>
                           <div class="flex items-center gap-2">
-                            <span class="bg-primary/10 text-primary text-sm font-medium px-3 py-1 rounded-full border border-primary/20">
+                            <span
+                              class="bg-primary/10 text-primary text-sm font-medium px-3 py-1 rounded-full border border-primary/20"
+                            >
                               {{ project.category }}
                             </span>
                           </div>
                         </div>
                       </div>
 
-                      <p class="text-secondary leading-relaxed line-clamp-2">{{ project.description }}</p>
+                      <p class="text-secondary leading-relaxed line-clamp-2">
+                        {{ project.description }}
+                      </p>
                     </div>
 
-                    <!-- Actions -->
                     <div class="flex-shrink-0">
                       <div class="flex items-center gap-2">
                         @if (project.demoUrl) {
@@ -194,7 +203,13 @@ import { Router } from '@angular/router';
                             class="p-3 hover:bg-accent/10 rounded-xl transition-colors duration-200 group border border-transparent hover:border-accent/20"
                             title="Voir la démo"
                           >
-                            <img [ngSrc]="'/icons/external-link.svg'" alt="Démo" class="w-5 h-5 icon-invert group-hover:scale-110 transition-transform duration-200" width="20" height="20" />
+                            <img
+                              [ngSrc]="'/icons/external-link.svg'"
+                              alt="Démo"
+                              class="w-5 h-5 icon-invert group-hover:scale-110 transition-transform duration-200"
+                              width="20"
+                              height="20"
+                            />
                           </button>
                         }
                         <button
@@ -202,14 +217,26 @@ import { Router } from '@angular/router';
                           class="p-3 hover:bg-primary/10 rounded-xl transition-colors duration-200 group border border-transparent hover:border-primary/20"
                           title="Modifier"
                         >
-                          <img [ngSrc]="'/icons/edit.svg'" alt="Modifier" class="w-5 h-5 icon-invert group-hover:scale-110 transition-transform duration-200" width="20" height="20" />
+                          <img
+                            [ngSrc]="'/icons/edit.svg'"
+                            alt="Modifier"
+                            class="w-5 h-5 icon-invert group-hover:scale-110 transition-transform duration-200"
+                            width="20"
+                            height="20"
+                          />
                         </button>
                         <button
                           (click)="deleteProject(project)"
                           class="p-3 hover:bg-red/10 rounded-xl transition-colors duration-200 group border border-transparent hover:border-red/20"
                           title="Supprimer"
                         >
-                          <img [ngSrc]="'/icons/trash.svg'" alt="Supprimer" class="w-5 h-5 icon-invert group-hover:scale-110 transition-transform duration-200" width="20" height="20" />
+                          <img
+                            [ngSrc]="'/icons/trash.svg'"
+                            alt="Supprimer"
+                            class="w-5 h-5 icon-invert group-hover:scale-110 transition-transform duration-200"
+                            width="20"
+                            height="20"
+                          />
                         </button>
                       </div>
                     </div>
@@ -218,8 +245,12 @@ import { Router } from '@angular/router';
               </article>
             } @empty {
               <div class="text-center py-24">
-                <div class="bg-background rounded-2xl border border-accent/20 p-12 max-w-md mx-auto">
-                  <div class="w-20 h-20 bg-accent/10 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                <div
+                  class="bg-background rounded-2xl border border-accent/20 p-12 max-w-md mx-auto"
+                >
+                  <div
+                    class="w-20 h-20 bg-accent/10 rounded-2xl flex items-center justify-center mx-auto mb-6"
+                  >
                     <img
                       [ngSrc]="'/icons/folder.svg'"
                       alt="Aucun projet"
@@ -230,17 +261,19 @@ import { Router } from '@angular/router';
                   </div>
                   <h3 class="text-xl font-semibold text-text mb-2">Aucun projet</h3>
                   <p class="text-secondary">
-                    Commencez par créer votre premier projet en cliquant sur le bouton "Nouveau projet".
+                    Commencez par créer votre premier projet en cliquant sur le bouton "Nouveau
+                    projet".
                   </p>
                 </div>
               </div>
             }
           </div>
         } @else {
-          <!-- Enhanced Grid View -->
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             @for (project of projects(); track project.id) {
-              <article class="bg-background rounded-2xl border border-accent/20 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden group">
+              <article
+                class="bg-background rounded-2xl border border-accent/20 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden group"
+              >
                 @if (project.imagePath) {
                   <div class="relative overflow-hidden">
                     <img
@@ -253,7 +286,9 @@ import { Router } from '@angular/router';
                     />
                     @if (project.featured) {
                       <div class="absolute top-3 right-3">
-                        <span class="bg-accent/90 backdrop-blur-sm text-white text-xs font-medium px-2.5 py-1 rounded-full border border-accent/30 flex items-center gap-1">
+                        <span
+                          class="bg-accent/90 backdrop-blur-sm text-white text-xs font-medium px-2.5 py-1 rounded-full border border-accent/30 flex items-center gap-1"
+                        >
                           <span>⭐</span>
                           Featured
                         </span>
@@ -261,7 +296,9 @@ import { Router } from '@angular/router';
                     }
                   </div>
                 } @else {
-                  <div class="w-full h-48 bg-accent/5 flex items-center justify-center border-b border-accent/20 relative">
+                  <div
+                    class="w-full h-48 bg-accent/5 flex items-center justify-center border-b border-accent/20 relative"
+                  >
                     <img
                       [ngSrc]="'/icons/folder.svg'"
                       alt="Projet"
@@ -271,7 +308,9 @@ import { Router } from '@angular/router';
                     />
                     @if (project.featured) {
                       <div class="absolute top-3 right-3">
-                        <span class="bg-accent/90 backdrop-blur-sm text-white text-xs font-medium px-2.5 py-1 rounded-full border border-accent/30 flex items-center gap-1">
+                        <span
+                          class="bg-accent/90 backdrop-blur-sm text-white text-xs font-medium px-2.5 py-1 rounded-full border border-accent/30 flex items-center gap-1"
+                        >
                           <span>⭐</span>
                           Featured
                         </span>
@@ -282,14 +321,20 @@ import { Router } from '@angular/router';
 
                 <div class="p-6 space-y-4">
                   <div class="space-y-2">
-                    <h3 class="text-lg font-semibold text-text line-clamp-1 group-hover:text-primary transition-colors duration-200">
+                    <h3
+                      class="text-lg font-semibold text-text line-clamp-1 group-hover:text-primary transition-colors duration-200"
+                    >
                       {{ project.title }}
                     </h3>
-                    <p class="text-secondary line-clamp-2 text-sm leading-relaxed">{{ project.description }}</p>
+                    <p class="text-secondary line-clamp-2 text-sm leading-relaxed">
+                      {{ project.description }}
+                    </p>
                   </div>
 
                   <div class="flex items-center justify-between pt-2">
-                    <span class="bg-primary/10 text-primary text-xs font-medium px-3 py-1.5 rounded-full border border-primary/20">
+                    <span
+                      class="bg-primary/10 text-primary text-xs font-medium px-3 py-1.5 rounded-full border border-primary/20"
+                    >
                       {{ project.category }}
                     </span>
 
@@ -299,7 +344,13 @@ import { Router } from '@angular/router';
                           class="p-2 hover:bg-accent/10 rounded-lg transition-colors duration-200 group/btn"
                           title="Voir la démo"
                         >
-                          <img [ngSrc]="'/icons/external-link.svg'" alt="Démo" class="w-4 h-4 icon-invert group-hover/btn:scale-110 transition-transform duration-200" width="16" height="16" />
+                          <img
+                            [ngSrc]="'/icons/external-link.svg'"
+                            alt="Démo"
+                            class="w-4 h-4 icon-invert group-hover/btn:scale-110 transition-transform duration-200"
+                            width="16"
+                            height="16"
+                          />
                         </button>
                       }
                       <button
@@ -307,14 +358,26 @@ import { Router } from '@angular/router';
                         class="p-2 hover:bg-primary/10 rounded-lg transition-colors duration-200 group/btn"
                         title="Modifier"
                       >
-                        <img [ngSrc]="'/icons/edit.svg'" alt="Modifier" class="w-4 h-4 icon-invert group-hover/btn:scale-110 transition-transform duration-200" width="16" height="16" />
+                        <img
+                          [ngSrc]="'/icons/edit.svg'"
+                          alt="Modifier"
+                          class="w-4 h-4 icon-invert group-hover/btn:scale-110 transition-transform duration-200"
+                          width="16"
+                          height="16"
+                        />
                       </button>
                       <button
                         (click)="deleteProject(project)"
                         class="p-2 hover:bg-red/10 rounded-lg transition-colors duration-200 group/btn"
                         title="Supprimer"
                       >
-                        <img [ngSrc]="'/icons/trash.svg'" alt="Supprimer" class="w-4 h-4 icon-invert group-hover/btn:scale-110 transition-transform duration-200" width="16" height="16" />
+                        <img
+                          [ngSrc]="'/icons/trash.svg'"
+                          alt="Supprimer"
+                          class="w-4 h-4 icon-invert group-hover/btn:scale-110 transition-transform duration-200"
+                          width="16"
+                          height="16"
+                        />
                       </button>
                     </div>
                   </div>
@@ -322,8 +385,12 @@ import { Router } from '@angular/router';
               </article>
             } @empty {
               <div class="col-span-full text-center py-24">
-                <div class="bg-background rounded-2xl border border-accent/20 p-12 max-w-md mx-auto">
-                  <div class="w-20 h-20 bg-accent/10 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                <div
+                  class="bg-background rounded-2xl border border-accent/20 p-12 max-w-md mx-auto"
+                >
+                  <div
+                    class="w-20 h-20 bg-accent/10 rounded-2xl flex items-center justify-center mx-auto mb-6"
+                  >
                     <img
                       [ngSrc]="'/icons/folder.svg'"
                       alt="Aucun projet"
@@ -334,7 +401,8 @@ import { Router } from '@angular/router';
                   </div>
                   <h3 class="text-xl font-semibold text-text mb-2">Aucun projet</h3>
                   <p class="text-secondary">
-                    Commencez par créer votre premier projet en cliquant sur le bouton "Nouveau projet".
+                    Commencez par créer votre premier projet en cliquant sur le bouton "Nouveau
+                    projet".
                   </p>
                 </div>
               </div>
@@ -377,7 +445,6 @@ export class ProjectManagerComponent {
     if (confirm(`Êtes-vous sûr de vouloir supprimer le projet "${project.title}" ?`)) {
       try {
         await this.projectService.deleteProject(project.id);
-        // Refresh projects list
         window.location.reload();
       } catch (error) {
         console.error('Error deleting project:', error);

@@ -12,7 +12,6 @@
   </header>
 
   <div class="container mx-auto px-4">
-    <!-- Search and filter section -->
     @defer (on viewport) {
       <app-project-search
         [searchQuery]="searchQuery()"
@@ -37,7 +36,6 @@
       </section>
     }
 
-    <!-- Projects grid -->
     <section aria-labelledby="projects-list-section">
       <h2 id="projects-list-section" class="sr-only">Liste des projets</h2>
 
@@ -138,7 +136,6 @@
           }
         </div>
 
-        <!-- Pagination controls -->
         @defer (on viewport; prefetch on idle) {
           <app-project-pagination
             [currentPage]="currentPage()"
