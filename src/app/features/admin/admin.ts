@@ -1,43 +1,85 @@
 import { Component, ChangeDetectionStrategy, inject, signal, computed } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { Router, RouterOutlet } from '@angular/router';
+import { CommonModule, NgOptimizedImage } from '@angular/common';
+import { Router, RouterOutlet, RouterLink } from '@angular/router';
 import { AuthService } from '@core/services/auth';
-import { AdminSidebar } from './components/admin-sidebar/admin-sidebar';
+import { NAVIGATION_LINKS } from './data/navigation-links.data';
 
 @Component({
   selector: 'app-admin',
-  imports: [CommonModule, AdminSidebar, RouterOutlet],
+  imports: [CommonModule, NgOptimizedImage, RouterLink, RouterOutlet],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <div class="min-h-screen bg-background flex">
-      <!-- Sidebar -->
-      <app-admin-sidebar
-        [userEmail]="currentUser()?.email || ''"
-        (sidebarToggled)="onSidebarToggled($event)"
-      />
+    <div class="min-h-screen bg-background">
+      <!-- Navigation Bar -->
+      <nav>
+        <div class="max-w-7xl mx-auto px-6 py-4">
+          <div class="flex justify-between items-center">
+            <h1 class="text-2xl font-bold text-text">{{ currentPageTitle() }}</h1>
 
-      <!-- Main Content -->
-      <div [class]="mainContentClasses()" class="flex-1 transition-all duration-300 ease-in-out">
-        <!-- Header -->
-        <header class="bg-background">
-          <div class="px-6 py-4">
-            <div class="flex justify-between items-center">
-              <h1 class="text-2xl font-bold text-text">{{ currentPageTitle() }}</h1>
-              <button
-                (click)="logout()"
-                class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
-              >
-                Déconnexion
-              </button>
+            <!-- Navigation Links -->
+            <div class="flex items-center gap-2">
+              @for (link of navigationLinks(); track link.route) {
+                <a
+                  [routerLink]="link.route === '' ? '/admin' : '/admin/' + link.route"
+                  class="flex items-center gap-2 px-3 py-2 text-sm font-medium border rounded-lg hover:scale-105"
+                  [class]="link.colorClasses"
+                >
+                  <img
+                    [ngSrc]="link.icon"
+                    [alt]="link.label"
+                    width="16"
+                    height="16"
+                    class="w-4 h-4 flex-shrink-0"
+                  />
+                  <span class="hidden md:inline">{{ link.label }}</span>
+                </a>
+              }
             </div>
           </div>
-        </header>
+        </div>
+      </nav>
 
-        <!-- Main Content Area -->
-        <main class="flex-1 overflow-y-auto">
-          <router-outlet></router-outlet>
-        </main>
-      </div>
+      <!-- Enhanced Header Section -->
+      <header class="bg-background rounded-2xl m-6 p-6 border border-accent shadow-sm">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="w-8 h-8 bg-accent rounded-lg flex items-center justify-center">
+              <img
+                [ngSrc]="'/icons/navigation.svg'"
+                alt="Navigation"
+                width="16"
+                height="16"
+                class="w-8 h-8 flex-shrink-0 icon-invert"
+              />
+            </div>
+            <h2 class="text-xl font-semibold text-text">Navigation</h2>
+          </div>
+        </div>
+
+        <div class="mt-4 grid grid-cols-2 md:grid-cols-6 gap-3">
+          @for (link of navigationLinks(); track link.route) {
+            <button
+              class="flex items-center gap-2 px-4 py-3 text-sm font-medium border rounded-lg hover:scale-105"
+              [class]="link.colorClasses"
+              (click)="navigateToSection(link.route)"
+            >
+              <img
+                [ngSrc]="link.icon"
+                [alt]="link.label"
+                width="16"
+                height="16"
+                class="w-4 h-4 flex-shrink-0"
+              />
+              {{ link.label }}
+            </button>
+          }
+        </div>
+      </header>
+
+      <!-- Main Content Area -->
+      <main class="flex-1 overflow-y-auto">
+        <router-outlet></router-outlet>
+      </main>
     </div>
   `,
 })
@@ -52,20 +94,11 @@ export class Admin {
     visitors: 124,
   });
 
-  // Sidebar state
-  private readonly _sidebarOpen = signal(true);
+  // Navigation links
+  readonly navigationLinks = signal(NAVIGATION_LINKS);
 
   // Computed pour l'utilisateur actuel
   readonly currentUser = this.authService.user;
-
-  // Computed pour les classes du contenu principal
-  readonly mainContentClasses = computed(() => {
-    const isDesktop = window.innerWidth >= 768;
-    if (!isDesktop) {
-      return 'ml-0';
-    }
-    return this._sidebarOpen() ? 'ml-64' : 'ml-16';
-  });
 
   // Computed pour le titre de la page actuelle
   readonly currentPageTitle = computed(() => {
@@ -78,6 +111,17 @@ export class Admin {
     if (url.includes('/admin/settings')) return 'Paramètres';
     return 'Administration';
   });
+
+  /**
+   * Navigation vers une section spécifique
+   */
+  navigateToSection(section: string): void {
+    if (section === '') {
+      this.router.navigate(['/admin']);
+    } else {
+      this.router.navigate([`/admin/${section}`]);
+    }
+  }
 
   /**
    * Déconnexion de l'utilisateur admin
@@ -93,12 +137,5 @@ export class Admin {
         console.error('Erreur lors de la déconnexion:', error);
       },
     });
-  }
-
-  /**
-   * Gestion du toggle de la sidebar
-   */
-  onSidebarToggled(isOpen: boolean): void {
-    this._sidebarOpen.set(isOpen);
   }
 }
