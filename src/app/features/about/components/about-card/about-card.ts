@@ -6,9 +6,9 @@ import { CardData } from '@features/about/interface/card-data';
   selector: 'app-about-card',
   imports: [NgOptimizedImage],
   template: `
-    <div class="mt-16 sm:mt-20 lg:mt-2">
+    <div class="mt-16 sm:mt-20 lg:mt-0">
       <h3
-        class="mb-8 text-2xl font-bold text-center sm:text-3xl lg:text-4xl underline underline-offset-4 decoration-accent decoration-3"
+        class="mb-6 text-2xl font-bold text-center sm:text-3xl lg:text-4xl underline underline-offset-4 decoration-accent decoration-3"
       >
         Mes valeurs
       </h3>
@@ -25,7 +25,7 @@ import { CardData } from '@features/about/interface/card-data';
                   class="flex justify-center items-center w-12 h-12 rounded-full bg-accent/40 group-hover:bg-accent transition-colors duration-300 flex-shrink-0"
                 >
                   <img
-                    [ngSrc]="'/icons/about/' + card.icon + '.svg'"
+                    [ngSrc]="'/icons/' + card.icon + '.svg'"
                     [alt]="'Icône ' + card.title"
                     class="object-contain w-6 h-6 icon-invert"
                     width="24"

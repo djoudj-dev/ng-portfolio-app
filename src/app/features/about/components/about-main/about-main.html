@@ -1,29 +1,30 @@
 <section
-  class="py-6 -mt-px bg-background sm:py-8 lg:py-6 text-text"
+  class="py-4 -mt-px bg-background sm:py-6 md:py-8 text-text"
   aria-labelledby="about-heading"
 >
   <!-- Titre principal centré -->
-  <div class="container px-4 mx-auto mb-8 lg:mb-12">
+  <div class="container px-3 sm:px-4 mx-auto mb-6 sm:mb-8 md:mb-12">
     <h1
       id="about-heading"
-      class="text-4xl text-text font-bold text-center sm:text-3xl lg:text-4xl underline underline-offset-4 decoration-accent decoration-3 mb-2"
+      class="text-2xl sm:text-3xl md:text-4xl text-text font-bold text-center underline underline-offset-4 decoration-accent decoration-2 sm:decoration-3 mb-2 sm:mb-3"
     >
       De la chaudronnerie au développement web
     </h1>
-    <h2 class="text-center text-xl text-text/80 max-w-2xl mx-auto">
+    <h2 class="text-center text-base sm:text-lg md:text-xl text-text/80 max-w-2xl mx-auto px-2 sm:px-0">
       Développeur Web certifié DWWM, motivé par la création d'applications web modernes et
       fonctionnelles
     </h2>
   </div>
 
-  <!-- Container 1 - Photo de profil -->
-  <div class="container px-4 mx-auto lg:flex lg:justify-start lg:pl-0">
+  <!-- Container principal mobile-first -->
+  <div class="container px-3 sm:px-4 mx-auto">
+    <!-- Photo de profil mobile -->
     <aside
-      class="flex justify-center mt-8 lg:mt-2 lg:justify-start"
+      class="flex flex-col items-center mb-6 sm:mb-8 md:hidden"
       aria-label="Photo de profil de Julien NÉDELLEC"
     >
       <figure class="relative">
-        <div class="relative w-80 h-80 sm:w-96 sm:h-96 lg:w-[18rem] lg:h-[18rem]">
+        <div class="relative w-64 h-64 sm:w-80 sm:h-80">
           <img
             [ngSrc]="'/photoProfil.webp'"
             alt="Photo de profil de Julien NÉDELLEC, développeur Angular"
@@ -34,20 +35,20 @@
           />
         </div>
 
-        <!-- Badges réseaux sociaux -->
-        <div class="flex justify-center gap-4 mt-4">
+        <!-- Badges réseaux sociaux mobile -->
+        <div class="flex justify-center gap-3 mt-4">
           @for (badge of socialBadges; track badge.name) {
             <a
               [href]="badge.href"
               target="_blank"
               rel="noopener noreferrer"
-              class="flex items-center justify-center w-12 h-12 bg-accent/50 hover:bg-accent rounded-lg transition-colors duration-200 group"
+              class="flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 bg-accent/50 hover:bg-accent rounded-lg transition-colors duration-200 group"
               [attr.aria-label]="badge.ariaLabel"
             >
               <img
                 [ngSrc]="badge.iconPath"
                 [alt]="badge.alt"
-                class="w-6 h-6 group-hover:scale-110 transition-transform duration-200 icon-invert"
+                class="w-5 h-5 sm:w-6 sm:h-6 group-hover:scale-110 transition-transform duration-200 icon-invert"
                 width="24"
                 height="24"
               />
@@ -56,45 +57,90 @@
         </div>
       </figure>
     </aside>
-    <div class="flex-1">
-      <article class="px-10">
-        <p class="mb-6 text-base sm:text-lg sm:mb-6 lg:text-2xl">
-          Issue de la chaudronnerie aéronautique où j'ai passé plusieurs années à former et déformer
-          toutes sortes d'alliages, notamment le titane avec une exigence de précision absolue, j'ai
-          (re)découvert une passion pour la création numérique. Cette expérience industrielle m'a
-          forgé une rigueur technique et une capacité d'adaptation qui se révèlent aujourd'hui
-          précieuses dans le développement web.
-        </p>
 
-        <p
-          class="mb-6 text-sm text-center leading-relaxed sm:text-base sm:mb-6 lg:text-start lg:text-lg text-text/80"
-        >
-          Ma transition vers le numérique s'est concrétisée par une formation intensive chez ALT-RH
-          Consulting, où j'ai acquis les fondamentaux :
-          <span class="text-accent font-semibold">HTML/CSS</span>,
-          <span class="text-accent font-semibold">JavaScript</span>,
-          <span class="text-accent font-semibold">Java</span> et les
-          <span class="text-accent font-semibold">méthodes agiles</span>. Cette première étape m'a
-          permis de valider mon appétence pour le code et de découvrir l'écosystème du développement
-          moderne. J'ai ensuite approfondi mes compétences chez Studi pour obtenir mon titre de
-          Développeur Web et Web Mobile, me spécialisant dans une stack fullstack complète :
-          <span class="text-accent font-semibold">Angular</span>,
-          <span class="text-accent font-semibold">TypeScript</span> côté front-end,
-          <span class="text-accent font-semibold">NestJS</span> pour les API, avec
-          <span class="text-accent font-semibold">PostgreSQL</span> et
-          <span class="text-accent font-semibold">MongoDB</span> pour la persistance des données, le
-          tout orchestré avec <span class="text-accent font-semibold">Docker</span> pour les
-          déploiements. Aujourd'hui, je conçois des applications web performantes et accessibles, en
-          appliquant la même exigence de qualité qui guidait mon travail dans l'aéronautique. Mon
-          approche combine rigueur technique et sens du design pour créer des solutions robustes et
-          élégantes, toujours centrées sur les besoins des utilisateurs.
-        </p>
-      </article>
+    <!-- Layout desktop avec photo et contenu côte à côte -->
+    <div class="md:flex md:gap-8 lg:gap-12">
+      <!-- Photo de profil desktop -->
+      <aside
+        class="hidden md:flex md:flex-col md:items-start md:flex-shrink-0"
+        aria-label="Photo de profil de Julien NÉDELLEC"
+      >
+        <figure class="relative">
+          <div class="relative w-72 h-72 lg:w-80 lg:h-80">
+            <img
+              [ngSrc]="'/photoProfil.webp'"
+              alt="Photo de profil de Julien NÉDELLEC, développeur Angular"
+              class="object-cover w-full h-full rounded-lg shadow-xl ring-1 ring-accent"
+              width="350"
+              height="350"
+              priority
+            />
+          </div>
+
+          <!-- Badges réseaux sociaux desktop -->
+          <div class="flex justify-center gap-4 mt-4">
+            @for (badge of socialBadges; track badge.name) {
+              <a
+                [href]="badge.href"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="flex items-center justify-center w-12 h-12 bg-accent/50 hover:bg-accent rounded-lg transition-colors duration-200 group"
+                [attr.aria-label]="badge.ariaLabel"
+              >
+                <img
+                  [ngSrc]="badge.iconPath"
+                  [alt]="badge.alt"
+                  class="w-6 h-6 group-hover:scale-110 transition-transform duration-200 icon-invert"
+                  width="24"
+                  height="24"
+                />
+              </a>
+            }
+          </div>
+        </figure>
+      </aside>
+
+      <!-- Contenu textuel -->
+      <div class="flex-1 md:min-w-0">
+        <article class="space-y-4 sm:space-y-6">
+          <p class="text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed">
+            Issue de la chaudronnerie aéronautique où j'ai passé plusieurs années à former et déformer
+            toutes sortes d'alliages, notamment le titane avec une exigence de précision absolue, j'ai
+            (re)découvert une passion pour la création numérique. Cette expérience industrielle m'a
+            forgé une rigueur technique et une capacité d'adaptation qui se révèlent aujourd'hui
+            précieuses dans le développement web.
+          </p>
+
+          <p
+            class="text-xs sm:text-sm md:text-base lg:text-lg leading-relaxed text-text/80"
+          >
+            Ma transition vers le numérique s'est concrétisée par une formation intensive chez ALT-RH
+            Consulting, où j'ai acquis les fondamentaux :
+            <span class="text-accent font-semibold">HTML/CSS</span>,
+            <span class="text-accent font-semibold">JavaScript</span>,
+            <span class="text-accent font-semibold">Java</span> et les
+            <span class="text-accent font-semibold">méthodes agiles</span>. Cette première étape m'a
+            permis de valider mon appétence pour le code et de découvrir l'écosystème du développement
+            moderne. J'ai ensuite approfondi mes compétences chez Studi pour obtenir mon titre de
+            Développeur Web et Web Mobile, me spécialisant dans une stack fullstack complète :
+            <span class="text-accent font-semibold">Angular</span>,
+            <span class="text-accent font-semibold">TypeScript</span> côté front-end,
+            <span class="text-accent font-semibold">NestJS</span> pour les API, avec
+            <span class="text-accent font-semibold">PostgreSQL</span> et
+            <span class="text-accent font-semibold">MongoDB</span> pour la persistance des données, le
+            tout orchestré avec <span class="text-accent font-semibold">Docker</span> pour les
+            déploiements. Aujourd'hui, je conçois des applications web performantes et accessibles, en
+            appliquant la même exigence de qualité qui guidait mon travail dans l'aéronautique. Mon
+            approche combine rigueur technique et sens du design pour créer des solutions robustes et
+            élégantes, toujours centrées sur les besoins des utilisateurs.
+          </p>
+        </article>
+      </div>
     </div>
   </div>
 
   <!-- Section des cartes -->
-  <div class="container px-4 mx-auto">
+  <div class="container px-3 sm:px-4 mx-auto mt-8 sm:mt-10 md:mt-10">
     <app-about-card [cards]="cards" />
   </div>
 </section>
