@@ -4,14 +4,14 @@ export const SOCIAL_BADGES: SocialBadge[] = [
   {
     name: 'linkedin',
     href: 'https://linkedin.com/in/julien-nedellec',
-    iconPath: '/icons/reseaux/linkedin.svg',
+    iconPath: '/icons/linkedin.svg',
     alt: 'LinkedIn',
     ariaLabel: 'Profil LinkedIn de Julien NÉDELLEC',
   },
   {
     name: 'github',
     href: 'https://github.com/djoudj-dev',
-    iconPath: '/icons/reseaux/github.svg',
+    iconPath: '/icons/github.svg',
     alt: 'GitHub',
     ariaLabel: 'Profil GitHub de Julien NÉDELLEC',
   },

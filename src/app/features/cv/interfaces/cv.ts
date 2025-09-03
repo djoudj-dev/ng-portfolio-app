@@ -12,5 +12,6 @@ export interface CvMetadata {
 }
 
 export interface UploadCvResponse {
+  id: string;
   path: string;
 }

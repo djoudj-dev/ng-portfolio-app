@@ -1,14 +1,13 @@
-<app-navbar (showLogin)="onShowLogin()" (logoutCompleted)="onLogoutCompleted()" />
+<div class="min-h-screen flex flex-col">
+  <app-navbar (showLogin)="onShowLogin()" (logoutCompleted)="onLogoutCompleted()" />
+  <app-login-modal
+    #loginModal
+    (loginCompleted)="onLoginCompleted()"
+    (modalClosed)="onModalClosed()"
+  />
+  <app-toast-container />
+  <main class="flex-1">
+    <router-outlet />
+  </main>
 
-<!-- Main Content -->
-<router-outlet />
-
-<!-- Login Modal -->
-<app-login-modal
-  #loginModal
-  (loginCompleted)="onLoginCompleted()"
-  (modalClosed)="onModalClosed()"
-/>
-
-<!-- Toast Container -->
-<app-toast-container />
+</div>

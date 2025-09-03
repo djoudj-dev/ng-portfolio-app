@@ -4,7 +4,6 @@ import { ButtonComponent } from '@shared/ui/button/button';
 import { ToastService } from '@shared/ui';
 import { CvService } from '@features/cv';
 import type { CvMetadata } from '@features/cv';
-import { environment } from '@environments/environment';
 
 @Component({
   selector: 'app-cv-admin',
@@ -383,16 +382,13 @@ export class CvAdminComponent {
     this._selectedFile.set(null);
   }
 
-  downloadCurrentCv(): void {
-    const cv = this._currentCv();
-    if (cv) {
-      const link = document.createElement('a');
-      link.href = `${environment.apiUrl}/cv/download`;
-      link.target = '_blank';
-      link.download = cv.originalName ?? cv.fileName;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+  async downloadCurrentCv(): Promise<void> {
+    try {
+      await this.cvService.downloadCvAndNotify();
+    } catch (error: unknown) {
+      console.error('Erreur téléchargement CV:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Erreur lors du téléchargement du CV';
+      this.toastService.danger(errorMessage);
     }
   }
 

@@ -13,7 +13,9 @@ interface LoginFormControls {
   imports: [ReactiveFormsModule, NgOptimizedImage],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <div class="min-h-screen flex items-center justify-center bg-background px-4 sm:px-6 lg:px-8">
+    <div
+      class="flex items-center justify-center bg-background border border-accent px-4 sm:px-6 lg:px-8"
+    >
       <div class="max-w-md w-full space-y-8">
         <!-- Header -->
         <div class="text-center">
@@ -44,7 +46,7 @@ interface LoginFormControls {
             <div class="relative">
               <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                 <img
-                  ngSrc="/icons/login/email.svg"
+                  ngSrc="/icons/email.svg"
                   alt="Email icon"
                   width="16"
                   height="16"
@@ -86,7 +88,7 @@ interface LoginFormControls {
             <div class="relative">
               <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                 <img
-                  ngSrc="/icons/login/password.svg"
+                  ngSrc="/icons/password.svg"
                   alt="Password icon"
                   width="16"
                   height="16"
@@ -118,7 +120,7 @@ interface LoginFormControls {
                 "
               >
                 <img
-                  [ngSrc]="showPassword() ? '/icons/login/eye-off.svg' : '/icons/login/eye.svg'"
+                  [ngSrc]="showPassword() ? '/icons/eye-off.svg' : '/icons/eye.svg'"
                   [alt]="showPassword() ? 'Masquer le mot de passe' : 'Afficher le mot de passe'"
                   width="16"
                   height="16"
@@ -146,7 +148,7 @@ interface LoginFormControls {
               aria-live="polite"
             >
               <img
-                ngSrc="/icons/login/warning.svg"
+                ngSrc="/icons/warning.svg"
                 alt="Erreur"
                 width="16"
                 height="16"
@@ -159,13 +161,7 @@ interface LoginFormControls {
                 class="ml-auto text-red-500 hover:text-red-700"
                 aria-label="Fermer le message d'erreur"
               >
-                <img
-                  ngSrc="/icons/login/close.svg"
-                  alt="Fermer"
-                  width="12"
-                  height="12"
-                  class="h-3 w-3"
-                />
+                <img ngSrc="/icons/close.svg" alt="Fermer" width="12" height="12" class="h-3 w-3" />
               </button>
             </div>
           }
@@ -191,7 +187,7 @@ interface LoginFormControls {
               } @else {
                 <div class="flex items-center space-x-2">
                   <img
-                    ngSrc="/icons/login/login.svg"
+                    ngSrc="/icons/login.svg"
                     alt="Se connecter"
                     width="16"
                     height="16"
@@ -214,7 +210,7 @@ interface LoginFormControls {
             [disabled]="authService.isLoading()"
           >
             <img
-              ngSrc="/icons/login/arrow-left.svg"
+              ngSrc="/icons/arrow-left.svg"
               alt="Retour"
               width="16"
               height="16"
