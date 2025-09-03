@@ -1,0 +1,21 @@
+<div class="relative w-full">
+  <button type="button" (click)="toggleDropdown()"
+          class="w-full px-4 py-2 bg-background-200 border border-primary-300 rounded-lg text-text text-left flex items-center justify-between">
+    <span class="truncate">
+      {{ selectedOptions().join(', ') || 'Sélectionner des technologies' }}
+    </span>
+    <svg class="w-5 h-5 text-text/70 transition-transform duration-200" [class.rotate-180]="isOpen()" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+  </button>
+
+  @if (isOpen()) {
+    <ul class="absolute z-10 w-full mt-1 bg-background border border-primary-300 rounded-lg shadow-lg max-h-60 overflow-y-auto">
+      @for (option of options(); track option.name) {
+        <li (click)="toggleSelection(option.name)" class="px-4 py-2 flex items-center cursor-pointer hover:bg-primary-300/20">
+          <input type="checkbox" [checked]="isOptionSelected(option.name)" class="mr-3 h-4 w-4 rounded text-accent focus:ring-accent">
+          <img [ngSrc]="option.icon" [alt]="option.name" width="20" height="20" class="mr-2">
+          <span>{{ option.name }}</span>
+        </li>
+      }
+    </ul>
+  }
+</div>
