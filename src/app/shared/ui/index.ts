@@ -1,4 +1,5 @@
 export { NavbarComponent } from './navbar/navbar';
+export { ButtonComponent } from './button/button';
 export { LoginForm } from '@shared/ui/login/login-form/login-form';
 export { LoginModal } from '@shared/ui/login/login-modal/login-modal';
 export { Toast } from './toast/toast';

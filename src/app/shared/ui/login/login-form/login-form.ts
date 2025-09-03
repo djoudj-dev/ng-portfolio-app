@@ -2,6 +2,7 @@ import { Component, ChangeDetectionStrategy, signal, inject, output, effect } fr
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService, LoginRequest } from '@core/services/auth';
 import { NgOptimizedImage } from '@angular/common';
+import { ButtonComponent } from '@shared/ui/button/button';
 
 interface LoginFormControls {
   email: FormControl<string>;
@@ -10,7 +11,7 @@ interface LoginFormControls {
 
 @Component({
   selector: 'app-login-form',
-  imports: [ReactiveFormsModule, NgOptimizedImage],
+  imports: [ReactiveFormsModule, NgOptimizedImage, ButtonComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div
@@ -162,22 +163,15 @@ interface LoginFormControls {
           }
 
           <div>
-            <button
+            <app-button
               type="submit"
+              color="accent"
               [disabled]="loginForm.invalid || authService.isLoading()"
-              class="group relative w-full flex justify-center py-3 px-4 border border-transparent
-                     text-sm font-medium rounded-lg text-white bg-accent hover:bg-accent-600
-                     focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent
-                     disabled:opacity-50 disabled:cursor-not-allowed
-                     transition-all duration-200"
+              [isLoading]="authService.isLoading()"
+              (buttonClick)="onSubmit()"
             >
               @if (authService.isLoading()) {
-                <div class="flex items-center space-x-2">
-                  <div
-                    class="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"
-                  ></div>
-                  <span>Connexion en cours...</span>
-                </div>
+                <span>Connexion en cours...</span>
               } @else {
                 <div class="flex items-center space-x-2">
                   <img
@@ -190,18 +184,18 @@ interface LoginFormControls {
                   <span>Se connecter</span>
                 </div>
               }
-            </button>
+            </app-button>
           </div>
         </form>
 
         <!-- Close Button -->
         <div class="text-center">
-          <button
+          <app-button
             type="button"
-            (click)="closeLogin()"
-            class="inline-flex items-center px-4 py-2 text-sm text-secondary hover:text-text
-                   transition-colors duration-200"
+            color="secondary"
             [disabled]="authService.isLoading()"
+            customClass="inline-flex items-center px-4 py-2 text-sm w-auto"
+            (buttonClick)="closeLogin()"
           >
             <img
               ngSrc="/icons/arrow-left.svg"
@@ -212,7 +206,7 @@ interface LoginFormControls {
               [class.icon-invert]="isDarkMode()"
             />
             Retour à l'accueil
-          </button>
+          </app-button>
         </div>
       </div>
     </div>
@@ -283,7 +277,6 @@ export class LoginForm {
         this.loginSuccess.emit();
       },
       error: (error) => {
-        // L'erreur est déjà gérée dans le service via tap
         console.error('Erreur de connexion:', error);
       },
     });
