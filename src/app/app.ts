@@ -1,10 +1,13 @@
-import { Component, signal, viewChild, inject } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component, signal, viewChild, inject, computed } from '@angular/core';
+import { Router, RouterOutlet, NavigationEnd } from '@angular/router';
 import { LoginModal, NavbarComponent, ToastContainer, ToastService } from '@shared/ui';
+import { FooterComponent } from '@shared/ui/footer/footer.component';
+import { filter, map } from 'rxjs/operators';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, NavbarComponent, LoginModal, ToastContainer],
+  imports: [RouterOutlet, NavbarComponent, LoginModal, ToastContainer, FooterComponent],
   templateUrl: './app.html',
   styleUrl: './app.css',
   host: {
@@ -13,10 +16,23 @@ import { LoginModal, NavbarComponent, ToastContainer, ToastService } from '@shar
   },
 })
 export class App {
+  private readonly router = inject(Router);
   private readonly toastService = inject(ToastService);
 
-  protected readonly title = signal('ng-portfolio-app');
+  private readonly currentUrl = toSignal(
+    this.router.events.pipe(
+      filter((event) => event instanceof NavigationEnd),
+      map((event: NavigationEnd) => event.url),
+    ),
+    { initialValue: this.router.url },
+  );
 
+  readonly showFooter = computed(() => {
+    const url = this.currentUrl();
+    return url === '/contact';
+  });
+
+  protected readonly title = signal('ng-portfolio-app');
   readonly loginModal = viewChild<LoginModal>('loginModal');
 
   onShowLogin(): void {
