@@ -19,89 +19,136 @@ import { AuthService } from '@core/services/auth';
   imports: [ReactiveFormsModule, CommonModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <div class="bg-background py-8">
-      <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="bg-background shadow-lg rounded-lg p-6 border border-accent">
-          <!-- Header -->
-          <div class="mb-6">
-            <h1 class="text-2xl font-bold text-text">
-              {{ badge() ? 'Modifier le statut du badge' : 'Gestion du badge' }}
-            </h1>
-            <p class="text-secondary mt-2">Gérez la disponibilité de votre badge professionnel</p>
+    <div class="space-y-6">
+      @if (isLoading()) {
+        <div class="flex items-center justify-center py-12">
+          <div class="text-center space-y-4">
+            <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-primary mx-auto"></div>
+            <p class="text-secondary font-medium">Chargement du badge...</p>
+          </div>
+        </div>
+      } @else if (error()) {
+        <div class="bg-red/5 border border-red/20 rounded-xl p-4 mb-6">
+          <div class="flex items-center gap-3">
+            <div class="w-5 h-5 bg-red/20 rounded-full flex items-center justify-center">
+              <span class="text-red text-xs">⚠</span>
+            </div>
+            <p class="text-red font-medium">{{ error() }}</p>
+          </div>
+        </div>
+      } @else {
+        <!-- Enhanced Form -->
+        <form [formGroup]="form" (ngSubmit)="onSubmit()" class="space-y-8">
+          <!-- Form Header -->
+          <div class="bg-gradient-to-r from-primary/5 to-accent/5 rounded-xl p-6 border border-accent/20">
+            <div class="flex items-center gap-4">
+              <div class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center">
+                <span class="text-2xl">🏷️</span>
+              </div>
+              <div>
+                <h2 class="text-xl font-bold text-text">
+                  {{ badge() ? 'Modifier le statut du badge' : 'Configuration du badge' }}
+                </h2>
+                <p class="text-secondary text-sm mt-1">
+                  Définissez votre disponibilité professionnelle
+                </p>
+              </div>
+            </div>
           </div>
 
-          @if (isLoading()) {
-            <div class="text-center py-8">
-              <div
-                class="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600 mx-auto"
-              ></div>
-              <p class="text-gray-600 mt-2">Chargement...</p>
-            </div>
-          } @else if (error()) {
-            <div class="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
-              <p class="text-red-600">{{ error() }}</p>
-            </div>
-          } @else {
-            <!-- Formulaire -->
-            <form [formGroup]="form" (ngSubmit)="onSubmit()" class="space-y-6">
-              <!-- Statut -->
-              <div>
-                <label for="status" class="block text-sm font-medium text-gray-700">
-                  Statut de disponibilité *
-                </label>
+          <!-- Form Fields -->
+          <div class="bg-background rounded-xl border border-accent/20 p-6 space-y-6">
+            <!-- Status Field -->
+            <div class="space-y-3">
+              <label for="status" class="block text-sm font-semibold text-text">
+                Statut de disponibilité
+                <span class="text-red ml-1">*</span>
+              </label>
+              <div class="relative">
                 <select
                   id="status"
                   formControlName="status"
-                  class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                  class="w-full px-4 py-3 border border-accent/30 rounded-xl bg-background text-text focus:ring-2 focus:ring-primary focus:border-primary/30 transition-all duration-200 appearance-none cursor-pointer"
                 >
                   @for (option of statusOptions; track option.value) {
-                    <option [value]="option.value">{{ option.label }}</option>
+                    <option [value]="option.value" class="bg-background text-text">{{ option.label }}</option>
                   }
                 </select>
-                @if (form.get('status')?.invalid && form.get('status')?.touched) {
-                  <p class="mt-1 text-sm text-red-600">Le statut est requis</p>
-                }
+                <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                  <svg class="w-5 h-5 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                  </svg>
+                </div>
               </div>
+              @if (form.get('status')?.invalid && form.get('status')?.touched) {
+                <div class="flex items-center gap-2 text-red text-sm">
+                  <span class="text-xs">⚠</span>
+                  <span>Le statut est requis</span>
+                </div>
+              }
+            </div>
 
-              <!-- Date de disponibilité (conditionnelle) -->
-              @if (showAvailableFromField()) {
-                <div>
-                  <label for="availableFrom" class="block text-sm font-medium text-gray-700">
-                    Date de disponibilité *
-                  </label>
+            <!-- Available From Field (Conditional) -->
+            @if (showAvailableFromField()) {
+              <div class="space-y-3 animate-in fade-in duration-300">
+                <label for="availableFrom" class="block text-sm font-semibold text-text">
+                  Date de disponibilité
+                  <span class="text-red ml-1">*</span>
+                </label>
+                <div class="relative">
                   <input
                     type="datetime-local"
                     id="availableFrom"
                     formControlName="availableFrom"
-                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                    class="w-full px-4 py-3 border border-accent/30 rounded-xl bg-background text-text focus:ring-2 focus:ring-primary focus:border-primary/30 transition-all duration-200"
                   />
-                  @if (form.get('availableFrom')?.invalid && form.get('availableFrom')?.touched) {
-                    <p class="mt-1 text-sm text-red-600">La date de disponibilité est requise</p>
-                  }
+                  <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                    <svg class="w-5 h-5 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                    </svg>
+                  </div>
                 </div>
-              }
-
-              <!-- Actions -->
-              <div class="flex justify-end space-x-3">
-                <button
-                  type="button"
-                  (click)="onCancelClick()"
-                  class="px-4 py-2 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                >
-                  Annuler
-                </button>
-                <button
-                  type="submit"
-                  [disabled]="form.invalid || isSaving()"
-                  class="px-4 py-2 border border-transparent rounded-md shadow-sm bg-indigo-600 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:opacity-50"
-                >
-                  {{ isSaving() ? 'Enregistrement...' : 'Enregistrer' }}
-                </button>
+                @if (form.get('availableFrom')?.invalid && form.get('availableFrom')?.touched) {
+                  <div class="flex items-center gap-2 text-red text-sm">
+                    <span class="text-xs">⚠</span>
+                    <span>La date de disponibilité est requise</span>
+                  </div>
+                }
+                <p class="text-secondary text-xs">
+                  💡 Sélectionnez la date et l'heure à partir desquelles vous serez disponible
+                </p>
               </div>
-            </form>
-          }
-        </div>
-      </div>
+            }
+          </div>
+
+          <!-- Form Actions -->
+          <div class="flex flex-col sm:flex-row gap-3 sm:justify-end">
+            <button
+              type="button"
+              (click)="onCancelClick()"
+              class="px-6 py-3 border border-accent/30 rounded-xl bg-background text-text font-medium hover:bg-accent/5 hover:border-accent/40 focus:outline-none focus:ring-2 focus:ring-accent/30 transition-all duration-200"
+            >
+              Annuler
+            </button>
+            <button
+              type="submit"
+              [disabled]="form.invalid || isSaving()"
+              class="px-6 py-3 bg-accent hover:bg-accent/90 disabled:bg-accent/50 text-white font-semibold rounded-xl focus:outline-none focus:ring-2 focus:ring-accent/30 transition-all duration-200 shadow-sm hover:shadow-md disabled:cursor-not-allowed"
+              [class.opacity-50]="form.invalid || isSaving()"
+            >
+              <div class="flex items-center justify-center gap-2">
+                @if (isSaving()) {
+                  <div class="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                  <span>Enregistrement...</span>
+                } @else {
+                  <span>💾</span>
+                  <span>Enregistrer</span>
+                }
+              </div>
+            </button>
+          </div>
+        </form>
+      }
     </div>
   `,
 })
@@ -233,7 +280,9 @@ export class BadgeEditComponent implements OnInit {
       const formValue = this.form.value;
       const request: UpdateBadgeRequest = {
         status: formValue.status,
-        availableFrom: formValue.availableFrom ?? undefined,
+        availableFrom: formValue.availableFrom && formValue.availableFrom.trim() !== ''
+          ? formValue.availableFrom
+          : undefined,
       };
 
       this.badgeService.update(this.badge()!.id, request).subscribe({
