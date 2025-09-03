@@ -10,7 +10,6 @@ import { NAVIGATION_LINKS } from './data/navigation-links.data';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="min-h-screen bg-background">
-      <!-- Navigation Bar -->
       <nav>
         <div class="max-w-7xl mx-auto px-6 py-4">
           <div class="flex justify-between items-center">
@@ -39,7 +38,6 @@ import { NAVIGATION_LINKS } from './data/navigation-links.data';
         </div>
       </nav>
 
-      <!-- Enhanced Header Section -->
       <header class="bg-background rounded-2xl m-6 p-6 border border-accent shadow-sm">
         <div class="flex items-center justify-between">
           <div class="flex items-center gap-3">
@@ -76,7 +74,6 @@ import { NAVIGATION_LINKS } from './data/navigation-links.data';
         </div>
       </header>
 
-      <!-- Main Content Area -->
       <main class="flex-1 overflow-y-auto">
         <router-outlet></router-outlet>
       </main>
@@ -87,20 +84,15 @@ export class Admin {
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
 
-  // État local avec signaux
   readonly stats = signal({
     users: 1,
     projects: 5,
     visitors: 124,
   });
 
-  // Navigation links
   readonly navigationLinks = signal(NAVIGATION_LINKS);
-
-  // Computed pour l'utilisateur actuel
   readonly currentUser = this.authService.user;
 
-  // Computed pour le titre de la page actuelle
   readonly currentPageTitle = computed(() => {
     const url = this.router.url;
     if (url === '/admin' || url === '/admin/') return 'Dashboard';
@@ -112,9 +104,6 @@ export class Admin {
     return 'Administration';
   });
 
-  /**
-   * Navigation vers une section spécifique
-   */
   navigateToSection(section: string): void {
     if (section === '') {
       this.router.navigate(['/admin']);
@@ -123,9 +112,6 @@ export class Admin {
     }
   }
 
-  /**
-   * Déconnexion de l'utilisateur admin
-   */
   logout(): void {
     this.authService.logout().subscribe({
       next: () => {

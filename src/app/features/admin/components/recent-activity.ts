@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, inject, signal } from '@angular/core';
 import { type Activity, ActivityType } from '@features/admin/interfaces/activity.interface';
-import { ActivityService } from '@features/admin/services/activity.service';
+import { ActivityService } from '@features/admin/services/activity-service';
 
 @Component({
   selector: 'app-recent-activity',
