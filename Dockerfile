@@ -9,7 +9,7 @@ WORKDIR /app
 COPY package*.json ./
 
 # Installe les dépendances
-RUN npm install
+RUN pnpm install
 
 # Copie tout le code source
 COPY . .
@@ -25,7 +25,7 @@ RUN mkdir -p src/environments && \
     echo "};" >> src/environments/environment.ts
 
 # Build l'application Angular en mode production
-RUN npm run build -- --configuration production
+RUN pnpm run build -- --configuration production
 
 # ---- Étape de production ----
 # Utilise Nginx Alpine comme image finale légère
