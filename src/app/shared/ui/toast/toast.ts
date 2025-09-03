@@ -18,7 +18,7 @@ import { ToastService } from '@shared/ui';
         @switch (toast().type) {
           @case ('success') {
             <img
-              [ngSrc]="'/icons/toast/success.svg'"
+              [ngSrc]="'/icons/success.svg'"
               alt="Success"
               class="w-5 h-5"
               [class]="iconClasses()"
@@ -28,7 +28,7 @@ import { ToastService } from '@shared/ui';
           }
           @case ('warning') {
             <img
-              [ngSrc]="'/icons/toast/warning.svg'"
+              [ngSrc]="'/icons/warning.svg'"
               alt="Warning"
               class="w-5 h-5"
               [class]="iconClasses()"
@@ -38,7 +38,7 @@ import { ToastService } from '@shared/ui';
           }
           @case ('danger') {
             <img
-              [ngSrc]="'/icons/toast/error.svg'"
+              [ngSrc]="'/icons/error.svg'"
               alt="Error"
               class="w-5 h-5"
               [class]="iconClasses()"
@@ -70,13 +70,7 @@ import { ToastService } from '@shared/ui';
           [class]="dismissButtonClasses()"
           aria-label="Fermer la notification"
         >
-          <img
-            [ngSrc]="'icons/toast/close.svg'"
-            alt="Fermer"
-            class="w-4 h-4"
-            height="16"
-            width="16"
-          />
+          <img [ngSrc]="'icons/close.svg'" alt="Fermer" class="w-4 h-4" height="16" width="16" />
         </button>
       }
     </div>
