@@ -34,12 +34,10 @@ export class ToastService {
       ...options,
     };
 
-    // Ajouter le nouveau toast
     this._toasts.update((toasts) => {
       const newToasts = [...toasts, toast];
       const maxToasts = this._config().maxToasts!;
 
-      // Limiter le nombre de toasts affichés
       if (newToasts.length > maxToasts) {
         return newToasts.slice(-maxToasts);
       }
@@ -47,7 +45,6 @@ export class ToastService {
       return newToasts;
     });
 
-    // Auto-dismiss si duration > 0
     if (duration && duration > 0) {
       setTimeout(() => {
         this.dismiss(id);

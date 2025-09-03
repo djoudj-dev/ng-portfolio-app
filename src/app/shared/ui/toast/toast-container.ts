@@ -51,7 +51,6 @@ export class ToastContainer {
   readonly containerDirectionClasses = computed(() => {
     const position = this.toastService.config().position ?? 'top-right';
 
-    // Les toasts en bas doivent apparaître dans l'ordre inverse (nouveaux en bas)
     if (position.startsWith('bottom')) {
       return 'flex-col-reverse';
     }
@@ -60,8 +59,6 @@ export class ToastContainer {
   });
 
   onToastDismissed(id: string): void {
-    // Le toast se supprime déjà lui-même, cette méthode peut être utilisée
-    // pour des actions supplémentaires si nécessaire
     console.log(`Toast ${id} dismissed`);
   }
 }

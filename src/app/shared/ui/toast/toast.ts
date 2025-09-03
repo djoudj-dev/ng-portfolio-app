@@ -49,7 +49,6 @@ import { ToastService } from '@shared/ui';
         }
       </div>
 
-      <!-- Contenu -->
       <div class="flex-1 min-w-0">
         <h4 class="text-sm font-semibold mb-1" [class]="titleClasses()">
           {{ toast().title }}
@@ -61,7 +60,6 @@ import { ToastService } from '@shared/ui';
         }
       </div>
 
-      <!-- Bouton de fermeture -->
       @if (toast().dismissible) {
         <button
           type="button"
