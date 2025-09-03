@@ -5,11 +5,10 @@ import { Router } from '@angular/router';
 import { ContactCardGroup } from './interface/contact.interface';
 import { CONTACT_DATA } from './data/contact-data';
 import { ContactMessageCard } from '@features/contact/components/contact-message-card/contact-message-card';
-import { FooterComponent } from '@shared/ui/footer/footer.component';
 
 @Component({
   selector: 'app-contact',
-  imports: [NgOptimizedImage, ReactiveFormsModule, ContactMessageCard, FooterComponent],
+  imports: [NgOptimizedImage, ReactiveFormsModule, ContactMessageCard],
   templateUrl: './contact.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
