@@ -2,7 +2,6 @@ import {
   Component,
   ChangeDetectionStrategy,
   signal,
-  computed,
   inject,
   OnInit,
 } from '@angular/core';
@@ -183,32 +182,28 @@ import { TimelineChartComponent } from '@features/analytics';
 export class AnalyticsOverviewComponent implements OnInit {
   private readonly analyticsService = inject(AnalyticsService);
 
-  private readonly _analytics = signal<AnalyticsOverview | null>(null);
-  private readonly _isLoading = signal(true);
-  private readonly _error = signal<string | null>(null);
-
-  readonly analytics = computed(() => this._analytics());
-  readonly isLoading = computed(() => this._isLoading());
-  readonly error = computed(() => this._error());
+  readonly analytics = signal<AnalyticsOverview | null>(null);
+  readonly isLoading = signal(true);
+  readonly error = signal<string | null>(null);
 
   async ngOnInit(): Promise<void> {
     await this.loadRealTimeStats();
   }
 
   private async loadRealTimeStats(): Promise<void> {
-    this._isLoading.set(true);
-    this._error.set(null);
+    this.isLoading.set(true);
+    this.error.set(null);
 
     try {
       const data = await this.analyticsService.getRealTimeStats();
-      this._analytics.set(data);
+      this.analytics.set(data);
     } catch (error: unknown) {
       console.error('Erreur chargement analytics:', error);
-      this._error.set(
+      this.error.set(
         error instanceof Error ? error.message : 'Erreur lors du chargement des analytics',
       );
     } finally {
-      this._isLoading.set(false);
+      this.isLoading.set(false);
     }
   }
 
