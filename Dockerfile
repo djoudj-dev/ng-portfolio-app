@@ -19,7 +19,7 @@ COPY . .
 
 # Créer le fichier d'environnement de production pour la liaison backend
 ARG API_URL
-ENV API_URL=${API_URL:-https://api.nedellec-julien.fr/api}
+ENV API_URL=${API_URL:-https://api.nedellec-julien.fr}
 
 RUN mkdir -p src/environments && \
     echo "export const environment = {" > src/environments/environment.ts && \
