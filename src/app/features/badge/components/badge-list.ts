@@ -46,7 +46,6 @@ import { AuthService } from '@core/services/auth';
               </button>
             </div>
           } @else {
-            <!-- Liste des badges -->
             @if (badges().length === 0) {
               <div class="text-center py-8">
                 <p class="text-secondary">Aucun badge trouvé</p>
@@ -74,7 +73,6 @@ import { AuthService } from '@core/services/auth';
                         {{ getStatusLabel(badge.status) }}
                       </div>
 
-                      <!-- Badge Info -->
                       <div>
                         <p class="font-medium text-text">Badge #{{ badge.id.slice(0, 8) }}</p>
                         <p class="text-sm text-secondary">
@@ -146,12 +144,10 @@ export class BadgeListComponent implements OnInit {
   }
 
   onCreateBadge(): void {
-    // Emit event or navigate to create form
     console.log('Create badge clicked');
   }
 
   onEditBadge(badge: Badge): void {
-    // Emit event or navigate to edit form
     console.log('Edit badge clicked', badge);
   }
 
@@ -162,7 +158,7 @@ export class BadgeListComponent implements OnInit {
 
     this.badgeService.delete(badge.id).subscribe({
       next: () => {
-        this.loadBadges(); // Reload the list
+        this.loadBadges();
       },
       error: (error) => {
         this.error.set(error.message);
