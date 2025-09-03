@@ -2,9 +2,8 @@ import {
   Component,
   ChangeDetectionStrategy,
   input,
-  ViewChild,
+  viewChild,
   ElementRef,
-  AfterViewInit,
   OnDestroy,
   effect,
 } from '@angular/core';
@@ -24,8 +23,8 @@ Chart.register(...registerables);
     </div>
   `,
 })
-export class TimelineChartComponent implements AfterViewInit, OnDestroy {
-  @ViewChild('chartCanvas', { static: true }) chartCanvas!: ElementRef<HTMLCanvasElement>;
+export class TimelineChartComponent implements OnDestroy {
+  readonly chartCanvas = viewChild.required<ElementRef<HTMLCanvasElement>>('chartCanvas');
 
   readonly data = input<VisitStats[]>([]);
   readonly title = input<string>('Évolution des visites');
@@ -33,17 +32,18 @@ export class TimelineChartComponent implements AfterViewInit, OnDestroy {
   private chart: Chart | null = null;
 
   constructor() {
-    // Effect pour mettre à jour le graphique quand les données changent
     effect(() => {
+      const canvas = this.chartCanvas();
       const chartData = this.data();
-      if (this.chart && chartData) {
-        this.updateChart(chartData);
+
+      if (canvas) {
+        if (!this.chart) {
+          this.initChart();
+        } else if (chartData) {
+          this.updateChart(chartData);
+        }
       }
     });
-  }
-
-  ngAfterViewInit(): void {
-    this.initChart();
   }
 
   ngOnDestroy(): void {
@@ -53,7 +53,7 @@ export class TimelineChartComponent implements AfterViewInit, OnDestroy {
   }
 
   private initChart(): void {
-    const ctx = this.chartCanvas.nativeElement.getContext('2d');
+    const ctx = this.chartCanvas().nativeElement.getContext('2d');
     if (!ctx) return;
 
     const chartData = this.data();

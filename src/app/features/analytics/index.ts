@@ -1,5 +1,5 @@
 // Services
-export * from './services/analytics.service';
+export * from './services/analytics-service';
 
 // Interfaces
 export * from './interfaces/analytics.interface';
