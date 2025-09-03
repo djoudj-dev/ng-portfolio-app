@@ -10,6 +10,7 @@ import { Observable, throwError } from 'rxjs';
 import { catchError, switchMap } from 'rxjs/operators';
 import { AuthService } from '@core/services/auth';
 import { Router } from '@angular/router';
+import { environment } from '@environments/environment';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
@@ -19,7 +20,7 @@ export class AuthInterceptor implements HttpInterceptor {
 
   intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     // Assurez-vous que withCredentials est défini pour toutes les requêtes API
-    if (req.url.includes('/api/')) {
+    if (req.url.startsWith(environment.apiUrl)) {
       const headers: { [key: string]: string } = {};
 
       // Ne pas définir Content-Type pour FormData (multipart), le navigateur le fait automatiquement
