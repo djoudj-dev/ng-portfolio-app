@@ -82,6 +82,7 @@ export class BadgeService {
       .patch<BadgeResponse>(`${this.apiUrl}/${id}`, updateRequest, this.getAuthOptions())
       .pipe(
         map((response) => this.mapResponseToBadge(response)),
+
         catchError((error) => {
           if (error.status === 404) {
             const mockBadge = this.getMockBadge();
