@@ -5,7 +5,6 @@
 >
   <div class="mx-auto px-3 sm:px-4 md:px-6 lg:max-w-7xl lg:px-8">
     <div class="flex items-center justify-between h-16">
-      <!-- Logo Section (Left) -->
       <div class="flex items-center space-x-2 sm:space-x-3" [routerLink]="['/']">
         <img
           [ngSrc]="'/logo.svg'"
@@ -20,7 +19,6 @@
         </span>
       </div>
 
-      <!-- Navigation Links (Center) - Hidden on mobile -->
       <div class="hidden lg:flex items-center space-x-6 xl:space-x-8">
         @for (link of navLinks(); track link.route) {
           <a
@@ -42,7 +40,6 @@
         }
       </div>
 
-      <!-- Action Icons (Right) -->
       <div class="flex items-center space-x-2 sm:space-x-3">
         <!-- CV Download Button -->
         <app-button
@@ -64,7 +61,6 @@
           </div>
         </app-button>
 
-        <!-- Theme Toggle -->
         <button
           (click)="toggleTheme()"
           class="p-1.5 sm:p-2 rounded-lg hover:bg-accent transition-colors duration-200"
@@ -80,7 +76,6 @@
           />
         </button>
 
-        <!-- Admin Panel (Only for admin users) -->
         @if (isAdmin()) {
           <button
             (click)="navigateToAdmin()"
@@ -98,7 +93,6 @@
           </button>
         }
 
-        <!-- Logout (Only when authenticated) -->
         @if (isLoggedIn()) {
           <button
             (click)="logout()"
@@ -116,7 +110,6 @@
           </button>
         }
 
-        <!-- Mobile Menu Toggle -->
         <button
           (click)="toggleMobileMenu()"
           class="lg:hidden p-1.5 sm:p-2 rounded-lg hover:bg-accent-100 transition-colors duration-200"
@@ -136,7 +129,6 @@
       </div>
     </div>
 
-    <!-- Mobile Menu (Hidden by default) -->
     @if (isMobileMenuOpen()) {
       <div id="mobile-menu" class="lg:hidden border-t border-primary-200 py-3 sm:py-4">
         <div class="flex flex-col space-y-2 sm:space-y-3">

@@ -8,16 +8,13 @@ import { NgOptimizedImage } from '@angular/common';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     @if (isVisible()) {
-      <!-- Modal Overlay -->
       <div
         class="fixed inset-0 z-50 overflow-y-auto"
         (click)="onOverlayClick($event)"
         (keydown)="onKeyDown($event)"
       >
-        <!-- Backdrop -->
         <div class="fixed inset-0 bg-background bg-opacity-75 transition-opacity"></div>
 
-        <!-- Modal Content -->
         <div class="flex min-h-screen items-center justify-center p-4">
           <div
             id="login-modal"
@@ -28,7 +25,6 @@ import { NgOptimizedImage } from '@angular/common';
             aria-labelledby="modal-title"
             tabindex="-1"
           >
-            <!-- Close Button -->
             <button
               type="button"
               (click)="closeModal()"
@@ -44,7 +40,6 @@ import { NgOptimizedImage } from '@angular/common';
               />
             </button>
 
-            <!-- Login Form -->
             <app-login-form (loginSuccess)="onLoginSuccess()" (loginCancel)="onLoginCancel()" />
           </div>
         </div>
@@ -56,20 +51,16 @@ import { NgOptimizedImage } from '@angular/common';
   },
 })
 export class LoginModal {
-  // State management
   private readonly _isVisible = signal(false);
   readonly isVisible = this._isVisible.asReadonly();
 
-  // Events
   readonly modalClosed = output<void>();
   readonly loginCompleted = output<void>();
 
   show(): void {
     this._isVisible.set(true);
-    // Prevent body scroll when modal is open
     document.body.classList.add('overflow-hidden');
 
-    // Focus the modal for accessibility
     setTimeout(() => {
       const modal = document.getElementById('login-modal');
       modal?.focus();
@@ -78,7 +69,6 @@ export class LoginModal {
 
   hide(): void {
     this._isVisible.set(false);
-    // Restore body scroll
     document.body.classList.remove('overflow-hidden');
   }
 
@@ -97,14 +87,12 @@ export class LoginModal {
   }
 
   onOverlayClick(event: Event): void {
-    // Close modal when clicking on overlay (not on modal content)
     if (event.target === event.currentTarget) {
       this.closeModal();
     }
   }
 
   onKeyDown(event: KeyboardEvent): void {
-    // Close modal when pressing ESC key
     if (event.key === 'Escape') {
       this.closeModal();
     }

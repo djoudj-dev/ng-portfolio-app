@@ -15,12 +15,10 @@ export interface ConfirmModalData {
   imports: [CommonModule, ButtonComponent, NgOptimizedImage],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <!-- Modal Backdrop -->
     <div
       class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
       (click)="onBackdropClick($event)"
     >
-      <!-- Modal Container -->
       <div
         class="bg-background rounded-2xl border border-accent shadow-2xl max-w-md w-full animate-in fade-in-0 zoom-in-95 duration-200"
         (click)="$event.stopPropagation()"
@@ -28,10 +26,8 @@ export interface ConfirmModalData {
         [attr.aria-labelledby]="'confirm-title'"
         [attr.aria-describedby]="data().message ? 'confirm-message' : null"
       >
-        <!-- Header -->
         <div class="p-6 pb-4">
           <div class="flex items-center gap-3">
-            <!-- Icon based on type -->
             <div
               class="w-10 h-10 rounded-full flex items-center justify-center"
               [ngClass]="getIconContainerClass()"
@@ -73,14 +69,12 @@ export interface ConfirmModalData {
               }
             </div>
 
-            <!-- Title -->
             <h2 id="confirm-title" class="text-lg font-semibold text-text">
               {{ data().title }}
             </h2>
           </div>
         </div>
 
-        <!-- Content -->
         @if (data().message) {
           <div class="px-6 pb-6">
             <p id="confirm-message" class="text-secondary leading-relaxed">
@@ -89,7 +83,6 @@ export interface ConfirmModalData {
           </div>
         }
 
-        <!-- Actions -->
         <div class="flex gap-3 p-6 pt-4 border-t border-accent/20">
           <app-button class="flex-1" color="accent" (buttonClick)="onCancel()">
             {{ data().cancelText || 'Annuler' }}
@@ -145,7 +138,6 @@ export class ConfirmModal {
   }
 
   onBackdropClick(_event: Event): void {
-    // Fermer le modal si on clique sur le backdrop
     this.onCancel();
   }
 

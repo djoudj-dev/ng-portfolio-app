@@ -17,7 +17,6 @@ interface LoginFormControls {
       class="flex items-center justify-center bg-background border border-accent px-4 sm:px-6 lg:px-8"
     >
       <div class="max-w-md w-full space-y-8">
-        <!-- Header -->
         <div class="text-center">
           <img
             ngSrc="/logo.svg"
@@ -31,14 +30,12 @@ interface LoginFormControls {
           <p class="mt-2 text-sm text-secondary">Accédez à votre espace d'administration</p>
         </div>
 
-        <!-- Form -->
         <form
           [formGroup]="loginForm"
           (ngSubmit)="onSubmit()"
           class="mt-8 space-y-6"
           [class.opacity-50]="authService.isLoading()"
         >
-          <!-- Email Field -->
           <div>
             <label for="email" class="block text-sm font-medium text-text mb-2">
               Adresse email
@@ -80,7 +77,6 @@ interface LoginFormControls {
             }
           </div>
 
-          <!-- Password Field -->
           <div>
             <label for="password" class="block text-sm font-medium text-text mb-2">
               Mot de passe
@@ -140,7 +136,6 @@ interface LoginFormControls {
             }
           </div>
 
-          <!-- Error Message -->
           @if (authService.error()) {
             <div
               class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg flex items-center space-x-2"
@@ -166,7 +161,6 @@ interface LoginFormControls {
             </div>
           }
 
-          <!-- Submit Button -->
           <div>
             <button
               type="submit"
@@ -230,19 +224,15 @@ interface LoginFormControls {
 export class LoginForm {
   readonly authService = inject(AuthService);
 
-  // Signaux pour l'état local du composant
   private readonly _showPassword = signal(false);
   private readonly _isDarkMode = signal(false);
 
-  // Signaux publics
   readonly showPassword = this._showPassword.asReadonly();
   readonly isDarkMode = this._isDarkMode.asReadonly();
 
-  // Événements
   readonly loginSuccess = output<void>();
   readonly loginCancel = output<void>();
 
-  // Formulaire typé avec validation
   readonly loginForm = new FormGroup<LoginFormControls>({
     email: new FormControl('', {
       nonNullable: true,
@@ -254,7 +244,6 @@ export class LoginForm {
     }),
   });
 
-  // Accès facile aux contrôles
   get emailControl() {
     return this.loginForm.controls.email;
   }
@@ -263,13 +252,10 @@ export class LoginForm {
   }
 
   constructor() {
-    // Initialiser le thème depuis le DOM
     this.initializeTheme();
 
-    // Écouter les changements de thème
     this.watchThemeChanges();
 
-    // Gérer l'état disabled des contrôles basé sur le loading state
     effect(() => {
       const isLoading = this.authService.isLoading();
       if (isLoading) {
@@ -319,7 +305,6 @@ export class LoginForm {
   }
 
   private watchThemeChanges(): void {
-    // Observer les changements d'attribut data-theme
     const observer = new MutationObserver((mutations) => {
       mutations.forEach((mutation) => {
         if (mutation.type === 'attributes' && mutation.attributeName === 'data-theme') {

@@ -27,11 +27,9 @@ export class NavbarComponent {
   private readonly router = inject(Router);
   private readonly authService = inject(AuthService);
 
-  // Events
   readonly showLogin = output<void>();
   readonly logoutCompleted = output<void>();
 
-  // Navigation links with their corresponding icons
   readonly navLinks = signal<NavLink[]>([
     { label: 'Accueil', route: '/', icon: 'home' },
     { label: 'À propos', route: '/about', icon: 'about' },
@@ -40,18 +38,15 @@ export class NavbarComponent {
     { label: 'Contact', route: '/contact', icon: 'contact' },
   ]);
 
-  // State signals
   private readonly _isDarkMode = signal(false);
   private readonly _isMobileMenuOpen = signal(false);
   private readonly _currentRoute = signal('/');
 
-  // Computed properties
   readonly isDarkMode = computed(() => this._isDarkMode());
   readonly isLoggedIn = computed(() => this.authService.isAuthenticated());
   readonly isAdmin = computed(() => this.authService.isAdmin());
   readonly isMobileMenuOpen = computed(() => this._isMobileMenuOpen());
 
-  // Theme icon computed properties
   readonly themeIcon = computed(() => ({
     src: this.isDarkMode() ? '/icons/sun.svg' : '/icons/moon.svg',
     alt: this.isDarkMode() ? 'Mode clair' : 'Mode sombre',
@@ -62,7 +57,6 @@ export class NavbarComponent {
     this.isDarkMode() ? 'Activer le mode clair' : 'Activer le mode sombre',
   );
 
-  // Mobile menu icon computed properties
   readonly menuIcon = computed(() => ({
     src: this.isMobileMenuOpen() ? '/icons/close.svg' : '/icons/open.svg',
     alt: this.isMobileMenuOpen() ? 'Fermer menu' : 'Ouvrir menu',
@@ -74,19 +68,15 @@ export class NavbarComponent {
   );
 
   constructor() {
-    // Initialize theme from localStorage or system preference
     this.initializeTheme();
 
-    // Initialize current route
     this._currentRoute.set(this.router.url);
 
-    // Listen to route changes
     this.router.events.subscribe(() => {
       this._currentRoute.set(this.router.url);
     });
   }
 
-  // Theme management
   toggleTheme(): void {
     const newTheme = !this._isDarkMode();
     this._isDarkMode.set(newTheme);
@@ -113,13 +103,10 @@ export class NavbarComponent {
     }
   }
 
-  // Authentication management
   logout(): void {
     this.authService.logout().subscribe({
       next: () => {
-        // Logout successful - state already updated in service
         this.logoutCompleted.emit();
-        // Redirect to home page after successful logout
         this.router.navigate(['/']);
       },
       error: (error) => {
@@ -132,7 +119,6 @@ export class NavbarComponent {
     this.router.navigate(['/admin']);
   }
 
-  // Mobile menu management
   toggleMobileMenu(): void {
     this._isMobileMenuOpen.update((current) => !current);
   }
@@ -141,14 +127,11 @@ export class NavbarComponent {
     this._isMobileMenuOpen.set(false);
   }
 
-  // Route checking
   isActiveRoute(route: string): boolean {
     return this._currentRoute() === route;
   }
 
-  // CV download functionality
   downloadCV(): void {
-    // Create a link element and trigger download
     const link = document.createElement('a');
     link.href = `${environment.apiUrl}/cv/download`;
     link.target = '_blank';
