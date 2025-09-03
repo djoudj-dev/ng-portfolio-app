@@ -69,12 +69,16 @@ export class CvService {
 
   async downloadCvAndNotify(userId?: string): Promise<void> {
     try {
+      // Récupérer les métadonnées pour obtenir le nom original
+      const metadata = await this.getCurrentCvMetadata(userId);
+      const fileName = (metadata.originalName ?? metadata.fileName) || 'CV.pdf';
+
       const blob = await this.downloadCv(userId);
 
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
-      link.download = 'CV.pdf';
+      link.download = fileName;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
