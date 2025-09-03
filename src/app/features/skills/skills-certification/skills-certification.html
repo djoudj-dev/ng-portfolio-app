@@ -1,30 +1,30 @@
-<section class="px-4 py-6 sm:px-6" aria-labelledby="certifications-section">
+<section class="px-3 py-4 sm:px-4 sm:py-6" aria-labelledby="certifications-section">
       <h2
         id="certifications-section"
-        class="text-accent decoration-text mb-6 text-center text-xl font-bold underline sm:text-2xl"
+        class="text-accent decoration-text mb-4 text-center text-lg font-bold underline sm:text-xl sm:mb-6 md:text-2xl"
       >
         Certifications
       </h2>
 
       <div
-        class="mx-auto grid max-w-md grid-cols-1 gap-4 sm:max-w-2xl sm:gap-6 md:max-w-4xl md:grid-cols-2 lg:max-w-6xl lg:grid-cols-2"
+        class="mx-auto grid max-w-sm grid-cols-1 gap-3 sm:max-w-2xl sm:gap-4 sm:grid-cols-2 md:max-w-4xl md:gap-6 lg:max-w-6xl"
         role="list"
       >
         @for (certification of certifications(); track certification.id) {
           <article
-            class="bg-background shadow-text border-accent relative rounded-lg border p-4"
+            class="bg-background shadow-text border-accent relative rounded-lg border p-3 sm:p-4"
             role="article"
           >
-            <header class="mb-3 flex items-center gap-2 sm:mb-4">
+            <header class="mb-2 flex items-center gap-1.5 sm:gap-2 sm:mb-3">
               <img
-                [ngSrc]="'/icons/skills/student.svg'"
+                [ngSrc]="'/icons/student.svg'"
                 alt="Icône de certification"
                 width="20"
                 height="20"
-                class="icon-invert h-5 w-5 sm:h-6 sm:w-6"
+                class="icon-invert h-4 w-4 sm:h-5 sm:w-5"
               />
               <h3
-                class="decoration-accent text-lg font-semibold underline sm:text-xl"
+                class="decoration-accent text-base font-semibold underline sm:text-lg md:text-xl leading-tight"
                 id="certification-{{ certification.id }}"
               >
                 {{ certification.title }}
@@ -33,7 +33,7 @@
 
             <!-- Slide container -->
             <div
-              class="relative mt-3 min-h-[180px] overflow-hidden sm:mt-4 sm:min-h-[200px]"
+              class="relative mt-2 min-h-[160px] overflow-hidden sm:mt-3 sm:min-h-[180px] md:min-h-[200px]"
               [attr.aria-labelledby]="'certification-' + certification.id"
             >
               <!-- Slide 1 : Description -->
@@ -49,7 +49,7 @@
                 [attr.aria-hidden]="getCurrentSlide(certification.id) !== 0"
                 id="certification-{{ certification.id }}-description"
               >
-                <p class="text-text text-xs sm:text-lg">
+                <p class="text-text text-xs leading-relaxed sm:text-sm md:text-base">
                   {{ certification.description }}
                 </p>
               </section>
@@ -67,17 +67,17 @@
                 [attr.aria-hidden]="getCurrentSlide(certification.id) !== 1"
               >
                 <h4
-                  class="mb-2 text-base font-semibold sm:text-lg"
+                  class="mb-1.5 text-sm font-semibold sm:text-base sm:mb-2"
                   id="skills-{{ certification.id }}"
                 >
                   Compétences acquises :
                 </h4>
                 <ul
-                  class="list-disc space-y-1 pl-4 text-xs sm:pl-5 sm:text-base"
+                  class="list-disc space-y-1 pl-4 text-sm sm:pl-4 sm:space-y-1 sm:text-sm md:text-base"
                   [attr.aria-labelledby]="'skills-' + certification.id"
                 >
                   @for (skill of certification.skillsLearned; track skill) {
-                    <li class="text-text/70">{{ skill }}</li>
+                    <li class="text-text/70 break-words">{{ skill }}</li>
                   }
                 </ul>
               </section>
@@ -85,24 +85,24 @@
 
             <!-- Footer -->
             <footer
-              class="mt-4 flex flex-col gap-3 sm:mt-6 sm:flex-row sm:items-center sm:justify-between"
+              class="mt-3 flex flex-col gap-2 sm:mt-4 sm:gap-3 md:flex-row md:items-center md:justify-between"
             >
-              <div class="flex items-center gap-2">
+              <div class="flex items-center gap-1.5 sm:gap-2">
                 <img
                   [ngSrc]="'/icons/trophy.svg'"
                   alt="Icône de trophée"
                   width="20"
                   height="20"
-                  class="h-6 w-6 sm:h-8 sm:w-8"
+                  class="h-5 w-5 sm:h-6 sm:w-6"
                 />
-                <p class="text-text/70 text-sm font-bold sm:text-lg">
+                <p class="text-text/70 text-xs font-bold sm:text-sm md:text-base">
                   {{ certification.status }}
                 </p>
               </div>
 
               <!-- Navigation buttons -->
               <nav
-                class="flex gap-2"
+                class="flex gap-1.5 sm:gap-2"
                 aria-label="Navigation des détails de certification"
               >
                 <app-button
@@ -112,7 +112,7 @@
                       : 'accent'
                   "
                   [customClass]="
-                    'flex-1 px-2 py-1 text-xs sm:px-3 sm:py-1 sm:text-sm'
+                    'flex-1 px-2 py-1 text-xs sm:px-3 sm:py-1.5 sm:text-sm md:flex-initial'
                   "
                   (buttonClick)="goToSlide(certification.id, 0)"
                   [attr.aria-pressed]="getCurrentSlide(certification.id) === 0"
@@ -129,7 +129,7 @@
                       : 'accent'
                   "
                   [customClass]="
-                    'flex-1 px-2 py-1 text-xs sm:px-3 sm:py-1 sm:text-sm'
+                    'flex-1 px-2 py-1 text-xs sm:px-3 sm:py-1.5 sm:text-sm md:flex-initial'
                   "
                   (buttonClick)="goToSlide(certification.id, 1)"
                   [attr.aria-pressed]="getCurrentSlide(certification.id) === 1"
