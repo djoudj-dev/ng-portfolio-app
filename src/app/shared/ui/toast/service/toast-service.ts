@@ -1,10 +1,12 @@
-import { Injectable, signal, computed } from '@angular/core';
-import type { ToastData, ToastType, ToastConfig } from '@shared/ui';
+import { Injectable, signal, computed, inject } from '@angular/core';
+import type { ToastData, ToastType, ToastConfig, ConfirmModalData } from '@shared/ui';
+import { ConfirmModalService } from '@shared/ui';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ToastService {
+  private readonly confirmModalService = inject(ConfirmModalService);
   private readonly _toasts = signal<ToastData[]>([]);
   private readonly _config = signal<ToastConfig>({
     position: 'top-right',
@@ -75,6 +77,10 @@ export class ToastService {
 
   updateConfig(config: Partial<ToastConfig>): void {
     this._config.update((current) => ({ ...current, ...config }));
+  }
+
+  async confirm(data: ConfirmModalData): Promise<boolean> {
+    return await this.confirmModalService.confirm(data);
   }
 
   private generateId(): string {
