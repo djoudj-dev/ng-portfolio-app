@@ -2,14 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { environment } from '@environments/environment';
-import type {
-  AnalyticsQuery,
-  AnalyticsOverview,
-  VisitStats,
-  TotalVisits,
-  TrafficSourceBreakdown,
-  TopPage,
-} from '@features/analytics';
+import type { AnalyticsQuery, AnalyticsOverview, TotalVisits } from '@features/analytics';
 
 @Injectable({
   providedIn: 'root',
@@ -31,21 +24,6 @@ export class AnalyticsService {
       throw new Error(this.getErrorMessage(error));
     }
   }
-
-  async getVisitStats(query?: AnalyticsQuery): Promise<VisitStats[]> {
-    try {
-      return await firstValueFrom(
-        this.http.get<VisitStats[]>(`${this.baseUrl}/stats`, {
-          params: this.buildQueryParams(query),
-          withCredentials: true,
-        }),
-      );
-    } catch (error: unknown) {
-      console.error('Erreur récupération stats analytics:', error);
-      throw new Error(this.getErrorMessage(error));
-    }
-  }
-
   async getTotalVisits(query?: AnalyticsQuery): Promise<TotalVisits> {
     try {
       return await firstValueFrom(
@@ -59,48 +37,6 @@ export class AnalyticsService {
       throw new Error(this.getErrorMessage(error));
     }
   }
-
-  async getTrafficSourceBreakdown(query?: AnalyticsQuery): Promise<TrafficSourceBreakdown[]> {
-    try {
-      return await firstValueFrom(
-        this.http.get<TrafficSourceBreakdown[]>(`${this.baseUrl}/traffic-sources`, {
-          params: this.buildQueryParams(query),
-          withCredentials: true,
-        }),
-      );
-    } catch (error: unknown) {
-      console.error('Erreur récupération sources trafic:', error);
-      throw new Error(this.getErrorMessage(error));
-    }
-  }
-
-  async getTopPages(query?: AnalyticsQuery): Promise<TopPage[]> {
-    try {
-      return await firstValueFrom(
-        this.http.get<TopPage[]>(`${this.baseUrl}/top-pages`, {
-          params: this.buildQueryParams(query),
-          withCredentials: true,
-        }),
-      );
-    } catch (error: unknown) {
-      console.error('Erreur récupération top pages:', error);
-      throw new Error(this.getErrorMessage(error));
-    }
-  }
-
-  async getRealTimeStats(): Promise<AnalyticsOverview> {
-    try {
-      return await firstValueFrom(
-        this.http.get<AnalyticsOverview>(`${this.baseUrl}/real-time`, {
-          withCredentials: true,
-        }),
-      );
-    } catch (error: unknown) {
-      console.error('Erreur récupération stats temps réel:', error);
-      throw new Error(this.getErrorMessage(error));
-    }
-  }
-
   private buildQueryParams(query?: AnalyticsQuery): Record<string, string> {
     const params: Record<string, string> = {};
 
@@ -116,16 +52,12 @@ export class AnalyticsService {
     if (query?.visitorType) {
       params['visitorType'] = query.visitorType;
     }
-    if (query?.trafficSource) {
-      params['trafficSource'] = query.trafficSource;
-    }
     if (query?.page) {
       params['page'] = query.page;
     }
 
     return params;
   }
-
   private getErrorMessage(error: unknown): string {
     if (
       error &&
