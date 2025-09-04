@@ -16,12 +16,13 @@ export enum TrafficSource {
   DIRECT = 'DIRECT',
   GOOGLE = 'GOOGLE',
   LINKEDIN = 'LINKEDIN',
-  GITHUB = 'GITHUB',
   TWITTER = 'TWITTER',
   FACEBOOK = 'FACEBOOK',
+  GITHUB = 'GITHUB',
+  OTHER_SEARCH = 'OTHER_SEARCH',
+  OTHER_SOCIAL = 'OTHER_SOCIAL',
   REFERRAL = 'REFERRAL',
-  EMAIL = 'EMAIL',
-  OTHER = 'OTHER'
+  UNKNOWN = 'UNKNOWN'
 }
 
 export interface VisitStats {

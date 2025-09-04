@@ -278,12 +278,13 @@ export class AnalyticsOverviewComponent implements OnInit {
       DIRECT: '🔗',
       GOOGLE: '🔍',
       LINKEDIN: '💼',
-      GITHUB: '⚡',
       TWITTER: '🐦',
       FACEBOOK: '📘',
+      GITHUB: '⚡',
+      OTHER_SEARCH: '🔍',
+      OTHER_SOCIAL: '📱',
       REFERRAL: '🔄',
-      EMAIL: '📧',
-      OTHER: '🌐',
+      UNKNOWN: '❓',
     };
     return icons[source] || '🌐';
   }
