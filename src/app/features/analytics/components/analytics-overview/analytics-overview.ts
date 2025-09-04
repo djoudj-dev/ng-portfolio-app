@@ -295,12 +295,12 @@ export class AnalyticsOverviewComponent implements OnInit {
     if (page.startsWith('http://') || page.startsWith('https://')) {
       try {
         const url = new URL(page);
-        const domain = url.hostname.replace('www.', '');
         const path = url.pathname;
         const search = url.search;
 
+        // Pour l'accueil, retourner simplement "Accueil" sans le domaine
         if (path === '/' && !search) {
-          return `${domain} (Accueil)`;
+          return 'Accueil';
         }
 
         // Gérer les paramètres de requête
@@ -309,27 +309,31 @@ export class AnalyticsOverviewComponent implements OnInit {
           const paramDescriptions: string[] = [];
 
           if (params.has('page')) paramDescriptions.push(`Page ${params.get('page')}`);
-          if (params.has('limit')) paramDescriptions.push(`Limite ${params.get('limit')}`);
-          if (params.has('sortBy')) paramDescriptions.push(`Trié par ${params.get('sortBy')}`);
+          if (params.has('limit')) paramDescriptions.push(`${params.get('limit')} éléments`);
+          if (params.has('sortBy')) {
+            const sortBy = params.get('sortBy');
+            const sortLabel = sortBy === 'createdAt' ? 'Date de création' : sortBy;
+            paramDescriptions.push(`Trié par ${sortLabel}`);
+          }
           if (params.has('sortOrder')) paramDescriptions.push(params.get('sortOrder') === 'desc' ? 'Décroissant' : 'Croissant');
-          if (params.has('t')) paramDescriptions.push('Paramètre de suivi');
+          if (params.has('t')) paramDescriptions.push('Lien de suivi');
 
           const pathDescription = this.getPathDescription(path);
           const paramString = paramDescriptions.length > 0 ? ` (${paramDescriptions.join(', ')})` : '';
 
-          return `${domain} - ${pathDescription}${paramString}`;
+          return `${pathDescription}${paramString}`;
         }
 
-        return `${domain} - ${this.getPathDescription(path)}`;
+        // Retourner seulement la description du chemin sans le domaine
+        return this.getPathDescription(path);
       } catch {
         // Si l'URL n'est pas valide, continuer avec le traitement par défaut
       }
     }
 
-    // Gérer les domaines sans protocole
+    // Gérer les domaines sans protocole - retourner "Accueil" au lieu du domaine
     if (page.includes('.') && !page.includes('/') && !page.includes('?')) {
-      const domain = page.replace('www.', '');
-      return `${domain} (Accueil)`;
+      return 'Accueil';
     }
 
     // Gérer les chemins locaux avec paramètres
