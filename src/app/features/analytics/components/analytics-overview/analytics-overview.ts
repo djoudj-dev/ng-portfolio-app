@@ -308,6 +308,52 @@ export class AnalyticsOverviewComponent implements OnInit {
           const params = new URLSearchParams(search);
           const paramDescriptions: string[] = [];
 
+          // Pour la page d'accueil avec paramètres, créer des noms distinctifs
+          if (path === '/') {
+            if (params.has('page') && params.has('limit') && params.has('sortBy')) {
+              // URLs de navigation/pagination
+              const page = params.get('page');
+              const limit = params.get('limit');
+              const sortBy = params.get('sortBy');
+              const sortOrder = params.get('sortOrder');
+
+              let pageName = 'Navigation';
+              if (sortBy === 'createdAt') pageName += ' (Récent)';
+              else if (sortBy === 'title') pageName += ' (Alphabétique)';
+
+              if (page && page !== '1') pageName += ` - Page ${page}`;
+              if (limit && limit !== '10') pageName += ` (${limit} éléments)`;
+              if (sortOrder === 'desc') pageName += ' ↓';
+              else if (sortOrder === 'asc') pageName += ' ↑';
+
+              return pageName;
+            }
+
+            if (params.has('limit') && !params.has('page')) {
+              // URLs de filtrage par limite
+              return `Filtrage (${params.get('limit')} éléments)`;
+            }
+
+            if (params.has('t')) {
+              // URLs de suivi/tracking
+              return 'Accueil (Suivi)';
+            }
+
+            // Autres paramètres sur la page d'accueil
+            if (params.has('page')) paramDescriptions.push(`Page ${params.get('page')}`);
+            if (params.has('limit')) paramDescriptions.push(`${params.get('limit')} éléments`);
+            if (params.has('sortBy')) {
+              const sortBy = params.get('sortBy');
+              const sortLabel = sortBy === 'createdAt' ? 'Date de création' : sortBy;
+              paramDescriptions.push(`Trié par ${sortLabel}`);
+            }
+            if (params.has('sortOrder')) paramDescriptions.push(params.get('sortOrder') === 'desc' ? 'Décroissant' : 'Croissant');
+
+            const paramString = paramDescriptions.length > 0 ? ` (${paramDescriptions.join(', ')})` : '';
+            return `Accueil${paramString}`;
+          }
+
+          // Pour les autres chemins avec paramètres
           if (params.has('page')) paramDescriptions.push(`Page ${params.get('page')}`);
           if (params.has('limit')) paramDescriptions.push(`${params.get('limit')} éléments`);
           if (params.has('sortBy')) {
