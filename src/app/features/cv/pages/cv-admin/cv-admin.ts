@@ -17,131 +17,136 @@ import type { CvMetadata } from '@features/cv';
           <p class="text-text">Téléchargez et gérez votre CV professionnel</p>
         </div>
 
-        <div class="p-6 space-y-6">
-          @if (currentCv(); as cv) {
-            <div class="bg-background rounded-xl p-6 border border-accent">
-              <h2 class="text-lg font-semibold text-text mb-4 flex items-center gap-2">
-                <img
-                  [ngSrc]="'/icons/cv.svg'"
-                  alt="CV"
-                  class="w-5 h-5 icon-invert"
-                  width="20"
-                  height="20"
-                />
-                CV Actuel
-              </h2>
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-                <div>
-                  <span
-                    class="text-accent font-semibold underline underline-offset-2 decoration-text"
-                    >Nom du fichier :</span
-                  >
-                  <p class="text-text font-medium">
-                    {{ cv.originalName || cv.fileName }}
-                  </p>
-                </div>
-                <div>
-                  <span
-                    class="text-accent font-semibold underline underline-offset-2 decoration-text"
-                    >Taille :</span
-                  >
-                  <p class="text-text font-medium">{{ formatFileSize(cv.fileSize) }}</p>
-                </div>
-                <div>
-                  <span
-                    class="text-accent font-semibold underline underline-offset-2 decoration-text"
-                    >Version :</span
-                  >
-                  <p class="text-text font-medium">{{ cv.version || 'N/A' }}</p>
-                </div>
-                <div>
-                  <span
-                    class="text-accent font-semibold underline underline-offset-2 decoration-text"
-                    >Téléchargements :</span
-                  >
-                  <p class="text-text font-medium">{{ cv.downloadCount }}</p>
-                </div>
-                <div>
-                  <span
-                    class="text-accent font-semibold underline underline-offset-2 decoration-text"
-                    >Dernière mise à jour :</span
-                  >
-                  <p class="text-text font-medium">{{ formatDate(cv.createdAt) }}</p>
-                </div>
-              </div>
-              <div class="mt-4 flex gap-3">
-                <app-button
-                  color="secondary"
-                  [customClass]="'!w-auto !px-4 !py-2'"
-                  (buttonClick)="downloadCurrentCv()"
-                >
-                  <div class="flex items-center gap-2">
+        <div class="p-6">
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- Section CV Actuel -->
+            <div>
+              @if (currentCv(); as cv) {
+                <div class="bg-background rounded-xl p-6 border border-accent">
+                  <h2 class="text-lg font-semibold text-text mb-4 flex items-center gap-2">
                     <img
-                      [ngSrc]="'/icons/download.svg'"
-                      alt="Télécharger"
-                      class="w-4 h-4 icon-invert"
-                      width="16"
-                      height="16"
+                      [ngSrc]="'/icons/cv.svg'"
+                      alt="CV"
+                      class="w-5 h-5 icon-invert"
+                      width="20"
+                      height="20"
                     />
-                    <span class="text-text">Télécharger</span>
+                    CV Actuel
+                  </h2>
+                  <div class="grid grid-cols-1 gap-4 text-sm">
+                    <div>
+                      <span
+                        class="text-accent font-semibold underline underline-offset-2 decoration-text"
+                        >Nom du fichier :</span
+                      >
+                      <p class="text-text font-medium">
+                        {{ cv.originalName || cv.fileName }}
+                      </p>
+                    </div>
+                    <div>
+                      <span
+                        class="text-accent font-semibold underline underline-offset-2 decoration-text"
+                        >Taille :</span
+                      >
+                      <p class="text-text font-medium">{{ formatFileSize(cv.fileSize) }}</p>
+                    </div>
+                    <div>
+                      <span
+                        class="text-accent font-semibold underline underline-offset-2 decoration-text"
+                        >Version :</span
+                      >
+                      <p class="text-text font-medium">{{ cv.version || 'N/A' }}</p>
+                    </div>
+                    <div>
+                      <span
+                        class="text-accent font-semibold underline underline-offset-2 decoration-text"
+                        >Téléchargements :</span
+                      >
+                      <p class="text-text font-medium">{{ cv.downloadCount }}</p>
+                    </div>
+                    <div>
+                      <span
+                        class="text-accent font-semibold underline underline-offset-2 decoration-text"
+                        >Dernière mise à jour :</span
+                      >
+                      <p class="text-text font-medium">{{ formatDate(cv.createdAt) }}</p>
+                    </div>
                   </div>
-                </app-button>
-                <app-button
-                  color="accent"
-                  [customClass]="'!w-auto !px-4 !py-2'"
-                  (buttonClick)="triggerFileInput()"
-                >
-                  <div class="flex items-center gap-2">
-                    <img
-                      [ngSrc]="'/icons/edit.svg'"
-                      alt="Remplacer"
-                      class="w-4 h-4 icon-invert brightness-0"
-                      width="16"
-                      height="16"
-                    />
-                    <span class="text-text">Remplacer</span>
+                  <div class="mt-4 flex gap-3">
+                    <app-button
+                      color="secondary"
+                      [customClass]="'!w-auto !px-4 !py-2'"
+                      (buttonClick)="downloadCurrentCv()"
+                    >
+                      <div class="flex items-center gap-2">
+                        <img
+                          [ngSrc]="'/icons/download.svg'"
+                          alt="Télécharger"
+                          class="w-4 h-4 icon-invert"
+                          width="16"
+                          height="16"
+                        />
+                        <span class="text-text">Télécharger</span>
+                      </div>
+                    </app-button>
+                    <app-button
+                      color="accent"
+                      [customClass]="'!w-auto !px-4 !py-2'"
+                      (buttonClick)="triggerFileInput()"
+                    >
+                      <div class="flex items-center gap-2">
+                        <img
+                          [ngSrc]="'/icons/edit.svg'"
+                          alt="Remplacer"
+                          class="w-4 h-4 icon-invert brightness-0"
+                          width="16"
+                          height="16"
+                        />
+                        <span class="text-text">Remplacer</span>
+                      </div>
+                    </app-button>
                   </div>
-                </app-button>
-              </div>
-            </div>
-          } @else {
-            <div class="bg-accent/5 rounded-xl p-6 border border-accent/10 text-center">
-              <img
-                [ngSrc]="'/icons/upload.svg'"
-                alt="Upload"
-                class="w-12 h-12 mx-auto mb-4 icon-invert opacity-50"
-                width="48"
-                height="48"
-              />
-              <h2 class="text-lg font-semibold text-accent mb-2">Aucun CV téléchargé</h2>
-              <p class="text-text/70 mb-4">Commencez par télécharger votre CV professionnel</p>
-              <app-button
-                color="accent"
-                [customClass]="'!w-auto !px-6 !py-3'"
-                (buttonClick)="triggerFileInput()"
-              >
-                <div class="flex items-center gap-2">
+                </div>
+              } @else {
+                <div class="bg-accent/5 rounded-xl p-6 border border-accent/10 text-center">
                   <img
                     [ngSrc]="'/icons/upload.svg'"
                     alt="Upload"
-                    class="w-4 h-4 icon-invert brightness-0 invert"
-                    width="16"
-                    height="16"
+                    class="w-12 h-12 mx-auto mb-4 icon-invert opacity-50"
+                    width="48"
+                    height="48"
                   />
-                  <span>Télécharger un CV</span>
+                  <h2 class="text-lg font-semibold text-accent mb-2">Aucun CV téléchargé</h2>
+                  <p class="text-text/70 mb-4">Commencez par télécharger votre CV professionnel</p>
+                  <app-button
+                    color="accent"
+                    [customClass]="'!w-auto !px-6 !py-3'"
+                    (buttonClick)="triggerFileInput()"
+                  >
+                    <div class="flex items-center gap-2">
+                      <img
+                        [ngSrc]="'/icons/upload.svg'"
+                        alt="Upload"
+                        class="w-4 h-4 icon-invert brightness-0 invert"
+                        width="16"
+                        height="16"
+                      />
+                      <span>Télécharger un CV</span>
+                    </div>
+                  </app-button>
                 </div>
-              </app-button>
+              }
             </div>
-          }
 
-          <div
-            class="border-2 border-dashed border-primary/20 rounded-xl p-8 text-center bg-primary/2"
-            [class.border-accent]="isDragOver()"
-            [class.bg-accent-5]="isDragOver()"
-            (dragover)="onDragOver($event)"
-            (dragleave)="onDragLeave($event)"
-            (drop)="onDrop($event)"
-          >
+            <!-- Section Glisser-déposer -->
+            <div
+              class="border-2 border-dashed border-primary/20 rounded-xl p-8 text-center bg-primary/2"
+              [class.border-accent]="isDragOver()"
+              [class.bg-accent-5]="isDragOver()"
+              (dragover)="onDragOver($event)"
+              (dragleave)="onDragLeave($event)"
+              (drop)="onDrop($event)"
+            >
             @if (isUploading()) {
               <div class="space-y-4">
                 <div class="w-12 h-12 mx-auto">
@@ -250,6 +255,7 @@ import type { CvMetadata } from '@features/cv';
                 }
               </div>
             }
+            </div>
           </div>
 
           <input
