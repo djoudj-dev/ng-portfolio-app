@@ -291,11 +291,110 @@ export class AnalyticsOverviewComponent implements OnInit {
   getPageDisplayName(page: string): string {
     if (!page || page === '/') return 'Accueil';
 
-    const segments = page.split('/').filter(Boolean);
+    // Gérer les URLs complètes avec domaine
+    if (page.startsWith('http://') || page.startsWith('https://')) {
+      try {
+        const url = new URL(page);
+        const domain = url.hostname.replace('www.', '');
+        const path = url.pathname;
+        const search = url.search;
+
+        if (path === '/' && !search) {
+          return `${domain} (Accueil)`;
+        }
+
+        // Gérer les paramètres de requête
+        if (search) {
+          const params = new URLSearchParams(search);
+          const paramDescriptions: string[] = [];
+
+          if (params.has('page')) paramDescriptions.push(`Page ${params.get('page')}`);
+          if (params.has('limit')) paramDescriptions.push(`Limite ${params.get('limit')}`);
+          if (params.has('sortBy')) paramDescriptions.push(`Trié par ${params.get('sortBy')}`);
+          if (params.has('sortOrder')) paramDescriptions.push(params.get('sortOrder') === 'desc' ? 'Décroissant' : 'Croissant');
+          if (params.has('t')) paramDescriptions.push('Paramètre de suivi');
+
+          const pathDescription = this.getPathDescription(path);
+          const paramString = paramDescriptions.length > 0 ? ` (${paramDescriptions.join(', ')})` : '';
+
+          return `${domain} - ${pathDescription}${paramString}`;
+        }
+
+        return `${domain} - ${this.getPathDescription(path)}`;
+      } catch {
+        // Si l'URL n'est pas valide, continuer avec le traitement par défaut
+      }
+    }
+
+    // Gérer les domaines sans protocole
+    if (page.includes('.') && !page.includes('/') && !page.includes('?')) {
+      const domain = page.replace('www.', '');
+      return `${domain} (Accueil)`;
+    }
+
+    // Gérer les chemins locaux avec paramètres
+    if (page.includes('?')) {
+      const [path, search] = page.split('?');
+      const params = new URLSearchParams(search);
+      const paramDescriptions: string[] = [];
+
+      if (params.has('page')) paramDescriptions.push(`Page ${params.get('page')}`);
+      if (params.has('limit')) paramDescriptions.push(`${params.get('limit')} éléments`);
+      if (params.has('sortBy')) {
+        const sortBy = params.get('sortBy');
+        const sortLabel = sortBy === 'createdAt' ? 'Date de création' : sortBy;
+        paramDescriptions.push(`Trié par ${sortLabel}`);
+      }
+      if (params.has('sortOrder')) paramDescriptions.push(params.get('sortOrder') === 'desc' ? 'Décroissant' : 'Croissant');
+      if (params.has('t')) paramDescriptions.push('Lien de suivi');
+
+      const pathDescription = this.getPathDescription(path);
+      const paramString = paramDescriptions.length > 0 ? ` (${paramDescriptions.join(', ')})` : '';
+
+      return `${pathDescription}${paramString}`;
+    }
+
+    // Gérer les chemins simples
+    return this.getPathDescription(page);
+  }
+
+  private getPathDescription(path: string): string {
+    if (!path || path === '/') return 'Accueil';
+
+    const segments = path.split('/').filter(Boolean);
     if (segments.length === 0) return 'Accueil';
 
+    // Mapping des chemins connus
+    const pathMappings: Record<string, string> = {
+      'about': 'À propos',
+      'projects': 'Projets',
+      'skills': 'Compétences',
+      'contact': 'Contact',
+      'admin': 'Administration',
+      'dashboard': 'Tableau de bord',
+      'cv': 'CV',
+      'api': 'API',
+      'login': 'Connexion',
+      'register': 'Inscription',
+      'profile': 'Profil'
+    };
+
+    // Utiliser le premier segment pour déterminer la section principale
+    const mainSection = segments[0].toLowerCase();
+
+    if (pathMappings[mainSection]) {
+      if (segments.length === 1) {
+        return pathMappings[mainSection];
+      } else {
+        // Pour les sous-sections, ajouter le contexte
+        const subSection = segments.slice(1).join(' / ');
+        return `${pathMappings[mainSection]} - ${subSection}`;
+      }
+    }
+
+    // Pour les chemins non mappés, utiliser le dernier segment en le formatant
     const lastSegment = segments[segments.length - 1];
-    return lastSegment.charAt(0).toUpperCase() + lastSegment.slice(1);
+    return lastSegment.charAt(0).toUpperCase() + lastSegment.slice(1).replace(/[-_]/g, ' ');
   }
 
   chartData() {
