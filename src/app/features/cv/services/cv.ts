@@ -93,15 +93,15 @@ export class CvService {
 
   async openCvInNewTab(userId?: string): Promise<void> {
     try {
-      const blob = await this.downloadCv(userId);
+      // Récupérer les métadonnées pour obtenir le nom original
+      const metadata = await this.getCurrentCvMetadata(userId);
+      const originalName = metadata.originalName ?? 'CV.pdf';
 
-      const url = window.URL.createObjectURL(blob);
-      window.open(url, '_blank');
+      // Construire l'URL directe avec le nom original
+      const cvUrl = `${environment.apiUrl}/cv/${encodeURIComponent(originalName)}`;
 
-      // Clean up the blob URL after a short delay to ensure the tab has loaded
-      setTimeout(() => {
-        window.URL.revokeObjectURL(url);
-      }, 1000);
+      // Ouvrir directement l'URL sans créer de blob
+      window.open(cvUrl, '_blank');
 
       this._cvDownloaded.next();
     } catch (error: unknown) {
