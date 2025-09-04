@@ -152,22 +152,6 @@
               <span class="font-medium">{{ link.label }}</span>
             </a>
           }
-          
-          <!-- CV Button in Mobile Menu -->
-          <button
-            (click)="openCV(); closeMobileMenu()"
-            class="flex items-center space-x-3 text-base sm:text-lg text-background bg-accent hover:bg-accent-600 transition-colors duration-200 px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg font-medium w-full text-left"
-            aria-label="Voir mon CV"
-          >
-            <img
-              [ngSrc]="'/icons/open.svg'"
-              alt="CV"
-              width="20"
-              height="20"
-              class="w-5 h-5 sm:w-6 sm:h-6 icon-invert brightness-0 invert"
-            />
-            <span>Voir mon CV</span>
-          </button>
         </div>
       </div>
     }

@@ -93,15 +93,28 @@ export class CvService {
 
   async openCvInNewTab(userId?: string): Promise<void> {
     try {
-      // Récupérer les métadonnées pour obtenir le nom original
-      const metadata = await this.getCurrentCvMetadata(userId);
-      const originalName = metadata.originalName ?? 'CV.pdf';
+      // Pour mobile : ouvrir immédiatement un onglet pour éviter le blocage de popup
+      const newTab = window.open('about:blank', '_blank');
+      
+      if (!newTab) {
+        // Si le popup est bloqué, utiliser l'URL de téléchargement directe
+        window.location.href = `${environment.apiUrl}/cv/download`;
+        this._cvDownloaded.next();
+        return;
+      }
 
-      // Construire l'URL directe avec le nom original
-      const cvUrl = `${environment.apiUrl}/cv/${encodeURIComponent(originalName)}`;
-
-      // Ouvrir directement l'URL sans créer de blob
-      window.open(cvUrl, '_blank');
+      try {
+        // Récupérer les métadonnées pour obtenir le nom original
+        const metadata = await this.getCurrentCvMetadata(userId);
+        const originalName = metadata.originalName ?? 'CV.pdf';
+        
+        // Rediriger l'onglet ouvert vers la bonne URL
+        newTab.location.href = `${environment.apiUrl}/cv/${encodeURIComponent(originalName)}`;
+      } catch (metadataError) {
+        console.error('Erreur récupération métadonnées:', metadataError);
+        // Fallback vers l'URL de téléchargement générique
+        newTab.location.href = `${environment.apiUrl}/cv/download`;
+      }
 
       this._cvDownloaded.next();
     } catch (error: unknown) {
