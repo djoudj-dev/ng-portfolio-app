@@ -3,7 +3,7 @@ export interface CounterCard {
   icon: string;
   alt: string;
   title: string;
-  value: number;
+  value: number | string;
   badge?: {
     value: string;
     type: 'positive' | 'negative' | 'neutral';

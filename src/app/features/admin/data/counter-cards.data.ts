@@ -31,3 +31,18 @@ export const COUNTER_CARDS_CONFIG: CounterCardConfig[] = [
     title: 'Visites cette année',
   },
 ];
+
+export const BIG_COUNTER_CARDS_CONFIG: CounterCardConfig[] = [
+  {
+    id: 'visitors',
+    icon: '/icons/users.svg',
+    alt: 'Répartition visiteurs',
+    title: 'Visiteurs & Bots',
+  },
+  {
+    id: 'realtime',
+    icon: '/icons/activity.svg',
+    alt: 'Activité temps réel',
+    title: 'Activité en temps réel',
+  },
+];
