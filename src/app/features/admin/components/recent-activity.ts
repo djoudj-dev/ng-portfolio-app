@@ -15,11 +15,6 @@ import { ActivityService } from '@features/admin/services/activity-service';
           </div>
           <h2 class="text-xl font-semibold text-text">Activité récente</h2>
         </div>
-        <button
-          class="text-sm text-accent hover:text-accent/80 font-medium transition-colors duration-200"
-        >
-          Voir tout
-        </button>
       </div>
 
       <div class="space-y-4">
@@ -86,7 +81,6 @@ export class RecentActivityComponent {
       const activities = await this.activityService.getRecentActivities(5);
       this.recentActivity.set(activities);
 
-      // Forcer la détection de changement pour OnPush
       this.cdr.markForCheck();
     } catch (error) {
       console.error('❌ Dashboard: Erreur lors du chargement des activités:', error);
@@ -96,10 +90,8 @@ export class RecentActivityComponent {
   }
 
   constructor() {
-    // Charger les activités immédiatement
     this.loadRecentActivities();
 
-    // Recharger toutes les 2 minutes
     setInterval(() => {
       this.loadRecentActivities();
     }, 120000);

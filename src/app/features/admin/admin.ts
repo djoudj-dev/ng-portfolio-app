@@ -38,45 +38,47 @@ import { NAVIGATION_LINKS } from './data/navigation-links.data';
         </div>
       </nav>
 
-      <header class="bg-background rounded-2xl m-6 p-6 border border-accent shadow-sm">
-        <div class="flex items-center justify-between">
-          <div class="flex items-center gap-3">
-            <div class="w-8 h-8 bg-accent rounded-lg flex items-center justify-center">
-              <img
-                [ngSrc]="'/icons/navigation.svg'"
-                alt="Navigation"
-                width="16"
-                height="16"
-                class="w-8 h-8 flex-shrink-0 icon-invert"
-              />
+      <div class="max-w-6xl mx-auto px-3 sm:px-4">
+        <header class="bg-background rounded-2xl mt-6 p-6 border border-accent shadow-sm">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <div class="w-8 h-8 bg-accent rounded-lg flex items-center justify-center">
+                <img
+                  [ngSrc]="'/icons/navigation.svg'"
+                  alt="Navigation"
+                  width="16"
+                  height="16"
+                  class="w-8 h-8 flex-shrink-0 icon-invert"
+                />
+              </div>
+              <h2 class="text-xl font-semibold text-text">Navigation</h2>
             </div>
-            <h2 class="text-xl font-semibold text-text">Navigation</h2>
           </div>
-        </div>
 
-        <div class="mt-4 grid grid-cols-2 md:grid-cols-6 gap-3">
-          @for (link of navigationLinks(); track link.route) {
-            <button
-              class="flex items-center gap-2 px-4 py-3 text-sm font-medium border rounded-lg hover:scale-105"
-              [class]="link.colorClasses"
-              (click)="navigateToSection(link.route)"
-            >
-              <img
-                [ngSrc]="link.icon"
-                [alt]="link.label"
-                width="16"
-                height="16"
-                class="w-4 h-4 flex-shrink-0"
-              />
-              {{ link.label }}
-            </button>
-          }
-        </div>
-      </header>
+          <div class="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+            @for (link of navigationLinks(); track link.route) {
+              <button
+                class="flex items-center gap-2 px-4 py-3 text-sm font-medium border rounded-lg hover:scale-105"
+                [class]="link.colorClasses"
+                (click)="navigateToSection(link.route)"
+              >
+                <img
+                  [ngSrc]="link.icon"
+                  [alt]="link.label"
+                  width="16"
+                  height="16"
+                  class="w-4 h-4 flex-shrink-0"
+                />
+                {{ link.label }}
+              </button>
+            }
+          </div>
+        </header>
 
-      <main class="flex-1 overflow-y-auto">
-        <router-outlet></router-outlet>
-      </main>
+        <main class="flex-1 overflow-y-auto">
+          <router-outlet></router-outlet>
+        </main>
+      </div>
     </div>
   `,
 })

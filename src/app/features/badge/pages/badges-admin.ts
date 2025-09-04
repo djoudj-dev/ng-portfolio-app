@@ -20,7 +20,7 @@ import { ToastService } from '@shared/ui/toast/service/toast-service';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <app-badge-admin-layout [pageTitle]="'Modification du badge'" [showBackButton]="false">
-      <div class="max-w-7xl mx-auto p-6 space-y-8">
+      <div class="max-w-6xl mx-auto p-6 space-y-8">
         <header
           class="bg-gradient-to-r from-primary/5 to-accent/5 rounded-2xl p-6 border border-accent/20 shadow-sm"
         >

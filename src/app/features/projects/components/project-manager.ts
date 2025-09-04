@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
   imports: [ButtonComponent, NgOptimizedImage],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <div class="max-w-7xl mx-auto p-6 space-y-8">
+    <div class="max-w-6xl mx-auto p-6 space-y-8">
       <header
         class="bg-gradient-to-r from-primary/5 to-accent/5 rounded-2xl p-6 border border-accent/20 shadow-sm"
       >
