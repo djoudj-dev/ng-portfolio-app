@@ -127,25 +127,10 @@ export class AuthService {
    * Vérification du statut d'authentification
    */
   private checkAuthStatus(): void {
-    // Appel à un endpoint pour vérifier l'état d'authentification
-    this.http
-      .get<{ user: User }>(`${this.apiUrl}/auth/me`, {
-        withCredentials: true,
-      })
-      .subscribe({
-        next: (response) => {
-          this._authState.update((state) => ({
-            ...state,
-            user: response.user,
-          }));
-        },
-        error: () => {
-          this._authState.update((state) => ({
-            ...state,
-            user: null,
-          }));
-        },
-      });
+    this._authState.update((state) => ({
+      ...state,
+      user: null,
+    }));
   }
 
   /**

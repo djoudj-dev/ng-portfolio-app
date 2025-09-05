@@ -58,7 +58,5 @@ export class ToastContainer {
     return 'flex-col';
   });
 
-  onToastDismissed(id: string): void {
-    console.log(`Toast ${id} dismissed`);
-  }
+  onToastDismissed(_id: string): void {}
 }
