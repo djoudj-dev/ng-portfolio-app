@@ -144,11 +144,9 @@ export class BadgeListComponent implements OnInit {
   }
 
   onCreateBadge(): void {
-    console.log('Create badge clicked');
   }
 
-  onEditBadge(badge: Badge): void {
-    console.log('Edit badge clicked', badge);
+  onEditBadge(_badge: Badge): void {
   }
 
   onDeleteBadge(badge: Badge): void {

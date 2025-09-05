@@ -295,7 +295,6 @@ export class CvAdminComponent {
       const cvMeta = await this.cvService.getCurrentCvMetadata();
       this._currentCv.set(cvMeta);
     } catch {
-      console.log('Aucun CV trouvé ou erreur de chargement');
       this._currentCv.set(null);
     }
   }

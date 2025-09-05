@@ -28,7 +28,7 @@ import { NAVIGATION_LINKS } from './data/navigation-links.data';
                     [alt]="link.label"
                     width="16"
                     height="16"
-                    class="w-4 h-4 flex-shrink-0"
+                    class="w-4 h-4 flex-shrink-0 icon-invert"
                   />
                   <span class="hidden md:inline">{{ link.label }}</span>
                 </a>
@@ -118,7 +118,6 @@ export class Admin {
     this.authService.logout().subscribe({
       next: () => {
         // Redirect to home page after successful logout
-        console.log('Déconnexion réussie');
         this.router.navigate(['/']);
       },
       error: (error) => {

@@ -18,7 +18,7 @@ import { NgOptimizedImage } from '@angular/common';
         <div class="flex min-h-screen items-center justify-center p-4">
           <div
             id="login-modal"
-            class="relative transform overflow-hidden rounded-lg bg-background shadow-xl transition-all"
+            class="relative transform overflow-hidden rounded-2xl bg-background shadow-xl transition-all border border-accent"
             (click)="$event.stopPropagation()"
             role="dialog"
             aria-modal="true"
@@ -30,7 +30,7 @@ import { NgOptimizedImage } from '@angular/common';
               alt="Fermer"
               width="16"
               height="16"
-              class="absolute right-4 top-4 z-10 h-4 w-4 cursor-pointer hover:opacity-70 transition-opacity"
+              class="absolute right-4 top-4 z-10 h-4 w-4 cursor-pointer hover:opacity-70 transition-opacity icon-invert"
               (click)="closeModal()"
               [attr.aria-label]="'Fermer la modal'"
             />
