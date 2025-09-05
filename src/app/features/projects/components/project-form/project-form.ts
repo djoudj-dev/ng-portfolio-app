@@ -75,7 +75,7 @@ export class ProjectFormComponent implements OnInit {
         this.isLoading.set(true);
         const project = await this.projectService.getProjectById(projectId);
         this.setupFormWithProject(project);
-      } catch (error) {
+      } catch {
         this.toastService.danger('Erreur', 'Erreur lors du chargement du projet');
       } finally {
         this.isLoading.set(false);
@@ -171,7 +171,6 @@ export class ProjectFormComponent implements OnInit {
           githubUrlBackend: formData.githubUrlBackend,
           githubUrlFullstack: formData.githubUrlFullstack,
         };
-        console.log('Updating project:', projectValue.id, updateData);
 
         const result = await this.projectService.updateProject(
           projectValue.id,

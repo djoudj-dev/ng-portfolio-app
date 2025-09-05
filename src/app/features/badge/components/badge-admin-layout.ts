@@ -46,7 +46,6 @@ export class BadgeAdminLayout {
   logout(): void {
     this.authService.logout().subscribe({
       next: () => {
-        console.log('Déconnexion réussie');
         this.router.navigate(['/']);
       },
       error: (error) => {
