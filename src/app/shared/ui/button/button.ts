@@ -3,7 +3,6 @@ import { ChangeDetectionStrategy, Component, computed, input, output, signal } f
 
 @Component({
   selector: 'app-button',
-  standalone: true,
   imports: [CommonModule, NgOptimizedImage],
   template: `
     <button
