@@ -249,7 +249,7 @@ interface LoginFormControls {
                       alt="Se connecter"
                       width="18"
                       height="18"
-                      class="h-5 w-5"
+                      class="h-5 w-5 icon-invert"
                     />
                     <span>Se connecter</span>
                   </div>

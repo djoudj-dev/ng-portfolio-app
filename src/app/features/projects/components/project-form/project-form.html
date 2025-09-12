@@ -1,121 +1,265 @@
-<section class="bg-background p-4 sm:p-6 rounded-lg shadow-md shadow-accent border border-primary-300">
-  <h2 class="text-xl sm:text-2xl font-bold text-text mb-6">
-    {{ isEditMode() ? 'Modifier le projet' : 'Ajouter un nouveau projet' }}
-  </h2>
-
-  <form [formGroup]="projectForm" (ngSubmit)="onSubmit()" class="space-y-6">
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <div>
-        <label for="title" class="block text-sm font-medium text-text/90 mb-2">Titre du projet</label>
-        <input id="title" type="text" formControlName="title"
-               class="w-full px-4 py-2 bg-background-200 border border-primary-300 rounded-lg text-text placeholder-text/50 focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all duration-200" />
+<section class="bg-background p-3 sm:p-6 lg:p-8 rounded-lg shadow-md shadow-accent border border-accent max-w-6xl mx-auto mt-2">
+  <!-- Header avec indicateur de progression visuel -->
+  <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 pb-4 border-b border-primary-300/30">
+    <h2 class="text-xl sm:text-2xl lg:text-3xl font-bold text-text mb-2 sm:mb-0">
+      {{ isEditMode() ? '✏️ Modifier le projet' : '🚀 Nouveau projet' }}
+    </h2>
+    @if (!isEditMode()) {
+      <div class="flex items-center space-x-2 text-sm text-text/60">
+        <div class="flex items-center space-x-1">
+          <div class="w-2 h-2 bg-accent rounded-full"></div>
+          <span>Requis</span>
+        </div>
+        <div class="flex items-center space-x-1">
+          <div class="w-2 h-2 bg-text/30 rounded-full"></div>
+          <span>Optionnel</span>
+        </div>
       </div>
+    }
+  </div>
 
-      <div>
-        <label for="image" class="block text-sm font-medium text-text/90 mb-2">
-          Image du projet {{ !isEditMode() ? '(requis)' : '(optionnel)' }}
-        </label>
-        <input id="image" type="file" (change)="onFileSelected($event)" accept="image/*"
-               class="w-full text-sm text-text file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:font-semibold file:bg-accent file:text-white hover:file:bg-accent/90" />
-        <div class="flex space-x-4 mt-4">
-          @if (currentImageUrl()) {
-            <div>
-              <span class="block text-sm font-medium text-text/70 mb-2">Image actuelle :</span>
-              <img [ngSrc]="currentImageUrl()!" alt="Image actuelle" width="128" height="128" class="rounded-lg h-32 w-32 object-cover shadow-md"/>
+  <form [formGroup]="projectForm" (ngSubmit)="onSubmit()" class="space-y-6 sm:space-y-8">
+    <!-- Section 1: Informations de base -->
+    <div class="bg-background-100 p-4 sm:p-6 rounded-lg border border-primary-300/30">
+      <h3 class="text-lg font-semibold text-text mb-4 flex items-center">
+        📋 Informations de base
+      </h3>
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
+        <div class="lg:col-span-1">
+          <label for="title" class="flex items-center text-sm font-medium text-text/90 mb-2">
+            <div class="w-2 h-2 bg-accent rounded-full mr-2"></div>
+            Titre du projet
+          </label>
+          <input id="title" type="text" formControlName="title" placeholder="Mon super projet Angular..."
+                 class="w-full px-4 py-3 bg-background-200 border border-primary-300 rounded-lg text-text placeholder-text focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all duration-200 text-base" />
+        </div>
+
+        <div class="lg:col-span-1">
+          <label for="image" class="flex items-center text-sm font-medium text-text/90 mb-2">
+            <div class="w-2 h-2 {{ !isEditMode() ? 'bg-accent' : 'bg-text/30' }} rounded-full mr-2"></div>
+            Image du projet {{ !isEditMode() ? '(requis)' : '(optionnel)' }}
+          </label>
+          <div class="space-y-4">
+            <input id="image" type="file" (change)="onFileSelected($event)" accept="image/*"
+                   class="w-full text-sm text-text file:mr-4 file:py-3 file:px-4 file:rounded-lg file:border-0 file:font-semibold file:bg-accent file:text-white hover:file:bg-accent/90 file:cursor-pointer cursor-pointer" />
+            <div class="grid grid-cols-1 {{ (currentImageUrl() && imagePreview()) ? 'sm:grid-cols-2' : '' }} gap-4">
+              @if (currentImageUrl()) {
+                <div class="text-center">
+                  <span class="block text-xs font-medium text-text/70 mb-2">📸 Image actuelle</span>
+                  <div class="relative inline-block">
+                    <img [ngSrc]="currentImageUrl()!" alt="Image actuelle" width="120" height="120"
+                         class="rounded-lg h-24 w-24 sm:h-28 sm:w-28 object-cover shadow-md mx-auto border-2 border-primary-300/50"/>
+                  </div>
+                </div>
+              }
+              @if (imagePreview()) {
+                <div class="text-center">
+                  <span class="block text-xs font-medium text-accent mb-2">🔄 Nouvel aperçu</span>
+                  <div class="relative inline-block">
+                    <img [ngSrc]="imagePreview()!" alt="Aperçu de l'image" width="120" height="120"
+                         class="rounded-lg h-24 w-24 sm:h-28 sm:w-28 object-cover shadow-md mx-auto border-2 border-accent/50"/>
+                  </div>
+                </div>
+              }
             </div>
-          }
-          @if (imagePreview()) {
-            <div>
-              <span class="block text-sm font-medium text-text/70 mb-2">Nouvel aperçu :</span>
-              <img [ngSrc]="imagePreview()!" alt="Aperçu de l'image" width="128" height="128" class="rounded-lg h-32 w-32 object-cover shadow-md"/>
-            </div>
-          }
+          </div>
         </div>
       </div>
     </div>
 
-    <div>
-      <label for="description" class="block text-sm font-medium text-text/90 mb-2">Description</label>
-      <textarea id="description" formControlName="description" rows="4"
-                class="w-full px-4 py-2 bg-background-200 border border-primary-300 rounded-lg text-text placeholder-text/50 focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all duration-200"></textarea>
+    <!-- Section 2: Description -->
+    <div class="bg-background-100 p-4 sm:p-6 rounded-lg border border-primary-300/30">
+      <h3 class="text-lg font-semibold text-text mb-4 flex items-center">
+        📝 Description du projet
+      </h3>
+      <label for="description" class="flex items-center text-sm font-medium text-text/90 mb-3">
+        <div class="w-2 h-2 bg-accent rounded-full mr-2"></div>
+        Décrivez votre projet en détail
+      </label>
+      <textarea id="description" formControlName="description" rows="5"
+                placeholder="Décrivez les fonctionnalités, l'objectif et les défis techniques de votre projet..."
+                class="w-full px-4 py-3 bg-background-200 border border-primary-300 rounded-lg text-text placeholder-text focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all duration-200 text-base resize-none"></textarea>
+      <div class="mt-2 text-xs text-text/50 flex items-center justify-between">
+        <span>💡 Plus c'est détaillé, mieux c'est !</span>
+        <span class="font-mono">{{ projectForm.get('description')?.value?.length || 0 }} caractères</span>
+      </div>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-start">
-      <div class="md:col-span-1">
-        <label for="technologies" class="block text-sm font-medium text-text/90 mb-2">Technologies</label>
-        <app-custom-multi-select formControlName="technologies" [options]="technologies"></app-custom-multi-select>
-      </div>
-      <div class="md:col-span-1">
-        <label for="category" class="block text-sm font-medium text-text/90 mb-2">Catégorie</label>
-        <select id="category" formControlName="category"
-                class="w-full px-4 py-2 bg-background-200 border border-primary-300 rounded-lg text-text focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all duration-200">
-          <option value="frontend">Frontend</option>
-          <option value="backend">Backend</option>
-          <option value="fullstack">Fullstack</option>
-          <option value="script">Script</option>
-        </select>
-      </div>
-      <div class="md:col-span-1">
-        <label for="priority" class="block text-sm font-medium text-text/90 mb-2">Priorité sur la page d'accueil</label>
-        <select id="priority" formControlName="priority"
-                class="w-full px-4 py-2 bg-background-200 border border-primary-300 rounded-lg text-text focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all duration-200">
-          <option [ngValue]="null">Pas mis en avant</option>
-          <option [ngValue]="1">Priorité 1 (Haut)</option>
-          <option [ngValue]="2">Priorité 2 (Milieu)</option>
-          <option [ngValue]="3">Priorité 3 (Bas)</option>
-        </select>
-        <div class="flex items-center mt-2">
-          <input type="checkbox" formControlName="featured" class="toggle toggle-accent toggle-sm" />
-          <span class="ml-3 text-xs text-text/70">Compatibilité (ancien featured)</span>
+    <!-- Section 3: Technologies et catégorisation -->
+    <div class="bg-background-100 p-4 sm:p-6 rounded-lg border border-primary-300/30">
+      <h3 class="text-lg font-semibold text-text mb-4 flex items-center">
+        🛠️ Technologies & Catégorie
+      </h3>
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
+        <div class="lg:col-span-1">
+          <label for="technologies" class="flex items-center text-sm font-medium text-text mb-3">
+            <div class="w-2 h-2 bg-accent rounded-full mr-2"></div>
+            Technologies utilisées
+          </label>
+          <app-custom-multi-select class="text-text" formControlName="technologies" [options]="technologies"></app-custom-multi-select>
+          <p class="text-xs text-text mt-2">💻 Sélectionnez toutes les technologies principales</p>
+        </div>
+
+        <div class="lg:col-span-1">
+          <label for="category" class="flex items-center text-sm font-medium text-text/90 mb-3">
+            <div class="w-2 h-2 bg-accent rounded-full mr-2"></div>
+            Catégorie du projet
+          </label>
+          <select id="category" formControlName="category"
+                  class="w-full px-4 py-3 bg-background border border-primary-300 rounded-lg text-text focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all duration-200 text-base">
+            <option value="" disabled>Choisir une catégorie</option>
+            <option value="frontend">Frontend</option>
+            <option value="backend">Backend</option>
+            <option value="fullstack">Fullstack</option>
+            <option value="script">Script</option>
+          </select>
+        </div>
+
+        <div class="lg:col-span-1">
+          <label for="priority" class="flex items-center text-sm font-medium text-text/90 mb-3">
+            <div class="w-2 h-2 bg-text/30 rounded-full mr-2"></div>
+            Priorité page d'accueil
+          </label>
+          <select id="priority" formControlName="priority"
+                  class="w-full px-4 py-3 bg-background border border-primary-300 rounded-lg text-text focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all duration-200 text-base">
+            <option [ngValue]="null">🚫 Pas mis en avant</option>
+            <option [ngValue]="1">🥇 Priorité 1 (Haut)</option>
+            <option [ngValue]="2">🥈 Priorité 2 (Milieu)</option>
+            <option [ngValue]="3">🥉 Priorité 3 (Bas)</option>
+          </select>
+          <div class="flex items-center mt-3 p-2 bg-background-200/50 rounded-lg">
+            <input type="checkbox" formControlName="featured" class="toggle toggle-accent toggle-sm" />
+            <span class="ml-3 text-xs text-text/70">🔄 Compatibilité ancien système</span>
+          </div>
+          <p class="text-xs text-text/60 mt-2">🏀 Les projets prioritaires apparaissent en premier</p>
         </div>
       </div>
     </div>
 
-    <div class="space-y-4 p-4 border border-primary-300/50 rounded-lg" formGroupName="github_urls">
-      <h3 class="text-lg font-medium text-text">Liens GitHub</h3>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <!-- Section 4: Liens du projet -->
+    <div class="bg-background-100 p-4 sm:p-6 rounded-lg border border-primary-300/30" formGroupName="github_urls">
+      <h3 class="text-lg font-semibold text-text mb-4 flex items-center">
+        🔗 Liens GitHub
+      </h3>
+      <p class="text-sm text-text/70 mb-4">📋 Ajoutez les liens vers vos repositories (optionnel)</p>
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
         <div>
-          <label for="frontend" class="block text-sm font-medium text-text/90 mb-2">Frontend</label>
-          <input id="frontend" type="text" formControlName="frontend"
-                 class="w-full px-4 py-2 bg-background-200 border border-primary-300 rounded-lg text-text placeholder-text/50 focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all duration-200" />
+          <label for="frontend" class="flex items-center text-sm font-medium text-text mb-2">
+            <div class="w-2 h-2 bg-text/30 rounded-full mr-2"></div>
+            🎨 Frontend
+          </label>
+          <input id="frontend" type="url" formControlName="frontend"
+                 placeholder="https://github.com/user/projet-frontend"
+                 class="w-full px-4 py-3 bg-background border border-primary-300 rounded-lg text-text placeholder-text focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all duration-200 text-base" />
         </div>
         <div>
-          <label for="backend" class="block text-sm font-medium text-text/90 mb-2">Backend</label>
-          <input id="backend" type="text" formControlName="backend"
-                 class="w-full px-4 py-2 bg-background-200 border border-primary-300 rounded-lg text-text placeholder-text/50 focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all duration-200" />
+          <label for="backend" class="flex items-center text-sm font-medium text-text mb-2">
+            <div class="w-2 h-2 bg-text/30 rounded-full mr-2"></div>
+            ⚙️ Backend
+          </label>
+          <input id="backend" type="url" formControlName="backend"
+                 placeholder="https://github.com/user/projet-backend"
+                 class="w-full px-4 py-3 bg-background-200 border border-primary-300 rounded-lg text-text placeholder-text focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all duration-200 text-base" />
         </div>
         <div>
-          <label for="fullstack" class="block text-sm font-medium text-text/90 mb-2">Fullstack</label>
-          <input id="fullstack" type="text" formControlName="fullstack"
-                 class="w-full px-4 py-2 bg-background-200 border border-primary-300 rounded-lg text-text placeholder-text/50 focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all duration-200" />
+          <label for="fullstack" class="flex items-center text-sm font-medium text-text mb-2">
+            <div class="w-2 h-2 bg-text/30 rounded-full mr-2"></div>
+            🔄 Fullstack
+          </label>
+          <input id="fullstack" type="url" formControlName="fullstack"
+                 placeholder="https://github.com/user/projet-complet"
+                 class="w-full px-4 py-3 bg-background-200 border border-primary-300 rounded-lg text-text placeholder-text focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all duration-200 text-base" />
         </div>
       </div>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <div>
-        <label for="demo_url" class="block text-sm font-medium text-text/90 mb-2">URL de la démo</label>
-        <input id="demo_url" type="text" formControlName="demo_url"
-               class="w-full px-4 py-2 bg-background-200 border border-primary-300 rounded-lg text-text placeholder-text/50 focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all duration-200" />
-      </div>
-      <div>
-        <label for="date" class="block text-sm font-medium text-text/90 mb-2">Date de réalisation</label>
-        <input id="date" type="date" formControlName="date"
-               class="w-full px-4 py-2 bg-background-200 border border-primary-300 rounded-lg text-text focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all duration-200" />
+    <!-- Section 5: Finalisation -->
+    <div class="bg-background-100 p-4 sm:p-6 rounded-lg border border-primary-300/30">
+      <h3 class="text-lg font-semibold text-text mb-4 flex items-center">
+        ✅ Finalisation
+      </h3>
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
+        <div>
+          <label for="demo_url" class="flex items-center text-sm font-medium text-text mb-2">
+            <div class="w-2 h-2 bg-text/30 rounded-full mr-2"></div>
+            🌐 URL de démonstration
+          </label>
+          <input id="demo_url" type="url" formControlName="demo_url"
+                 placeholder="https://monprojet.vercel.app"
+                 class="w-full px-4 py-3 bg-background-200 border border-primary-300 rounded-lg text-text placeholder-text focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all duration-200 text-base" />
+          <p class="text-xs text-text/60 mt-2">📱 Lien vers la version live du projet</p>
+        </div>
+        <div>
+          <label for="date" class="flex items-center text-sm font-medium text-text/90 mb-2">
+            <div class="w-2 h-2 bg-accent rounded-full mr-2"></div>
+            📅 Date de réalisation
+          </label>
+          <input id="date" type="date" formControlName="date"
+                 class="w-full px-4 py-3 bg-background border border-primary-300 rounded-lg text-text focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all duration-200 text-base" />
+          <p class="text-xs text-text/60 mt-2">🕰️ Quand avez-vous terminé ce projet ?</p>
+        </div>
       </div>
     </div>
 
 
-    <div class="mt-8 flex justify-end">
-      <app-button
-        type="submit"
-        color="accent"
-        [isLoading]="isLoading()"
-[disabled]="!projectForm.valid || (!isEditMode() && !selectedFile)"
-        customClass="px-8 py-3 hover:bg-primary/80"
-      >
-        Enregistrer le projet
-      </app-button>
+    <!-- Section d'actions - Mobile friendly -->
+    <div class="sticky bottom-0 -mx-3 sm:-mx-6 lg:-mx-8 mt-8 p-4 sm:p-6 bg-gradient-to-r from-background via-background to-background border-t border-primary-300/30 rounded-b-lg">
+      <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 sm:justify-between sm:items-center">
+        <!-- Indicateurs de validation -->
+        <div class="flex flex-col sm:flex-row gap-2 text-sm">
+          <div class="flex items-center space-x-2">
+            <div class="w-2 h-2 {{ projectForm.get('title')?.valid ? 'bg-green-500' : 'bg-red-500' }} rounded-full"></div>
+            <span class="text-text/70">Titre</span>
+          </div>
+          <div class="flex items-center space-x-2">
+            <div class="w-2 h-2 {{ projectForm.get('description')?.valid ? 'bg-green-500' : 'bg-red-500' }} rounded-full"></div>
+            <span class="text-text/70">Description</span>
+          </div>
+          <div class="flex items-center space-x-2">
+            <div class="w-2 h-2 {{ projectForm.get('technologies')?.valid ? 'bg-green-500' : 'bg-red-500' }} rounded-full"></div>
+            <span class="text-text/70">Technologies</span>
+          </div>
+          <div class="flex items-center space-x-2" [class.hidden]="isEditMode()">
+            <div class="w-2 h-2 {{ selectedFile ? 'bg-green-500' : 'bg-red-500' }} rounded-full"></div>
+            <span class="text-text/70">Image</span>
+          </div>
+        </div>
+
+        <!-- Boutons d'action -->
+        <div class="flex flex-col sm:flex-row gap-3 sm:gap-4">
+          <button type="button" (click)="resetForm()"
+                  class="px-6 py-3 border border-primary-300 rounded-lg text-text hover:bg-background-200 transition-all duration-200 text-center">
+            🔄 Réinitialiser
+          </button>
+          <app-button
+            type="submit"
+            color="accent"
+            [isLoading]="isLoading()"
+            [disabled]="!projectForm.valid || (!isEditMode() && !selectedFile)"
+            customClass="px-8 py-3 text-base sm:text-lg font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200"
+          >
+            <span class="flex items-center justify-center space-x-2">
+              <span>{{ isEditMode() ? '✏️ Mettre à jour' : '🚀 Créer le projet' }}</span>
+              <div class="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" [class.hidden]="!isLoading()"></div>
+            </span>
+          </app-button>
+        </div>
+      </div>
+
+      <!-- Aide contextuelle -->
+      <div class="mt-4 p-3 bg-red-50 border border-red-200 rounded-lg" [class.hidden]="validationMessages().length === 0">
+        <div class="flex items-start space-x-2">
+          <span class="text-red-500 mt-0.5">⚠️</span>
+          <div class="text-sm text-red-700">
+            <p class="font-medium mb-1">Formulaire incomplet</p>
+            <ul class="text-xs space-y-1">
+              @for (msg of validationMessages(); track $index) {
+                <li>• {{ msg }}</li>
+              }
+            </ul>
+          </div>
+        </div>
+      </div>
     </div>
   </form>
 </section>

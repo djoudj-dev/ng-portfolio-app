@@ -50,11 +50,11 @@ import { ToastService } from '@shared/ui';
       </div>
 
       <div class="flex-1 min-w-0">
-        <h4 class="text-sm font-semibold mb-1" [class]="titleClasses()">
+        <h4 class="text-sm text-text font-semibold mb-1" [class]="titleClasses()">
           {{ toast().title }}
         </h4>
         @if (toast().message) {
-          <p class="text-sm" [class]="messageClasses()">
+          <p class="text-sm text-text" [class]="messageClasses()">
             {{ toast().message }}
           </p>
         }
@@ -64,7 +64,7 @@ import { ToastService } from '@shared/ui';
         <button
           type="button"
           (click)="onDismiss()"
-          class="ml-3 flex-shrink-0 p-1 rounded-full hover:bg-background focus:outline-none focus:ring-2 focus:ring-offset-2 transition-colors"
+          class="ml-3 flex-shrink-0 p-1 rounded-full hover:bg-background focus:outline-none focus:ring-2 focus:ring-offset-2 transition-colors icon-invert"
           [class]="dismissButtonClasses()"
           aria-label="Fermer la notification"
         >
