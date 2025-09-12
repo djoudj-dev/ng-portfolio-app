@@ -1,5 +1,5 @@
 <section
-  class="py-6 -mt-px bg-background sm:py-8 lg:py-8 text-text"
+  class="py-12 -mt-px bg-background sm:py-24 md:py-24 lg:py-12 text-text"
   aria-labelledby="intro-heading"
 >
   <div class="container px-4 mx-auto">
@@ -7,12 +7,12 @@
       <article class="lg:w-1/2 lg:pr-8">
         <h1
           id="intro-heading"
-          class="mb-4 text-4xl font-bold text-center sm:text-3xl sm:mb-4 lg:mb-8 lg:text-start lg:text-6xl"
+          class="mb-3 text-3xl font-bold text-center sm:text-4xl sm:mb-4 lg:mb-4 lg:text-start lg:text-6xl"
         >
           Bonjour,
         </h1>
 
-        <h2 class="mb-4 text-xl text-center sm:text-2xl sm:mb-6 lg:text-start lg:text-4xl">
+        <h2 class="mb-3 text-xl text-center sm:text-2xl sm:mb-4 lg:text-start lg:text-4xl">
           Je suis
           <strong
             class="mb-6 inline-block px-2 py-1 text-white rounded-lg transition-transform duration-300 bg-accent hover:rotate-15 sm:px-3"
@@ -22,29 +22,28 @@
         </h2>
 
         <p
-          class="mb-6 max-w-2xl text-base text-center leading-relaxed sm:text-lg sm:mb-6 lg:text-start lg:text-2xl font-semibold"
+          class="mb-4 max-w-2xl mx-auto text-base text-center leading-relaxed sm:text-lg sm:mb-4 lg:mx-0 lg:text-start lg:text-2xl font-semibold"
         >
           Développeur Angular passionné par la création d'applications web modernes, performantes et
           accessibles. J'aime me spécialiser dans le développement frontend avec Angular mais aussi
           dans le développement de la partie backend selon les besoins.
         </p>
-
         <p
-          class="mb-6 max-w-xl text-sm text-center leading-relaxed sm:text-base sm:mb-6 lg:text-start lg:text-xl text-text/80"
+          class="mb-4 max-w-xl mx-auto text-sm text-center leading-relaxed sm:text-base sm:mb-4 lg:mx-0 lg:text-start lg:text-xl text-text/80"
         >
           Mon objectif est de créer des expériences utilisateur exceptionnelles en utilisant les
           meilleures pratiques et les technologies les plus adaptées au projet en cours.
         </p>
 
         <nav
-          class="flex flex-wrap justify-center gap-3 mt-6 sm:gap-4 sm:mt-8 lg:mt-12 lg:justify-start"
+          class="flex flex-row flex-wrap justify-center gap-3 mt-4 sm:gap-4 sm:mt-6 lg:mt-6 lg:justify-start"
           aria-label="Actions principales"
         >
           <app-button
             color="secondary"
             aria-label="Voir mes projets"
             [customClass]="
-              'px-4 py-3 min-h-[48px] sm:px-5 sm:py-3 lg:px-6 lg:py-4 shadow-md hover:shadow-lg transition-all duration-200'
+              'flex-1 sm:flex-initial px-4 py-3 min-h-[48px] sm:px-5 sm:py-3 lg:px-6 lg:py-4 shadow-md hover:shadow-lg transition-all duration-200'
             "
             (buttonClick)="navigateToProjects()"
           >
@@ -66,7 +65,7 @@
             color="accent"
             aria-label="Me contacter"
             [customClass]="
-              'px-4 py-3 min-h-[48px] sm:px-5 sm:py-3 lg:px-6 lg:py-4 shadow-md hover:shadow-lg transition-all duration-200'
+              'flex-1 sm:flex-initial px-4 py-3 min-h-[48px] sm:px-5 sm:py-3 lg:px-6 lg:py-4 shadow-md hover:shadow-lg transition-all duration-200'
             "
             (buttonClick)="navigateToContact()"
           >
@@ -95,7 +94,7 @@
         </figure>
       </aside>
     </div>
-    <div class="flex flex-col items-center pt-8 sm:pt-10 lg:pt-14">
+    <div class="flex flex-col items-center pt-6 sm:pt-8 lg:pt-12">
       <app-button
         color="accent"
         aria-label="Découvrir mon parcours professionnel"
@@ -105,8 +104,8 @@
         (buttonClick)="navigateToAbout()"
       >
         <div class="flex items-center gap-3 relative z-10">
-          <span class="text-text tracking-wide">Découvrir mon parcours</span>
-          <span class="relative w-5 h-5 transform transition-transform duration-300 group-hover:translate-y-1">
+          <span class="text-text">Découvrir mon parcours</span>
+          <span class="relative w-5 h-5 transform transition-transform duration-300">
             <img
               [ngSrc]="'/icons/arrow-b.svg'"
               alt="Découvrir"
@@ -116,8 +115,7 @@
             />
           </span>
         </div>
-        <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-700"></div>
-      </app-button>
+       </app-button>
     </div>
   </div>
 </section>

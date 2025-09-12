@@ -116,6 +116,8 @@ export class ProjectService {
           formData.append(key, JSON.stringify(value));
         } else if (typeof value === 'boolean') {
           formData.append(key, value.toString());
+        } else if (key === 'priority' && typeof value === 'number') {
+          formData.append(key, value.toString());
         } else if (key === 'category') {
           const uppercaseCategory = value.toString().toUpperCase();
           formData.append(key, uppercaseCategory);

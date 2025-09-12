@@ -67,7 +67,7 @@ import { NAVIGATION_LINKS } from './data/navigation-links.data';
                   [alt]="link.label"
                   width="16"
                   height="16"
-                  class="w-4 h-4 flex-shrink-0"
+                  class="w-4 h-4 flex-shrink-0 icon-invert"
                 />
                 {{ link.label }}
               </button>

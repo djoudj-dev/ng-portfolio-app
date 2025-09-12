@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, input, signal, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input, signal, OnInit, computed } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { ButtonComponent } from '@shared/ui/button/button';
@@ -36,6 +36,33 @@ export class ProjectFormComponent implements OnInit {
   imagePreview = signal<string | null>(null);
   isLoading = signal(false);
   isEditMode = signal(false);
+
+  // Liste des messages d'erreur pour réduire la complexité dans le template
+  validationMessages = computed(() => {
+    const msgs: string[] = [];
+    const form = this.projectForm;
+
+    if (form.get('title')?.invalid) {
+      msgs.push('Le titre est requis');
+    }
+    if (form.get('description')?.invalid) {
+      msgs.push('La description est requise');
+    }
+    if (form.get('technologies')?.invalid) {
+      msgs.push('Au moins une technologie est requise');
+    }
+    if (form.get('category')?.invalid) {
+      msgs.push('Sélectionnez une catégorie');
+    }
+    if (form.get('date')?.invalid) {
+      msgs.push('La date de réalisation est requise');
+    }
+    if (!this.isEditMode() && !this.selectedFile) {
+      msgs.push('Une image est requise pour les nouveaux projets');
+    }
+
+    return msgs;
+  });
 
   technologies = TECHNOLOGIES;
 
@@ -210,5 +237,28 @@ export class ProjectFormComponent implements OnInit {
 
   private markFormGroupTouched(): void {
     this.projectForm.markAllAsTouched();
+  }
+
+  resetForm(): void {
+    this.projectForm.reset({
+      title: '',
+      description: '',
+      technologies: [],
+      demo_url: null,
+      category: null,
+      featured: false,
+      priority: null,
+      date: null,
+      github_urls: {
+        frontend: null,
+        backend: null,
+        fullstack: null,
+      },
+    });
+    this.selectedFile = null;
+    this.imagePreview.set(null);
+    this.currentImageUrl.set(null);
+    this.currentProject.set(null);
+    this.isEditMode.set(false);
   }
 }
