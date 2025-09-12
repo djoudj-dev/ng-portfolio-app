@@ -46,6 +46,7 @@ export class ProjectFormComponent implements OnInit {
     demo_url: [null as string | null],
     category: [null as ProjectCategory | null, Validators.required],
     featured: [false],
+    priority: [null as number | null],
     date: [null as string | null, Validators.required],
     github_urls: this.fb.group({
       frontend: [null as string | null],
@@ -95,6 +96,7 @@ export class ProjectFormComponent implements OnInit {
       demo_url: project.demoUrl,
       category: project.category,
       featured: project.featured,
+      priority: project.priority,
       date: formattedDate,
       github_urls: {
         frontend: project.githubUrls?.frontend,
@@ -148,6 +150,7 @@ export class ProjectFormComponent implements OnInit {
         demoUrl: rawData.demo_url ?? undefined,
         category: rawData.category,
         featured: rawData.featured ?? false,
+        priority: rawData.priority ?? undefined,
         status: 'ACTIVE' as ProjectStatus,
         date: rawData.date,
         githubUrlFrontend: rawData.github_urls?.frontend ?? undefined,
@@ -165,6 +168,7 @@ export class ProjectFormComponent implements OnInit {
           demoUrl: formData.demoUrl,
           category: formData.category,
           featured: formData.featured,
+          priority: formData.priority,
           status: formData.status,
           date: formData.date,
           githubUrlFrontend: formData.githubUrlFrontend,
