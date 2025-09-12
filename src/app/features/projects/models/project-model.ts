@@ -16,6 +16,7 @@ export interface ProjectModel {
   demoUrl?: string | null;
   category: ProjectCategory;
   featured: boolean;
+  priority?: number | null;
   status: ProjectStatus;
   date: Date;
   createdAt: Date;
@@ -36,6 +37,7 @@ export interface CreateProjectDto {
   demoUrl?: string;
   category: ProjectCategory;
   featured?: boolean;
+  priority?: number;
   status?: ProjectStatus;
   date: string;
 }
@@ -50,6 +52,7 @@ export interface UpdateProjectDto {
   demoUrl?: string;
   category?: ProjectCategory;
   featured?: boolean;
+  priority?: number;
   status?: ProjectStatus;
   date?: string;
 }
@@ -85,6 +88,7 @@ export interface ProjectResponseDto {
   demoUrl?: string | null;
   category: ProjectCategory;
   featured: boolean;
+  priority?: number | null;
   status: ProjectStatus;
   date: Date;
   createdAt: Date;
