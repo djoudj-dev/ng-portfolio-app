@@ -123,11 +123,27 @@ export class NavbarComponent {
   }
 
   toggleMobileMenu(): void {
-    this._isMobileMenuOpen.update((current) => !current);
+    const willOpen = !this._isMobileMenuOpen();
+    this._isMobileMenuOpen.set(willOpen);
+
+    setTimeout(() => {
+      if (willOpen) {
+        // Focus the first link in the mobile menu
+        const firstLink = document.querySelector('#mobile-menu a');
+        (firstLink as HTMLElement | null)?.focus?.();
+      } else {
+        // Return focus to the toggle button
+        (document.getElementById('menu-toggle') as HTMLElement | null)?.focus?.();
+      }
+    }, 0);
   }
 
   closeMobileMenu(): void {
+    if (!this._isMobileMenuOpen()) return;
     this._isMobileMenuOpen.set(false);
+    setTimeout(() => {
+      (document.getElementById('menu-toggle') as HTMLElement | null)?.focus?.();
+    }, 0);
   }
 
   isActiveRoute(route: string): boolean {

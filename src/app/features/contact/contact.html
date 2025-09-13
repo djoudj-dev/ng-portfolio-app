@@ -1,5 +1,5 @@
 <main id="contact" class="pb-4 pt-20 lg:pt-18">
-  <section class="mx-auto flex flex-col justify-center">
+  <section class="mx-auto flex flex-col justify-center" role="region" aria-labelledby="contact-heading">
     <div class="container mx-auto px-4 md:px-6">
       <header class="mb-10 text-center">
         <h1
@@ -20,7 +20,7 @@
             <div
               class="bg-background border-accent ase-in-out transform rounded-lg border p-4"
             >
-              <h3 class="text-text mb-4 text-xl font-bold">
+              <h3 class="text-text mb-4 text-xl font-bold" id="contact-info-{{ group.id }}">
                 {{ group.title }}
               </h3>
 
@@ -70,11 +70,13 @@
           }
         </div>
 
-        <div
+        <section
           class="bg-background-200 shadow-primary-md border-accent relative rounded-xl border p-6 lg:w-2/3"
+          role="region"
+          aria-label="Formulaire de contact"
         >
           <app-contact-message-card />
-        </div>
+        </section>
       </div>
     </div>
   </section>

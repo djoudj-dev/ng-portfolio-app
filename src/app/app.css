@@ -1,0 +1,202 @@
+/* Skip Links pour l'accessibilité */
+.skip-links {
+  position: absolute;
+  top: -100px;
+  left: 0;
+  z-index: 9999;
+}
+
+.skip-link {
+  position: absolute;
+  top: -100px;
+  left: 6px;
+  padding: 8px 16px;
+  background: #000;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 14px;
+  transition: top 0.3s ease;
+}
+
+.skip-link:focus {
+  top: 6px;
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+
+.skip-link:hover:focus {
+  background: #333;
+}
+
+/* Focus visible amélioré */
+*:focus-visible {
+  outline: 2px solid #007acc;
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* Amélioration du focus pour les boutons */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 2px solid #007acc;
+  outline-offset: 2px;
+  transition: outline 0.2s ease-in-out;
+}
+
+/* Focus visible amélioré pour les éléments interactifs */
+[role="button"]:focus-visible,
+[role="link"]:focus-visible,
+[role="tab"]:focus-visible,
+[role="menuitem"]:focus-visible {
+  outline: 2px solid #007acc;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Animation pour les transitions de focus */
+* {
+  scroll-behavior: smooth;
+}
+
+/* Préserver le mouvement pour ceux qui le souhaitent */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Améliorer le contraste pour le texte secondaire */
+.text-secondary {
+  color: rgb(75 85 99) !important; /* gray-600 pour un meilleur contraste */
+}
+
+/* Assurer un contraste suffisant pour les liens */
+a {
+  text-decoration-color: currentColor;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Améliorer la visibilité des erreurs */
+.text-red-500,
+.text-red-600 {
+  color: #dc2626 !important; /* Rouge plus contrasté */
+}
+
+/* Améliorer la visibilité des succès */
+.text-green-500,
+.text-green-600 {
+  color: #059669 !important; /* Vert plus contrasté */
+}
+
+/* Classes utilitaires pour l'accessibilité */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.sr-only:focus,
+.sr-only:focus-within {
+  position: static;
+  width: auto;
+  height: auto;
+  padding: inherit;
+  margin: inherit;
+  overflow: visible;
+  clip: auto;
+  white-space: normal;
+}
+
+/* Amélioration du contraste pour les textes avec opacité */
+.text-text\/80 {
+  color: rgb(0 0 0 / 0.9) !important; /* Augmenter l'opacité pour un meilleur contraste */
+}
+
+.text-text\/70 {
+  color: rgb(0 0 0 / 0.8) !important;
+}
+
+/* Améliorer la visibilité des erreurs de validation */
+.text-red-800 {
+  color: #991b1b !important;
+}
+
+/* Améliorer les couleurs d'accent pour le contraste */
+.text-accent {
+  color: #0066cc !important;
+}
+
+.text-accent:hover {
+  color: #0052a3 !important;
+}
+
+/* Mode sombre - améliorer les contrastes */
+@media (prefers-color-scheme: dark) {
+  .text-text\/80 {
+    color: rgb(255 255 255 / 0.9) !important;
+  }
+  
+  .text-text\/70 {
+    color: rgb(255 255 255 / 0.8) !important;
+  }
+  
+  .text-secondary {
+    color: rgb(156 163 175) !important; /* gray-400 pour le mode sombre */
+  }
+
+  .text-accent {
+    color: #60a5fa !important; /* Bleu plus clair pour le mode sombre */
+  }
+
+  .text-accent:hover {
+    color: #93c5fd !important;
+  }
+}
+
+/* Améliorer la lisibilité des petits textes */
+.text-xs {
+  font-size: 0.75rem;
+  line-height: 1.2;
+  letter-spacing: 0.025em;
+}
+
+.text-sm {
+  line-height: 1.4;
+}
+
+/* Assurer que les éléments interactifs ont une taille minimale */
+button, 
+[role="button"],
+input[type="button"],
+input[type="submit"],
+input[type="reset"] {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+/* Améliorer la visibilité des focus pour les touch devices */
+@media (hover: none) {
+  button:focus,
+  [role="button"]:focus,
+  a:focus {
+    outline: 3px solid #007acc;
+    outline-offset: 2px;
+  }
+}

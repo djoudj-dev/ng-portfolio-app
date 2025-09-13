@@ -1,12 +1,14 @@
 import { Injectable, signal, computed, inject } from '@angular/core';
 import type { ToastData, ToastType, ToastConfig, ConfirmModalData } from '@shared/ui';
 import { ConfirmModalService } from '@shared/ui';
+import { LiveAnnouncerService } from '@core/services/live-announcer-service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ToastService {
   private readonly confirmModalService = inject(ConfirmModalService);
+  private readonly liveAnnouncerService = inject(LiveAnnouncerService);
   private readonly _toasts = signal<ToastData[]>([]);
   private readonly _config = signal<ToastConfig>({
     position: 'top-right',
@@ -44,6 +46,14 @@ export class ToastService {
 
       return newToasts;
     });
+
+    // Annonce le toast pour l'accessibilité
+    const announceMessage = message ? `${title}: ${message}` : title;
+    if (type === 'danger') {
+      this.liveAnnouncerService.announceUrgent(announceMessage);
+    } else {
+      this.liveAnnouncerService.announce(announceMessage);
+    }
 
     if (duration && duration > 0) {
       setTimeout(() => {

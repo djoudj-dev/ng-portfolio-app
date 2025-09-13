@@ -12,6 +12,8 @@ import { ToastService } from '@shared/ui';
       class="flex items-start p-4 mb-3 rounded-lg shadow-lg border-l-4 animate-slide-in-right"
       role="alert"
       [attr.aria-live]="toast().type === 'danger' ? 'assertive' : 'polite'"
+      aria-atomic="true"
+      [attr.aria-label]="getAriaLabel()"
     >
       <!-- Icône -->
       <div class="flex-shrink-0 mr-3">
@@ -50,9 +52,9 @@ import { ToastService } from '@shared/ui';
       </div>
 
       <div class="flex-1 min-w-0">
-        <h4 class="text-sm text-text font-semibold mb-1" [class]="titleClasses()">
+        <p class="text-sm text-text font-semibold mb-1" [class]="titleClasses()">
           {{ toast().title }}
-        </h4>
+        </p>
         @if (toast().message) {
           <p class="text-sm text-text" [class]="messageClasses()">
             {{ toast().message }}
@@ -176,5 +178,14 @@ export class Toast {
   onDismiss(): void {
     this.dismissed.emit(this.toast().id);
     this.toastService.dismiss(this.toast().id);
+  }
+
+  getAriaLabel(): string {
+    const type = this.toast().type;
+    const typeLabel = type === 'success' ? 'Succès' : type === 'warning' ? 'Avertissement' : 'Erreur';
+    const title = this.toast().title;
+    const message = this.toast().message;
+    
+    return message ? `${typeLabel}: ${title}, ${message}` : `${typeLabel}: ${title}`;
   }
 }

@@ -8,16 +8,16 @@ import { CardData } from '@features/about/interface/card-data';
   template: `
     <div class="mt-16 sm:mt-20 lg:mt-0">
       <h3
-        class="mb-6 text-2xl font-bold text-center sm:text-3xl lg:text-4xl underline underline-offset-4 decoration-accent decoration-3"
+        class=" pb-4 text-2xl font-bold text-center sm:text-3xl lg:text-4xl underline underline-offset-4 decoration-accent decoration-3"
       >
         Mes valeurs
       </h3>
 
-      <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
+      <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8 auto-rows-fr">
         @for (card of cards(); track card.icon) {
           <div class="group">
             <article
-              class="flex flex-col p-6 bg-background border border-accent rounded-xl shadow-md hover:shadow-xl hover:-translate-y-1"
+              class="flex flex-col p-6 bg-background border border-accent rounded-xl shadow-md hover:shadow-xl hover:-translate-y-1 min-h-[180px] h-full transition-all duration-300"
             >
               <!-- En-tête avec icône et titre -->
               <div class="flex items-center mb-3 gap-3">
@@ -32,13 +32,13 @@ import { CardData } from '@features/about/interface/card-data';
                     height="24"
                   />
                 </div>
-                <h4 class="text-lg font-semibold text-text group-hover:text-accent">
+                <p class="text-lg font-semibold text-text group-hover:text-accent">
                   {{ card.title }}
-                </h4>
+                </p>
               </div>
 
               <!-- Description -->
-              <p class="text-sm leading-relaxed text-text/80">
+              <p class="text-sm leading-relaxed text-text/80 flex-1">
                 {{ card.description }}
               </p>
             </article>
