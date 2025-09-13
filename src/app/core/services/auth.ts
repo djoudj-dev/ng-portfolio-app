@@ -129,8 +129,35 @@ export class AuthService {
   private checkAuthStatus(): void {
     this._authState.update((state) => ({
       ...state,
-      user: null,
+      isLoading: true,
     }));
+
+    this.http
+      .post<AuthResponse>(`${this.apiUrl}/auth/status`, {}, {
+        withCredentials: true,
+      })
+      .pipe(
+        tap((response) => {
+          this._authState.update((state) => ({
+            ...state,
+            user: response.user,
+            isLoading: false,
+            error: null,
+          }));
+        }),
+        tap({
+          error: () => {
+            // Si la vérification échoue, l'utilisateur n'est pas connecté
+            this._authState.update((state) => ({
+              ...state,
+              user: null,
+              isLoading: false,
+              error: null,
+            }));
+          },
+        }),
+      )
+      .subscribe();
   }
 
   /**
