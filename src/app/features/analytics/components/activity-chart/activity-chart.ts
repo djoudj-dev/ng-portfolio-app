@@ -65,7 +65,7 @@ interface ChartData {
             <div class="flex items-center gap-4 text-sm">
               <div class="flex items-center gap-2">
                 <div class="w-3 h-3 bg-gradient-to-r from-green-400 to-green-600 rounded-sm"></div>
-                <span class="text-secondary">Visiteurs humains</span>
+                <span class="text-secondary">Visiteurs</span>
               </div>
               <div class="flex items-center gap-2">
                 <div
@@ -76,7 +76,7 @@ interface ChartData {
             </div>
           </div>
 
-          <div class="bg-gray-50 rounded-xl p-4">
+          <div class="bg-background border border-accent rounded-xl p-4">
             <div class="h-64 flex items-end justify-between gap-2">
               @for (day of getChartData(); track day.date) {
                 <div class="flex-1 flex flex-col items-center group cursor-pointer">
