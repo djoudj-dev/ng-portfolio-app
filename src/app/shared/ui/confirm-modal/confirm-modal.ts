@@ -1,6 +1,14 @@
-import { Component, ChangeDetectionStrategy, input, output } from '@angular/core';
+import {
+  Component,
+  ChangeDetectionStrategy,
+  input,
+  output,
+  ViewChild,
+  ElementRef,
+  AfterViewInit,
+} from '@angular/core';
 import { CommonModule, NgOptimizedImage } from '@angular/common';
-import { ButtonComponent } from '../button/button';
+import { ButtonComponent } from '@shared/ui';
 
 export interface ConfirmModalData {
   title: string;
@@ -22,9 +30,13 @@ export interface ConfirmModalData {
       <div
         class="bg-background rounded-2xl border border-accent shadow-2xl max-w-md w-full animate-in fade-in-0 zoom-in-95 duration-200"
         (click)="$event.stopPropagation()"
+        (keydown)="onKeyDown($event)"
         role="dialog"
+        aria-modal="true"
         [attr.aria-labelledby]="'confirm-title'"
         [attr.aria-describedby]="data().message ? 'confirm-message' : null"
+        tabindex="-1"
+        #modalRef
       >
         <div class="p-6 pb-4">
           <div class="flex items-center gap-3">
@@ -122,11 +134,39 @@ export interface ConfirmModalData {
     `,
   ],
 })
-export class ConfirmModal {
+export class ConfirmModal implements AfterViewInit {
+  @ViewChild('modalRef', { static: false }) modalRef!: ElementRef;
+
   readonly data = input.required<ConfirmModalData>();
 
   readonly confirmed = output<boolean>();
   readonly cancelled = output<void>();
+
+  ngAfterViewInit(): void {
+    // Focus the modal on init
+    setTimeout(() => {
+      this.modalRef?.nativeElement?.focus();
+      this.focusFirstInteractive();
+    }, 0);
+  }
+
+  private getFocusableElements(): HTMLElement[] {
+    const root: HTMLElement | null = this.modalRef?.nativeElement ?? null;
+    if (!root) return [];
+    const selectors = [
+      'a[href]','area[href]','input:not([disabled])','select:not([disabled])','textarea:not([disabled])',
+      'button:not([disabled])','iframe','object','embed','[contenteditable]','[tabindex]:not([tabindex="-1"])'
+    ];
+    const nodeList = root.querySelectorAll<HTMLElement>(selectors.join(','));
+    return Array.from(nodeList).filter((el) => !el.hasAttribute('disabled') && !el.getAttribute('aria-hidden'));
+  }
+
+  private focusFirstInteractive(): void {
+    const focusables = this.getFocusableElements();
+    // Prefer the first button after heading
+    const target = focusables.find((el) => el.tagName.toLowerCase() === 'button') ?? focusables[0];
+    target?.focus();
+  }
 
   onConfirm(): void {
     this.confirmed.emit(true);
@@ -139,6 +179,36 @@ export class ConfirmModal {
 
   onBackdropClick(_event: Event): void {
     this.onCancel();
+  }
+
+  onKeyDown(event: KeyboardEvent): void {
+    if (event.key === 'Escape') {
+      this.onCancel();
+      return;
+    }
+
+    if (event.key === 'Tab') {
+      const focusables = this.getFocusableElements();
+      if (focusables.length === 0) {
+        event.preventDefault();
+        (this.modalRef?.nativeElement as HTMLElement)?.focus();
+        return;
+      }
+      const first = focusables[0];
+      const last = focusables[focusables.length - 1];
+      const active = document.activeElement as HTMLElement | null;
+      if (event.shiftKey) {
+        if (!active || active === first) {
+          last.focus();
+          event.preventDefault();
+        }
+      } else {
+        if (!active || active === last) {
+          first.focus();
+          event.preventDefault();
+        }
+      }
+    }
   }
 
   getIconContainerClass(): string {

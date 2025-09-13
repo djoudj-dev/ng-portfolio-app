@@ -20,9 +20,9 @@ export type SubmissionStatus = "success" | "error";
             height="128"
           />
 
-          <h4 class="text-text mb-2 text-xl font-bold">
+          <p class="text-text mb-2 text-xl font-bold">
             Message envoyé avec succès!
-          </h4>
+          </p>
           <p class="text-text/70 mb-6 text-center">
             Merci pour votre message. Je vous répondrai dans les plus brefs
             délais.
@@ -36,7 +36,7 @@ export type SubmissionStatus = "success" | "error";
             height="128"
           />
 
-          <h4 class="text-text mb-2 text-xl font-bold">Erreur d'envoi</h4>
+          <p class="text-text mb-2 text-xl font-bold">Erreur d'envoi</p>
           <p class="text-text/70 mb-6 text-center">
             Une erreur s'est produite lors de l'envoi de votre message. Veuillez
             réessayer.
