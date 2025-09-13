@@ -200,6 +200,46 @@ import { ToastService } from '@shared/ui/toast/service/toast-service';
                             </div>
                           </div>
                         </div>
+
+                        <!-- Zone de réponse -->
+                        <div class="pt-4 border-t border-accent/20 space-y-3">
+                          <h4 class="text-sm font-semibold text-text uppercase tracking-wide">
+                            Répondre à {{ msg.email }}
+                          </h4>
+                          <div class="space-y-3">
+                            <input
+                              type="text"
+                              class="w-full px-3 py-2 rounded-lg border border-accent/20 bg-background text-text focus:outline-none focus:ring-2 focus:ring-primary/40"
+                              placeholder="Objet (optionnel)"
+                              [value]="getReplySubject(msg.id)"
+                              (input)="onReplySubjectChange(msg.id, '' + ($any($event.target).value ?? ''))"
+                            />
+                            <textarea
+                              rows="4"
+                              class="w-full px-3 py-2 rounded-lg border border-accent/20 bg-background text-text focus:outline-none focus:ring-2 focus:ring-primary/40"
+                              placeholder="Votre réponse..."
+                              [value]="getReplyText(msg.id)"
+                              (input)="onReplyChange(msg.id, '' + ($any($event.target).value ?? ''))"
+                            ></textarea>
+                            <div class="flex items-center gap-3">
+                              <app-button
+                                color="primary"
+                                [disabled]="isSending(msg.id) || !canSend(msg.id)"
+                                [customClass]="'px-4 py-2 text-sm'"
+                                (buttonClick)="sendReply(msg)"
+                              >
+                                {{ isSending(msg.id) ? 'Envoi...' : 'Envoyer la réponse' }}
+                              </app-button>
+                              <app-button
+                                color="accent"
+                                [customClass]="'px-4 py-2 text-sm'"
+                                (buttonClick)="clearReply(msg.id)"
+                              >
+                                Effacer
+                              </app-button>
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   }
@@ -220,6 +260,11 @@ export class AdminMessagesPage {
   readonly loading = signal<boolean>(false);
   readonly unreadCount = signal<number>(0);
   readonly expandedId = signal<string | null>(null);
+
+  // Etat pour la réponse
+  private readonly replyTexts = signal<Record<string, string>>({});
+  private readonly replySubjects = signal<Record<string, string>>({});
+  private readonly sendingId = signal<string | null>(null);
 
   constructor() {
     this.load();
@@ -280,6 +325,65 @@ export class AdminMessagesPage {
         this.unreadCount.update((c) => Math.max(0, c - 1));
       }
       this.toastService.success('Message supprimé');
+    }
+  }
+
+  // --- Réponse ---
+  getReplyText(id: string): string {
+    return this.replyTexts()[id] ?? '';
+  }
+
+  onReplyChange(id: string, value: string): void {
+    this.replyTexts.update((map) => ({ ...map, [id]: value }));
+  }
+
+  getReplySubject(id: string): string {
+    return this.replySubjects()[id] ?? '';
+  }
+
+  onReplySubjectChange(id: string, value: string): void {
+    this.replySubjects.update((map) => ({ ...map, [id]: value }));
+  }
+
+  canSend(id: string): boolean {
+    return this.getReplyText(id).trim().length > 0;
+  }
+
+  isSending(id: string): boolean {
+    return this.sendingId() === id;
+  }
+
+  clearReply(id: string): void {
+    const map = { ...this.replyTexts() };
+    delete map[id];
+    this.replyTexts.set(map);
+
+    const mapS = { ...this.replySubjects() };
+    delete mapS[id];
+    this.replySubjects.set(mapS);
+  }
+
+  async sendReply(msg: ContactMessage): Promise<void> {
+    const id = msg.id;
+    const body = this.getReplyText(id).trim();
+    if (!body) return;
+    const subject = (this.getReplySubject(id) || `Re: ${msg.subject}`).trim();
+
+    this.sendingId.set(id);
+    try {
+      const ok = await this.contactService.replyToMessage(id, { message: body, subject });
+      if (ok) {
+        this.toastService.success('Réponse envoyée');
+        // Marquer comme lu si besoin
+        if (!msg.isRead) {
+          await this.markAsRead(msg);
+        }
+        this.clearReply(id);
+      } else {
+        this.toastService.danger("Échec de l'envoi de la réponse");
+      }
+    } finally {
+      this.sendingId.set(null);
     }
   }
 }

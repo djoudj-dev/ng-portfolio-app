@@ -3,15 +3,22 @@ import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { environment } from '@environments/environment';
 import type { AnalyticsQuery, AnalyticsOverview, TotalVisits } from '@features/analytics';
+import { AuthService } from '@core/services/auth';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AnalyticsService {
   private readonly http = inject(HttpClient);
+  private readonly auth = inject(AuthService);
   private readonly baseUrl = `${environment.apiUrl}/analytics`;
 
   async getAnalyticsOverview(query?: AnalyticsQuery): Promise<AnalyticsOverview> {
+    // Vérification préventive d'autorisation
+    if (!(this.auth.isAuthenticated() && this.auth.isAdmin())) {
+      return Promise.reject(new Error('Accès non autorisé aux analytics'));
+    }
+
     try {
       return await firstValueFrom(
         this.http.get<AnalyticsOverview>(`${this.baseUrl}/overview`, {
@@ -25,6 +32,11 @@ export class AnalyticsService {
     }
   }
   async getTotalVisits(query?: AnalyticsQuery): Promise<TotalVisits> {
+    // Vérification préventive d'autorisation
+    if (!(this.auth.isAuthenticated() && this.auth.isAdmin())) {
+      return Promise.reject(new Error('Accès non autorisé aux analytics'));
+    }
+
     try {
       return await firstValueFrom(
         this.http.get<TotalVisits>(`${this.baseUrl}/totals`, {

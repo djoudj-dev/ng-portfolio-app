@@ -105,4 +105,22 @@ export class ContactService {
       return false;
     }
   }
+
+  // Répondre à un message de contact depuis l'admin
+  async replyToMessage(
+    id: string,
+    payload: { message: string; subject?: string },
+  ): Promise<boolean> {
+    try {
+      await firstValueFrom(
+        this.http.post(`${environment.apiUrl}/contact/${id}/reply`, payload, {
+          headers: { 'Content-Type': 'application/json' },
+        }),
+      );
+      return true;
+    } catch (err) {
+      console.error("Erreur lors de l'envoi de la réponse:", err);
+      return false;
+    }
+  }
 }
