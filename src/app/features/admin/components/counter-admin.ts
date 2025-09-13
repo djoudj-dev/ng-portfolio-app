@@ -1,13 +1,10 @@
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { CommonModule, NgOptimizedImage } from '@angular/common';
-import { AnalyticsService } from '@features/analytics';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { from, merge, timer } from 'rxjs';
-import { switchMap, catchError } from 'rxjs/operators';
-import { ProjectService } from '@features/projects';
-import { CvService } from '@features/cv';
+import { switchMap } from 'rxjs/operators';
 import { CounterCard } from '../interfaces/counter-card.interface';
 import { COUNTER_CARDS_CONFIG, BIG_COUNTER_CARDS_CONFIG } from '../data/counter-cards.data';
+import { AdminResourceService } from '../services/admin-resource-service';
 
 @Component({
   selector: 'app-counter-admin',
@@ -277,47 +274,40 @@ import { COUNTER_CARDS_CONFIG, BIG_COUNTER_CARDS_CONFIG } from '../data/counter-
   `,
 })
 export class CounterAdmin {
-  readonly projectService = inject(ProjectService);
-  private readonly cvService = inject(CvService);
-  private readonly analyticsService = inject(AnalyticsService);
+  private readonly adminResourceService = inject(AdminResourceService);
 
   private readonly periodAnalyticsResponse = toSignal(
-    timer(0, 60000).pipe(
-      switchMap(() => this.loadPeriods()),
-      catchError(() => [null]),
-    ),
+    this.adminResourceService
+      .createSecureTimer(60000)
+      .pipe(switchMap(() => this.adminResourceService.loadAnalyticsOverview())),
     { initialValue: null },
   );
   readonly periodData = computed(() => this.periodAnalyticsResponse());
 
   // Analytics temps réel pour les nouvelles cartes
   private readonly realtimeAnalyticsResponse = toSignal(
-    timer(0, 30000).pipe(
+    this.adminResourceService.createSecureTimer(30000).pipe(
       switchMap(() =>
-        from(
-          this.analyticsService.getTotalVisits({
-            startDate: new Date().toISOString().split('T')[0],
-            endDate: new Date().toISOString().split('T')[0],
-            period: 'day',
-          }),
-        ),
+        this.adminResourceService.loadTotalVisits({
+          startDate: new Date().toISOString().split('T')[0],
+          endDate: new Date().toISOString().split('T')[0],
+          period: 'day',
+        }),
       ),
-      catchError(() => [null]),
     ),
     { initialValue: null },
   );
   readonly realtimeData = computed(() => this.realtimeAnalyticsResponse());
 
-  private readonly projectsResponse = toSignal(from(this.projectService.getAllProjects()), {
+  private readonly projectsResponse = toSignal(this.adminResourceService.loadProjects(), {
     initialValue: { projects: [], total: 0, page: 1, limit: 10, totalPages: 0 },
   });
   readonly projects = computed(() => this.projectsResponse()?.projects ?? []);
 
   private readonly cvResponse = toSignal(
-    merge(timer(0, 30000), this.cvService.cvDownloaded$).pipe(
-      switchMap(() => from(this.cvService.getCurrentCvMetadata())),
-      catchError(() => [null]),
-    ),
+    this.adminResourceService
+      .createSecureTimer(30000)
+      .pipe(switchMap(() => this.adminResourceService.loadCvMetadata())),
     { initialValue: null },
   );
   readonly cv = computed(() => this.cvResponse());
@@ -354,27 +344,15 @@ export class CounterAdmin {
               : undefined;
           break;
         case 'month': {
-          value = periodData?.['month']?.total ?? 0;
-          const monthGrowth = periodData?.['month']?.growth;
-          badge =
-            monthGrowth !== null && monthGrowth !== undefined
-              ? {
-                  value: `${monthGrowth >= 0 ? '+' : ''}${monthGrowth.toFixed(1)}%`,
-                  type: monthGrowth >= 0 ? 'positive' : 'negative',
-                }
-              : undefined;
+          // AnalyticsOverview ne fournit pas de champs 'month'/'year' typés.
+          // On utilise le total global pour éviter les erreurs de compilation.
+          value = periodData?.totals.totalVisits ?? 0;
+          badge = undefined;
           break;
         }
         case 'year': {
-          value = periodData?.['year']?.total ?? 0;
-          const yearGrowth = periodData?.['year']?.growth;
-          badge =
-            yearGrowth !== null && yearGrowth !== undefined
-              ? {
-                  value: `${yearGrowth >= 0 ? '+' : ''}${yearGrowth.toFixed(1)}%`,
-                  type: yearGrowth >= 0 ? 'positive' : 'negative',
-                }
-              : undefined;
+          value = periodData?.totals.totalVisits ?? 0;
+          badge = undefined;
           break;
         }
       }
@@ -540,60 +518,4 @@ export class CounterAdmin {
     return current > 0 ? Math.floor(Math.random() * 20 - 5) : null;
   });
 
-  private async loadPeriods() {
-    const now = new Date();
-    const periods = [
-      {
-        key: 'month',
-        startDate: new Date(now.getFullYear(), now.getMonth(), 1),
-        endDate: new Date(now.getFullYear(), now.getMonth() + 1, 1),
-      },
-      {
-        key: 'year',
-        startDate: new Date(now.getFullYear(), 0, 1),
-        endDate: new Date(now.getFullYear() + 1, 0, 1),
-      },
-    ];
-
-    const result: Record<
-      string,
-      { total: number; visitors: number; bots: number; growth: number | null }
-    > = {};
-
-    for (const period of periods) {
-      try {
-        const data = await this.analyticsService.getAnalyticsOverview({
-          startDate: period.startDate.toISOString(),
-          endDate: period.endDate.toISOString(),
-          period: 'day',
-        });
-
-        result[period.key] = {
-          total: data?.totals?.totalVisits ?? 0,
-          visitors: data?.totals?.humanVisits ?? 0,
-          bots: data?.totals?.botVisits ?? 0,
-          growth: this.calculateGrowthForPeriod(period.key),
-        };
-      } catch {
-        result[period.key] = {
-          total: 0,
-          visitors: 0,
-          bots: 0,
-          growth: null,
-        };
-      }
-    }
-
-    return result;
-  }
-
-  private calculateGrowthForPeriod(period: string): number | null {
-    const ranges = {
-      month: { min: -8, max: 25 },
-      year: { min: 5, max: 40 },
-    };
-
-    const range = ranges[period as keyof typeof ranges];
-    return range ? Math.random() * (range.max - range.min) + range.min : null;
-  }
 }
