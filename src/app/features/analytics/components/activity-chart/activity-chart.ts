@@ -63,16 +63,24 @@ interface ChartData {
           <div class="flex items-center justify-between">
             <h4 class="text-lg font-semibold text-text">Répartition des visiteurs (7 jours)</h4>
             <div class="flex items-center gap-4 text-sm">
-              <div class="flex items-center gap-2">
-                <div class="w-3 h-3 bg-gradient-to-r from-green-400 to-green-600 rounded-sm"></div>
-                <span class="text-secondary">Visiteurs</span>
-              </div>
-              <div class="flex items-center gap-2">
-                <div
-                  class="w-3 h-3 bg-gradient-to-r from-orange-400 to-orange-600 rounded-sm"
-                ></div>
-                <span class="text-secondary">Robots/Crawlers</span>
-              </div>
+              @for (day of getChartData(); track day.date) {
+                <div class="flex items-center gap-2">
+                  <div
+                    class="w-3 h-3 bg-gradient-to-r from-green-400 to-green-600 rounded-sm"
+                  ></div>
+                  <span class="text-secondary">Visiteurs</span> :
+                  <div class="text-sm font-bold text-green-600">{{ day.humanVisits }}</div>
+                </div>
+                <div class="flex items-center gap-2">
+                  <div
+                    class="w-3 h-3 bg-gradient-to-r from-orange-400 to-orange-600 rounded-sm"
+                  ></div>
+                  @if (day.botVisits > 0) {
+                    <span class="text-secondary">Robots/Crawlers</span> :
+                    <div class="text-xs font-medium text-accent-600">{{ day.botVisits }}</div>
+                  }
+                </div>
+              }
             </div>
           </div>
 
@@ -95,7 +103,7 @@ interface ChartData {
                         [class.rounded-lg]="day.botHeight === 0"
                         [class.rounded-b-lg]="day.botHeight > 0"
                         [style.height.px]="day.humanHeight"
-                        [title]="day.humanVisits + ' visiteurs humains le ' + day.day"
+                        [title]="day.humanVisits + ' visiteurs le ' + day.day"
                       >
                         <div
                           class="absolute inset-0 bg-gradient-to-t from-transparent to-white/10 rounded-b-lg opacity-0 group-hover:opacity-100 transition-opacity"
@@ -104,13 +112,7 @@ interface ChartData {
                     </div>
                   </div>
 
-                  <div class="text-center space-y-1">
-                    <div class="flex flex-col gap-1">
-                      <div class="text-sm font-bold text-green-600">{{ day.humanVisits }}</div>
-                      @if (day.botVisits > 0) {
-                        <div class="text-xs font-medium text-accent-600">{{ day.botVisits }}</div>
-                      }
-                    </div>
+                  <div class="flex items-center justify-center space-x-2">
                     <div class="text-xs text-secondary font-medium">{{ day.day }}</div>
                     <div class="text-xs text-gray-500">{{ day.date }}</div>
                   </div>
