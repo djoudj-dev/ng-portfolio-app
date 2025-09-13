@@ -63,24 +63,23 @@ interface ChartData {
           <div class="flex items-center justify-between">
             <h4 class="text-lg font-semibold text-text">Répartition des visiteurs (7 jours)</h4>
             <div class="flex items-center gap-4 text-sm">
-              @for (day of getChartData(); track day.date) {
-                <div class="flex items-center gap-2">
-                  <div
-                    class="w-3 h-3 bg-gradient-to-r from-green-400 to-green-600 rounded-sm"
-                  ></div>
-                  <span class="text-secondary">Visiteurs</span> :
-                  <div class="text-sm font-bold text-green-600">{{ day.humanVisits }}</div>
-                </div>
-                <div class="flex items-center gap-2">
-                  <div
-                    class="w-3 h-3 bg-gradient-to-r from-orange-400 to-orange-600 rounded-sm"
-                  ></div>
-                  @if (day.botVisits > 0) {
-                    <span class="text-secondary">Robots/Crawlers</span> :
-                    <div class="text-xs font-medium text-accent-600">{{ day.botVisits }}</div>
-                  }
-                </div>
-              }
+              @let totals = getTotals();
+              <div class="flex items-center gap-2">
+                <div
+                  class="w-3 h-3 bg-gradient-to-r from-green-400 to-green-600 rounded-sm"
+                ></div>
+                <span class="text-secondary">Visiteurs</span> :
+                <div class="text-sm font-bold text-green-600">{{ totals.humans }}</div>
+              </div>
+              <div class="flex items-center gap-2">
+                <div
+                  class="w-3 h-3 bg-gradient-to-r from-orange-400 to-orange-600 rounded-sm"
+                ></div>
+                @if (totals.bots > 0) {
+                  <span class="text-secondary">Robots/Crawlers</span> :
+                  <div class="text-xs font-medium text-accent-600">{{ totals.bots }}</div>
+                }
+              </div>
             </div>
           </div>
 
@@ -221,5 +220,16 @@ export class ActivityChartComponent implements OnInit {
       humanHeight: Math.max(5, (day.humanVisits / maxTotal) * maxHeight),
       botHeight: day.botVisits > 0 ? Math.max(3, (day.botVisits / maxTotal) * maxHeight) : 0,
     }));
+  }
+
+  getTotals(): { humans: number; bots: number } {
+    const data = this.getChartData();
+    let humans = 0;
+    let bots = 0;
+    for (const d of data) {
+      humans += d.humanVisits;
+      bots += d.botVisits;
+    }
+    return { humans, bots };
   }
 }
