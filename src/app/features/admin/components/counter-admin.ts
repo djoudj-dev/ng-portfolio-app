@@ -134,7 +134,7 @@ import { COUNTER_CARDS_CONFIG, BIG_COUNTER_CARDS_CONFIG } from '../data/counter-
                 <div class="flex justify-between text-xs font-medium">
                   <span
                     class="text-green-600 px-3 py-1.5 bg-background rounded-full border border-accent"
-                    >{{ getHumanPercentage() }}% Humains</span
+                    >{{ getHumanPercentage() }}% Visiteurs</span
                   >
                   <span
                     class="text-accent-600  px-3 py-1.5 bg-background rounded-full border border-accent"
@@ -404,7 +404,7 @@ export class CounterAdmin {
           badge =
             total > 0
               ? {
-                  value: `${Math.round((humanVisits / total) * 100)}% humains`,
+                  value: `${Math.round((humanVisits / total) * 100)}% visiteurs`,
                   type: humanVisits > botVisits ? 'positive' : 'neutral',
                 }
               : undefined;
@@ -523,9 +523,9 @@ export class CounterAdmin {
 
     switch (status) {
       case 'excellent':
-        return `Excellent trafic ! ${humanPercentage}% d'humains sur ${totalVisits} visites.`;
+        return `Excellent trafic ! ${humanPercentage}% de visites réel sur ${totalVisits} total visites.`;
       case 'good':
-        return `Bon trafic avec ${humanPercentage}% de visiteurs humains.`;
+        return `Bon trafic avec ${humanPercentage}% de visiteurs.`;
       case 'needs-attention':
         return totalVisits === 0
           ? "Aucune visite aujourd'hui. Optimisation recommandée."
