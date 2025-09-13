@@ -86,14 +86,6 @@ import { SKILL_CATEGORIES } from '../data/skill-data';
               </li>
             }
           </ul>
-
-          <!-- Footer avec compteur de skills -->
-          <div class="mt-4 pt-3 border-t border-accent/20">
-            <p class="text-xs sm:text-sm text-text/70 text-center">
-              {{ category.skills.length }}
-              {{ category.skills.length === 1 ? 'compétence' : 'compétences' }}
-            </p>
-          </div>
         </article>
       }
     </section>
