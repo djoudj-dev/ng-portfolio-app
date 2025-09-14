@@ -8,7 +8,6 @@ import { ProjectService } from './services/project-service';
 import { Router } from '@angular/router';
 import { ProjectCategory } from '@features/projects/enums/project-enum';
 import { TECHNOLOGIES, Technology } from '@features/projects/data/technologies';
-import { sortProjectsByPriority } from '@features/projects/utils/project-sort';
 
 @Component({
   selector: 'app-project',
@@ -58,9 +57,7 @@ export class Project implements OnInit {
 
       const response = await this.projectService.getAllProjects(filterParams);
 
-      const sorted = sortProjectsByPriority(response.projects);
-
-      this.allProjects.set(sorted);
+      this.allProjects.set(response.projects);
       this.totalPages.set(response.totalPages);
       this.totalProjects.set(response.total);
     } catch {
