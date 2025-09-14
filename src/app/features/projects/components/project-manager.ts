@@ -6,6 +6,7 @@ import { ProjectService } from '@features/projects/services/project-service';
 import { ProjectModel } from '@features/projects/models/project-model';
 import { ButtonComponent } from '@shared/ui/button/button';
 import { Router } from '@angular/router';
+import { sortProjectsByPriority } from '@features/projects/utils/project-sort';
 
 @Component({
   selector: 'app-project-manager',
@@ -421,7 +422,10 @@ export class ProjectManagerComponent {
   private readonly projectsResponse = toSignal(from(this.projectService.getAllProjects()), {
     initialValue: { projects: [], total: 0, page: 1, limit: 10, totalPages: 0 },
   });
-  readonly projects = computed(() => this.projectsResponse()?.projects || []);
+  readonly projects = computed(() => {
+    const list = this.projectsResponse()?.projects || [];
+    return sortProjectsByPriority(list);
+  });
 
   setView(view: 'list' | 'grid'): void {
     this.currentView.set(view);
