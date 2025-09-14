@@ -34,7 +34,7 @@ export class Project implements OnInit {
   readonly currentPage = signal<number>(1);
   readonly totalPages = signal<number>(0);
   readonly totalProjects = signal<number>(0);
-  readonly projectsPerPage = 10;
+  readonly projectsPerPage = 3;
   readonly hydratedProjects = signal<Set<string>>(new Set());
 
   async ngOnInit(): Promise<void> {
