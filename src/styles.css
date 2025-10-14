@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 @theme {
   --color-text: oklch(30.15% 0.01 270);
@@ -69,7 +69,7 @@
 }
 
 /* ===== THÈME DARK (Mode sombre) ===== */
-[data-theme="dark"],
+[data-theme='dark'],
 .dark {
   /* Couleurs principales */
   --color-text: oklch(92% 0.01 260);
@@ -139,13 +139,13 @@ html {
   background-color: oklch(100% 0 0); /* Mode clair par défaut */
 }
 
-html[data-theme="dark"],
+html[data-theme='dark'],
 html.dark {
   background-color: oklch(25% 0.005 260) !important; /* Mode dark immédiat */
 }
 
 /* Utilitaire pour inverser les icônes en mode dark */
-[data-theme="dark"] .icon-invert,
+[data-theme='dark'] .icon-invert,
 .dark .icon-invert {
   filter: invert(1);
 }
