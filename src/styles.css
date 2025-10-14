@@ -73,7 +73,7 @@
 .dark {
   /* Couleurs principales */
   --color-text: oklch(92% 0.01 260);
-  --color-background: oklch(23.5% 0 89.88);
+  --color-background: oklch(25% 0.005 260);
   --color-primary: oklch(76% 0.02 250);
   --color-secondary: oklch(63% 0.03 260);
   --color-accent: oklch(77% 0.17 55);
