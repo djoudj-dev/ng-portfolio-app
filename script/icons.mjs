@@ -45,13 +45,24 @@ function toId(filePath) {
 function extractSvgContent(svg) {
   svg = svg.replace(/<\?xml[^>]*>|<!--[\s\S]*?-->/g, '').trim();
   const match = svg.match(/<svg[^>]*>([\s\S]*?)<\/svg>/i);
-  if (!match) return { content: svg, viewBox: null };
+  if (!match) return { content: svg, viewBox: null, defs: null };
 
   const openTag = svg.match(/<svg[^>]*>/i)[0];
   const viewBoxMatch = openTag.match(/viewBox=["']([^"']+)["']/i);
+
+  const innerContent = match[1].trim();
+
+  // Extraire les <defs> s'ils existent
+  const defsMatch = innerContent.match(/<defs>([\s\S]*?)<\/defs>/i);
+  const defs = defsMatch ? defsMatch[0] : null;
+
+  // Retirer les <defs> du contenu principal
+  const contentWithoutDefs = defs ? innerContent.replace(/<defs>[\s\S]*?<\/defs>/i, '').trim() : innerContent;
+
   return {
-    content: match[1].trim(),
+    content: contentWithoutDefs,
     viewBox: viewBoxMatch ? viewBoxMatch[1] : null,
+    defs: defs,
   };
 }
 
@@ -109,18 +120,27 @@ function buildSprite() {
     return;
   }
 
+  const allDefs = [];
   const symbols = files.map((file) => {
     const svg = fs.readFileSync(file, 'utf8');
-    const { content, viewBox } = extractSvgContent(svg);
+    const { content, viewBox, defs } = extractSvgContent(svg);
     const id = toId(file);
     const vb = viewBox ? ` viewBox="${viewBox}"` : '';
+
+    // Collecter les defs pour les placer globalement
+    if (defs) {
+      allDefs.push(defs);
+    }
+
     return `  <symbol id="${id}"${vb}>${content}</symbol>`;
   });
+
+  const defsSection = allDefs.length > 0 ? `  <defs>\n${allDefs.map(d => d.replace(/<\/?defs>/gi, '').trim()).join('\n')}\n  </defs>\n` : '';
 
   const sprite = [
     '<?xml version="1.0" encoding="UTF-8"?>',
     '<svg xmlns="http://www.w3.org/2000/svg" style="display:none">',
-    ...symbols,
+    defsSection + symbols.join('\n'),
     '</svg>',
   ].join('\n');
 

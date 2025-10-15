@@ -2,12 +2,13 @@ import { Component, signal, viewChild, inject, computed } from '@angular/core';
 import { Router, RouterOutlet, NavigationEnd } from '@angular/router';
 import { LoginModal, NavbarComponent, ToastContainer, ToastService } from '@shared/ui';
 import { FooterComponent } from '@shared/ui/footer/footer.component';
+import { AdminMenuComponent } from '@shared/ui/admin-menu/admin-menu';
 import { filter, map } from 'rxjs/operators';
 import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, NavbarComponent, LoginModal, ToastContainer, FooterComponent],
+  imports: [RouterOutlet, NavbarComponent, LoginModal, ToastContainer, FooterComponent, AdminMenuComponent],
   templateUrl: './app.html',
   styleUrls: ['./app.css', './shared/animations/route-animations.css'],
   host: {
@@ -46,10 +47,6 @@ export class App {
 
   onLoginCompleted(): void {
     this.toastService.success('Connexion réussie', 'Vous êtes maintenant connecté à votre compte.');
-  }
-
-  onLogoutCompleted(): void {
-    this.toastService.success('Déconnexion réussie', 'Vous avez été déconnecté avec succès.');
   }
 
   onModalClosed(): void {}

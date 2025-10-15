@@ -1,14 +1,14 @@
 import { Component, inject, signal, ChangeDetectionStrategy } from '@angular/core';
-import { NgOptimizedImage } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ContactCardGroup } from './interface/contact.interface';
 import { CONTACT_DATA } from './data/contact-data';
 import { ContactMessageCard } from '@features/contact/components/contact-message-card/contact-message-card';
+import { SvgIcon } from '@app/shared/ui/icon-svg/icon-svg';
 
 @Component({
   selector: 'app-contact',
-  imports: [NgOptimizedImage, ReactiveFormsModule, ContactMessageCard],
+  imports: [ReactiveFormsModule, ContactMessageCard, SvgIcon],
   templateUrl: './contact.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

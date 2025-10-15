@@ -1,11 +1,11 @@
 @import 'tailwindcss';
 
 @theme {
-  --color-text: oklch(30.15% 0.01 270);
-  --color-background: oklch(100% 0 0);
-  --color-primary: oklch(45% 0.05 265);
-  --color-secondary: oklch(58% 0.04 260);
-  --color-accent: oklch(72% 0.17 55);
+  --color-text: oklch(100% 0 89.88);
+  --color-background: oklch(23.5% 0 89.88);
+  --color-primary: oklch(50% 0.08 100);
+  --color-secondary: oklch(42% 0.12 55);
+  --color-accent: oklch(68% 0.15 135);
 
   --color-primary-50: oklch(98% 0.005 265);
   --color-primary-100: oklch(95% 0.01 265);
@@ -66,86 +66,52 @@
   --color-red-800: oklch(35% 0.1 25);
   --color-red-900: oklch(25% 0.07 25);
   --color-red-950: oklch(15% 0.04 25);
-}
 
-/* ===== THÈME DARK (Mode sombre) ===== */
-[data-theme='dark'],
-.dark {
-  /* Couleurs principales */
-  --color-text: oklch(92% 0.01 260);
-  --color-background: oklch(25% 0.005 260);
-  --color-primary: oklch(76% 0.02 250);
-  --color-secondary: oklch(63% 0.03 260);
-  --color-accent: oklch(77% 0.17 55);
+  --font-orbitron: 'Orbitron', sans-serif;
 
-  /* Déclinaisons PRIMARY */
-  --color-primary-100: oklch(92% 0.01 250);
-  --color-primary-200: oklch(85% 0.015 250);
-  --color-primary-300: oklch(78% 0.018 250);
-  --color-primary-400: oklch(76% 0.02 250);
-  --color-primary-500: oklch(60% 0.02 250);
-  --color-primary-600: oklch(45% 0.015 250);
-  --color-primary-700: oklch(35% 0.01 250);
-  --color-primary-800: oklch(25% 0.008 250);
-  --color-primary-900: oklch(15% 0.005 250);
+  /* Spacing personnalisés */
+  --spacing-em12: 0.12em;
 
-  /* Déclinaisons SECONDARY */
-  --color-secondary-100: oklch(90% 0.01 260);
-  --color-secondary-200: oklch(80% 0.015 260);
-  --color-secondary-300: oklch(70% 0.02 260);
-  --color-secondary-400: oklch(63% 0.03 260);
-  --color-secondary-500: oklch(50% 0.025 260);
-  --color-secondary-600: oklch(40% 0.02 260);
-  --color-secondary-700: oklch(30% 0.015 260);
-  --color-secondary-800: oklch(20% 0.01 260);
-  --color-secondary-900: oklch(12% 0.005 260);
+  /* Letter spacing personnalisés */
+  --letter-spacing-120: 0.12em;
+  --letter-spacing-160: 0.16em;
 
-  /* Déclinaisons ACCENT */
-  --color-accent-100: oklch(95% 0.04 55);
-  --color-accent-200: oklch(90% 0.08 55);
-  --color-accent-300: oklch(85% 0.12 55);
-  --color-accent-400: oklch(77% 0.17 55);
-  --color-accent-500: oklch(65% 0.16 55);
-  --color-accent-600: oklch(50% 0.13 55);
-  --color-accent-700: oklch(38% 0.1 55);
-  --color-accent-800: oklch(28% 0.06 55);
-  --color-accent-900: oklch(18% 0.03 55);
+  /* Tailles personnalisées */
+  --width-18: 4.5rem;
+  --height-18: 4.5rem;
+  --width-220: 13.75rem;
+  --height-220: 13.75rem;
+  --width-280: 17.5rem;
+  --height-280: 17.5rem;
+  --width-caret: 0.125rem;
+  --height-caret-h: 1.5rem;
 
-  /* Déclinaisons GREEN */
-  --color-green-100: oklch(92% 0.02 142);
-  --color-green-200: oklch(85% 0.04 142);
-  --color-green-300: oklch(78% 0.08 142);
-  --color-green-400: oklch(70% 0.12 142);
-  --color-green-500: oklch(62% 0.15 142);
-  --color-green-600: oklch(52% 0.13 142);
-  --color-green-700: oklch(42% 0.11 142);
-  --color-green-800: oklch(32% 0.08 142);
-  --color-green-900: oklch(22% 0.05 142);
+  /* Max width personnalisés */
+  --max-width-auto: auto;
 
-  /* Déclinaisons RED */
-  --color-red-100: oklch(92% 0.02 25);
-  --color-red-200: oklch(85% 0.04 25);
-  --color-red-300: oklch(78% 0.08 25);
-  --color-red-400: oklch(70% 0.12 25);
-  --color-red-500: oklch(62% 0.15 25);
-  --color-red-600: oklch(52% 0.13 25);
-  --color-red-700: oklch(42% 0.11 25);
-  --color-red-800: oklch(32% 0.08 25);
-  --color-red-900: oklch(22% 0.05 25);
-}
+  /* Letter spacing supplémentaires */
+  --letter-spacing-100: 0.1em;
+  --letter-spacing-150: 0.15em;
+  --letter-spacing-200: 0.2em;
+  --letter-spacing-220: 0.22em;
+  --letter-spacing-250: 0.25em;
+  --letter-spacing-280: 0.28em;
+  --letter-spacing-300: 0.3em;
+  --letter-spacing-350: 0.35em;
+  --letter-spacing-400: 0.4em;
 
-/* Configuration du background pour éviter le flash */
-html {
-  background-color: oklch(100% 0 0); /* Mode clair par défaut */
-}
+  /* Largeurs personnalisées */
+  --width-tooltip: 300px;
+  --width-350: 21.875rem;
+  --height-350: 21.875rem;
 
-html[data-theme='dark'],
-html.dark {
-  background-color: oklch(25% 0.005 260) !important; /* Mode dark immédiat */
-}
+  /* Top positions */
+  --top-tooltip: calc(-100% - 0.75rem);
 
-/* Utilitaire pour inverser les icônes en mode dark */
-[data-theme='dark'] .icon-invert,
-.dark .icon-invert {
-  filter: invert(1);
+  /* Border radius supplémentaires */
+  --border-radius-4xl: 2rem;
+
+  /* Min height */
+  --min-height-50: 50vh;
+  --min-height-72: 18rem;
 }

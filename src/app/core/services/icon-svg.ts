@@ -80,4 +80,51 @@ export class IconSvg {
   getSafeHtml(html: string): SafeHtml {
     return this.sanitizer.bypassSecurityTrustHtml(html);
   }
+
+  /**
+   * Extrait le SVG d'un <symbol> du sprite et le retourne sous forme de balise <svg> avec viewBox
+   */
+  getSymbolSvg(symbolId: string, spriteUrl: string = this.defaultSpriteUrl): Observable<string> {
+    return new Observable<string>((observer) => {
+      const emitSymbol = (sprite: string) => {
+        // RegExp sans backslash inutile, mode dotAll pour matcher tout
+        const regex = new RegExp(
+          `<symbol[^>]*id=["']${symbolId}["'][^>]*viewBox=["']([^"']+)["'][^>]*>(.*)</symbol>`,
+          's',
+        );
+        const match = sprite.match(regex);
+        console.log(
+          '[IconSvg] Recherche symbolId:',
+          symbolId,
+          '| Trouvé:',
+          !!match,
+          '| Contenu:',
+          match ? match[2].slice(0, 100) : '---',
+        );
+        if (match) {
+          const viewBox = match[1];
+          const content = match[2];
+          // Reconstruit le SVG inline avec viewBox
+          const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${viewBox}">${content}</svg>`;
+          // Si le contenu est vide, fallback
+          observer.next(
+            content.trim()
+              ? svg
+              : '<svg width="24" height="24"><rect width="100%" height="100%" fill="orange"/><text x="2" y="16" font-size="10" fill="white">VIDE</text></svg>',
+          );
+        } else {
+          observer.next(
+            '<svg width="24" height="24"><rect width="100%" height="100%" fill="red"/><text x="2" y="16" font-size="10" fill="white">SVG?</text></svg>',
+          );
+        }
+        observer.complete();
+      };
+      // Sprite déjà chargé ?
+      if (this.spriteCache.has(spriteUrl)) {
+        emitSymbol(this.spriteCache.get(spriteUrl)!);
+      } else {
+        this.loadSprite(spriteUrl).subscribe(emitSymbol);
+      }
+    });
+  }
 }

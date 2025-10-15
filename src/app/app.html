@@ -1,4 +1,4 @@
-<div class="min-h-screen flex flex-col">
+<div class="min-h-screen flex flex-col bg-background">
   <!-- Skip Links pour l'accessibilité -->
   <nav aria-label="Liens de navigation rapide" class="skip-links">
     <a href="#main-content" class="skip-link">Aller au contenu principal</a>
@@ -6,19 +6,20 @@
     <a href="#footer-content" class="skip-link">Aller au pied de page</a>
   </nav>
 
-  <app-navbar id="nav-menu" (showLogin)="onShowLogin()" (logoutCompleted)="onLogoutCompleted()" />
+  <app-navbar id="nav-menu" />
   <app-login-modal
     #loginModal
     (loginCompleted)="onLoginCompleted()"
     (modalClosed)="onModalClosed()"
   />
   <app-toast-container />
+  <app-admin-menu />
   <main id="main-content" class="flex-1 route-animation-container" role="main">
-    <router-outlet />
+    <router-outlet class="route-animation-container" />
   </main>
   <!-- Ancre toujours présente pour lier le pied de page (résout l'avertissement IDE) -->
   <div id="footer-content" tabindex="-1" aria-hidden="true"></div>
   @if (showFooter()) {
-  <app-footer />
-    }
+    <app-footer />
+  }
 </div>

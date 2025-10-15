@@ -1,0 +1,44 @@
+<!-- Bouton toggle du menu mobile -->
+<button
+  id="menu-toggle"
+  (click)="onToggle()"
+  class="lg:hidden p-2 flex items-center justify-center rounded-lg text-text hover:bg-accent transition-colors duration-200"
+  [attr.aria-label]="menuIcon().ariaLabel"
+  [attr.aria-expanded]="isOpen()"
+>
+  <app-svg-icon
+    [name]="menuIcon().name"
+    [width]="'24'"
+    [height]="'24'"
+    [iconClass]="'w-4.5 h-4.5 sm:w-6 sm:h-6'"
+  />
+</button>
+
+<!-- Menu mobile déroulant -->
+@if (isOpen()) {
+  <div
+    id="mobile-menu"
+    class="lg:hidden border-t border-accent-200 py-3 sm:py-4 absolute top-full left-0 right-0 bg-background backdrop-blur-sm"
+  >
+    <div class="flex flex-col space-y-2 sm:space-y-3 px-3 sm:px-4 md:px-6">
+      @for (link of navLinks(); track link.route) {
+        <a
+          [routerLink]="link.route"
+          (click)="onNavigate(link.route)"
+          class="flex items-center space-x-3 text-base sm:text-lg text-text hover:text-accent transition-colors duration-200 px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg hover:bg-accent active:bg-accent"
+          [class.text-accent]="isActiveRoute()(link.route)"
+          [class.bg-accent]="isActiveRoute()(link.route)"
+          [attr.aria-current]="isActiveRoute()(link.route) ? 'page' : null"
+        >
+          <app-svg-icon
+            [name]="link.icon"
+            [width]="'20'"
+            [height]="'20'"
+            [iconClass]="'w-5 h-5 sm:w-6 sm:h-6'"
+          />
+          <span class="font-medium">{{ link.label }}</span>
+        </a>
+      }
+    </div>
+  </div>
+}

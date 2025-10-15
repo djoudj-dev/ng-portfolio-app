@@ -1,22 +1,123 @@
-<main id="about" class="text-text pb-2 lg:pb-0 pt-20 lg:pt-10">
-  <app-about-main />
-
-  <div class="fixed bottom-8 right-8 z-40">
-    <button
-      (click)="navigateToSkills()"
-      aria-label="Aller à la section Compétences"
-      title="Voir mes compétences"
-      class="p-2 rounded-full shadow-md transition-colors bg-accent hover:bg-accent-600 hover:shadow-lg"
+<section
+  class="relative flex min-h-50 flex-col items-center text-text pb-4 pt-14 sm:pb-8 sm:pt-16 md:pb-12 md:pt-24"
+>
+  <header
+    class="sticky top-0 z-30 bg-background/95 backdrop-blur-lg border-b border-accent/20 mb-4 px-3 sm:mb-8 sm:px-6 md:mb-12 shadow-md w-full"
+  >
+    <h1
+      id="about-heading"
+      class="text-text decoration-accent mb-2 flex justify-center text-xl font-bold underline decoration-2 underline-offset-4 sm:text-3xl sm:mb-3 md:text-4xl lg:text-5xl mt-3 sm:mt-5 lg:mt-8"
     >
-      <span class="relative flex-shrink-0 w-10 h-10">
-        <img
-          [ngSrc]="'/icons/arrow-b.svg'"
-          alt="Flèche vers les compétences"
-          class="object-contain inset-0 w-full h-full icon-invert"
-          width="24"
-          height="24"
-        />
-      </span>
-    </button>
-  </div>
-</main>
+      {{ aboutTitle() }}
+    </h1>
+    <p
+      class="text-text/80 mx-auto mb-3 max-w-2xl text-center text-sm px-2 leading-relaxed sm:text-base sm:mb-5 sm:px-0 md:text-lg"
+    >
+      {{ aboutSubTitle() }}
+    </p>
+  </header>
+
+  <article
+    class="relative w-full max-w-6xl overflow-visible rounded-4xl border border-primary/40 p-4 shadow-lg shadow-primary/20 backdrop-blur sm:p-6 md:p-8 lg:p-10"
+  >
+    <span class="pointer-events-none absolute inset-0" aria-hidden="true"></span>
+
+    <div class="relative z-auto flex flex-col gap-4 sm:gap-5 md:gap-6">
+      <div class="grid gap-6 md:grid-cols-2 md:items-start md:gap-8">
+        <div class="flex flex-col items-center gap-4 sm:gap-5 md:items-center md:gap-6">
+          <div
+            class="relative flex h-220 w-220 items-center justify-center overflow-hidden rounded-3xl border border-primary/20 transition-transform duration-200 hover:-translate-y-1 md:h-350 md:w-350"
+          >
+            @if (hasAvatar()) {
+              <img
+                class="h-full w-full object-cover"
+                [src]="avatarUrl()"
+                [alt]="displayName()"
+                loading="lazy"
+              />
+            } @else {
+              <span class="text-2xl font-semibold uppercase tracking-350 text-primary/70">
+                {{ initials() }}
+              </span>
+            }
+          </div>
+
+          <div class="flex items-center justify-center gap-3 px-2 sm:gap-4 sm:px-4">
+            @for (button of socialButtons; track button.label) {
+              <a
+                class="flex h-12 w-12 items-center justify-center rounded-xl border border-primary/20 bg-gradient-to-br from-accent/20 via-background/60 to-primary/10 text-text shadow-lg transition hover:border-accent/40 hover:shadow-accent/30"
+                [href]="button.href"
+                target="_blank"
+                rel="noopener"
+                [attr.aria-label]="button.label"
+              >
+                <app-svg-icon [name]="button.icon" [width]="'22'" [height]="'22'" />
+              </a>
+            }
+          </div>
+        </div>
+
+        <div
+          class="flex max-w-xl flex-col items-center gap-4 text-center sm:gap-5 md:items-start md:gap-6 md:text-left"
+        >
+          <header class="flex flex-col gap-2 text-center md:text-left">
+            <p class="text-xs font-semibold uppercase tracking-400 text-accent/50">
+              Profil professionnel
+            </p>
+            <h1 class="text-3xl font-semibold uppercase tracking-300 text-primary/80">
+              {{ displayName() }}
+            </h1>
+            <div class="flex flex-col gap-3 md:flex-row md:items-center md:gap-6">
+              <p class="text-lg font-semibold uppercase tracking-220 text-accent/70">
+                Développeur Angular
+              </p>
+            </div>
+          </header>
+          @if (hasLocation()) {
+            <dl class="grid gap-3 text-center sm:gap-4 md:gap-5 md:text-left">
+              <div class="grid gap-1">
+                <dt class="text-md font-semibold uppercase tracking-280 text-accent/60">
+                  Localisation
+                </dt>
+                <dd class="text-sm font-semibold uppercase tracking-100 text-primary/70">
+                  {{ location() }}
+                </dd>
+              </div>
+            </dl>
+          }
+
+          <app-highlights-section [highlights]="highlights" />
+        </div>
+      </div>
+
+      <app-diplomas-section [diplomas]="diplomas" />
+    </div>
+  </article>
+
+  <section
+    class="mt-8 w-full max-w-6xl space-y-4 rounded-4xl border border-primary/25 p-4 text-text shadow-lg shadow-primary/15 sm:space-y-5 sm:p-6 md:mt-12 md:space-y-6 md:p-8 lg:p-10"
+    aria-label="Parcours"
+  >
+    <h2 class="text-lg font-semibold uppercase tracking-280 text-accent/60">Parcours</h2>
+    <p class="text-lg leading-7 text-text/90">
+      Issue de la chaudronnerie aéronautique où j'ai passé plusieurs années à former et déformer
+      toutes sortes d'alliages, notamment le titane, j'ai appris l'exigence du geste parfait et le
+      goût du travail bien fait.
+    </p>
+    <p class="text-lg leading-7 text-text/90">
+      Cette rigueur m'a naturellement conduit vers une passion retrouvée : la création numérique.
+      Formé intensivement chez ALT-RH Consulting, j'y ai consolidé les fondamentaux du développement
+      web moderne et des méthodes agiles.
+    </p>
+    <p class="text-lg leading-7 text-text/90">
+      J'ai ensuite validé un titre professionnel de Développeur Web et Web Mobile chez Studi, en me
+      spécialisant sur une stack complète : Angular &amp; TypeScript pour le front, NestJS pour les
+      APIs, PostgreSQL et MongoDB pour la data, le tout orchestré avec Docker.
+    </p>
+    <p class="text-lg leading-7 text-text/90">
+      Aujourd'hui, je conçois des applications web modernes, accessibles et performantes, en gardant
+      la même exigence de qualité qu'en atelier aéronautique : précision, sécurité et sens du
+      détail.
+    </p>
+  </section>
+</section>

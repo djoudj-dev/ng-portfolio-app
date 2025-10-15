@@ -1,155 +1,121 @@
 <nav
-  class="fixed top-0 left-0 right-0 z-50 bg-background border-b border-accent backdrop-blur-sm"
+  [class.nav-scrolled]="isScrolled()"
+  class="fixed top-0 z-50 flex justify-center w-full px-4 pt-6 transition-all duration-300"
   role="navigation"
   aria-label="Navigation principale"
 >
-  <div class="mx-auto px-3 sm:px-4 md:px-6 lg:max-w-7xl lg:px-8">
-    <div class="flex items-center justify-between h-16">
-      <div class="flex items-center space-x-2 sm:space-x-3" [routerLink]="['/']">
-        <img
-          [ngSrc]="'/logo.svg'"
-          alt="Logo Julien.N"
-          width="24"
-          height="24"
-          priority
-          class="w-18 h-18"
-        />
-        <span class="text-2xl font-bold text-text tracking-tight">
-          Julien<span class="text-accent bounce-dot">.</span>N
-        </span>
-      </div>
+  <div
+    class="relative flex w-full max-w-6xl flex-nowrap items-center justify-between gap-3 rounded-full border-2 border-primary/40 px-4 py-3 shadow-lg shadow-primary/20 backdrop-blur-md sm:px-6 sm:py-3"
+  >
+    <!-- Logo / Marque -->
+    <a
+      [routerLink]="['/']"
+      class="inline-flex items-center gap-2 text-base font-bold tracking-tight text-text transition hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/45 focus-visible:ring-offset-2 focus-visible:ring-offset-background sm:text-lg lg:text-xl flex-shrink-0"
+    >
+      <span
+        class="inline-flex items-center justify-center h-10 w-10 rounded-full border border-primary bg-background/60 text-text"
+      >
+        <app-svg-icon name="lucide:code-xml" [width]="'24'" [height]="'24'" />
+      </span>
+    </a>
 
-      <div class="hidden lg:flex items-center space-x-6 xl:space-x-8">
+    <!-- Liens de navigation principaux -->
+    <div
+      class="absolute left-1/2 -translate-x-1/2 hidden lg:flex items-center divide-x divide-primary/20 rounded-full bg-transparent"
+    >
+      @for (link of navLinks(); track link.route) {
+        <a
+          class="inline-flex items-center gap-2 px-3 py-1 text-base font-medium text-text transition-transform duration-150 hover:-translate-y-0.5 hover:text-accent focus-visible:outline-none h-11 relative group"
+          [routerLink]="link.route"
+          [class.text-accent]="isActiveRoute(link.route)"
+          [attr.aria-current]="isActiveRoute(link.route) ? 'page' : null"
+          [attr.tabindex]="link.label === 'Blog' ? 0 : null"
+        >
+          <span
+            class="inline-flex items-center justify-center h-8 w-8 rounded-full bg-background/60 transition-shadow"
+          >
+            <app-svg-icon [name]="link.icon" [width]="'20'" [height]="'20'" />
+          </span>
+          <span
+            class="whitespace-nowrap transition-all px-3 py-1 rounded-md shadow-sm"
+            [class.bg-accent]="isActiveRoute(link.route)"
+            [class.text-background]="isActiveRoute(link.route)"
+            [class.bg-transparent]="!isActiveRoute(link.route) && link.label !== 'Blog'"
+            [class.bg-secondary]="!isActiveRoute(link.route) && link.label === 'Blog'"
+          >
+            {{ link.label }}
+          </span>
+          <!-- Bulle d'info Blog, structure identique au bouton CV -->
+          @if (link.label === 'Blog' && !isActiveRoute(link.route)) {
+            <span
+              class="absolute top-full left-1/2 -translate-x-1/2 mt-2 invisible opacity-0 scale-95 pointer-events-none transition-all duration-150 ease-out items-center whitespace-nowrap rounded-md bg-primary text-text px-3 py-1 text-sm shadow-md z-50 group-hover:visible group-hover:opacity-100 group-hover:pointer-events-auto group-hover:scale-100"
+            >
+              Bientôt disponible !
+            </span>
+          }
+        </a>
+      }
+    </div>
+
+    <!-- Zone droite (CV + menu mobile) -->
+    <div class="ml-auto flex items-center gap-2">
+      <!-- Bouton CV -->
+      <button
+        type="button"
+        (click)="openCV()"
+        class="relative inline-flex items-center group"
+        aria-label="Voir mon CV"
+      >
+        <span
+          class="inline-flex items-center justify-center h-10 w-10 rounded-full border border-primary bg-background/60 text-text transition-transform hover:scale-105"
+        >
+          <app-svg-icon name="lucide:download" [width]="'20'" [height]="'20'" />
+        </span>
+
+        <span
+          class="absolute top-full left-1/2 -translate-x-1/2 mt-2 invisible opacity-0 scale-95 pointer-events-none transition-all duration-150 ease-out items-center whitespace-nowrap rounded-md bg-primary text-text px-3 py-1 text-sm shadow-md z-50 group-hover:visible group-hover:opacity-100 group-hover:pointer-events-auto group-hover:scale-100"
+        >
+          Télécharger mon CV
+        </span>
+      </button>
+
+      <!-- Bouton menu mobile -->
+      <button
+        type="button"
+        class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-primary bg-background/60 text-text transition hover:scale-105 lg:hidden"
+        aria-label="{{ isMobileMenuOpen() ? 'Fermer la navigation' : 'Ouvrir la navigation' }}"
+        [attr.aria-expanded]="isMobileMenuOpen()"
+        (click)="onToggleMobileMenu()"
+      >
+        <app-svg-icon
+          [name]="isMobileMenuOpen() ? 'lucide:circle-x' : 'lucide:menu'"
+          [width]="'20'"
+          [height]="'20'"
+        />
+      </button>
+    </div>
+
+    <!-- Menu mobile -->
+    <div
+      class="absolute left-3 right-3 top-20 flex flex-col gap-3 rounded-3xl border-2 border-primary bg-background p-4 text-left shadow-md shadow-primary sm:p-5 lg:hidden"
+      [class.hidden]="!isMobileMenuOpen()"
+    >
+      <!-- Liens de navigation mobile -->
+      <div class="flex flex-col gap-2">
         @for (link of navLinks(); track link.route) {
           <a
             [routerLink]="link.route"
-            class="flex items-center space-x-2 text-sm xl:text-base text-text hover:text-accent group relative hover:font-bold"
+            class="group inline-flex items-center gap-3 px-3 py-2 text-sm font-medium text-text transition-colors hover:text-accent rounded-lg"
             [class.text-accent]="isActiveRoute(link.route)"
-            [attr.aria-current]="isActiveRoute(link.route) ? 'page' : null"
+            (click)="onCloseMobileMenu()"
           >
-            <app-svg-icon
-              [name]="link.icon"
-              [width]="'24'"
-              [height]="'24'"
-              [iconClass]="'w-4.5 h-4.5 sm:w-6 sm:h-6'"
-            />
-            <span class="nav-link-hover">{{ link.label }}</span>
+            <span class="inline-flex items-center justify-center h-6 w-6">
+              <app-svg-icon [name]="link.icon" [width]="'18'" [height]="'18'" />
+            </span>
+            <span>{{ link.label }}</span>
           </a>
         }
       </div>
-
-      <div class="flex items-center space-x-2 sm:space-x-3">
-        <!-- CV View Button -->
-        <app-button
-          color="accent"
-          [customClass]="
-            '!w-auto !px-2 !py-1.5 sm:!px-3 sm:!py-2 !rounded-lg !text-xs sm:!text-sm !font-semibold hover:!scale-105 !shadow-md hover:!shadow-lg !transition-all !duration-300'
-          "
-          (buttonClick)="openCV()"
-          aria-label="Voir mon CV"
-        >
-          <div class="flex items-center gap-1 sm:gap-2">
-            <app-svg-icon
-              name="lucide:view"
-              [width]="'24'"
-              [height]="'24'"
-              [iconClass]="'w-4.5 h-4.5 sm:w-6 sm:h-6'"
-            />
-            <span class="hidden xs:inline sm:inline">Voir mon CV</span>
-            <span class="xs:hidden sm:hidden">CV</span>
-          </div>
-        </app-button>
-
-        <button
-          (click)="toggleTheme()"
-          class="flex items-center justify-center p-2 rounded-lg hover:bg-accent text-text transition-colors duration-200"
-          [attr.aria-label]="themeAriaLabel()"
-        >
-          <app-svg-icon
-            [name]="themeIcon().name"
-            [width]="'24'"
-            [height]="'24'"
-            [iconClass]="'w-4.5 h-4.5 sm:w-6 sm:h-6'"
-          />
-        </button>
-
-        @if (isAdmin()) {
-          <button
-            (click)="navigateToAdmin()"
-            class="p-1.5 sm:p-2 rounded-lg hover:bg-accent transition-colors duration-200"
-            aria-label="Accéder au panneau d'administration"
-          >
-            <img
-              [ngSrc]="'/icons/admin.svg'"
-              alt="Admin"
-              width="18"
-              height="18"
-              class="w-4.5 h-4.5 sm:w-5 sm:h-5"
-              [class.icon-invert]="isDarkMode()"
-            />
-          </button>
-        }
-
-        @if (isLoggedIn()) {
-          <button
-            (click)="logout()"
-            class="p-1.5 sm:p-2 rounded-lg hover:bg-accent transition-colors duration-200"
-            aria-label="Se déconnecter"
-          >
-            <img
-              [ngSrc]="'/icons/logout.svg'"
-              alt="Déconnexion"
-              width="18"
-              height="18"
-              class="w-4.5 h-4.5 sm:w-5 sm:h-5"
-              [class.icon-invert]="isDarkMode()"
-            />
-          </button>
-        }
-
-        <button
-          id="menu-toggle"
-          (click)="toggleMobileMenu()"
-          class="lg:hidden p-1.5 sm:p-2 rounded-lg hover:bg-accent transition-colors duration-200"
-          [attr.aria-label]="menuAriaLabel()"
-          [attr.aria-expanded]="isMobileMenuOpen()"
-          aria-controls="mobile-menu"
-        >
-          <img
-            [ngSrc]="menuIcon().src"
-            [alt]="menuIcon().alt"
-            width="20"
-            height="20"
-            class="w-5 h-5 sm:w-6 sm:h-6"
-            [class.icon-invert]="isDarkMode()"
-          />
-        </button>
-      </div>
     </div>
-
-    @if (isMobileMenuOpen()) {
-      <div id="mobile-menu" class="lg:hidden border-t border-accent-200 py-3 sm:py-4">
-        <div class="flex flex-col space-y-2 sm:space-y-3">
-          @for (link of navLinks(); track link.route) {
-            <a
-              [routerLink]="link.route"
-              (click)="closeMobileMenu()"
-              class="flex items-center space-x-3 text-base sm:text-lg text-text hover:text-accent transition-colors duration-200 px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg hover:bg-accent active:bg-accent"
-              [class.text-accent]="isActiveRoute(link.route)"
-              [class.bg-accent]="isActiveRoute(link.route)"
-              [attr.aria-current]="isActiveRoute(link.route) ? 'page' : null"
-            >
-              <app-svg-icon
-                [name]="link.icon"
-                [width]="'20'"
-                [height]="'20'"
-                [iconClass]="'w-5 h-5 sm:w-6 sm:h-6'"
-              ></app-svg-icon>
-              <span class="font-medium">{{ link.label }}</span>
-            </a>
-          }
-        </div>
-      </div>
-    }
   </div>
 </nav>

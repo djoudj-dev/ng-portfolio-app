@@ -1,40 +1,26 @@
-import { NgOptimizedImage } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, computed } from '@angular/core';
 import { Router } from '@angular/router';
-import { LaptopView } from '@features/landing/laptop-view/laptop-view';
 import { ButtonComponent } from '@shared/ui/button/button';
+import { SvgIcon } from '@app/shared/ui/icon-svg/icon-svg';
+import { TypewriterComponent } from '../typewriter/typewriter';
 
 @Component({
   selector: 'app-hero-section',
-  imports: [LaptopView, ButtonComponent, NgOptimizedImage],
+  imports: [ButtonComponent, SvgIcon, TypewriterComponent],
   templateUrl: './hero-section.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  styles: `
-    @keyframes halo {
-      0%,
-      100% {
-        opacity: 0.6;
-        transform: scale(1);
-      }
-      50% {
-        opacity: 0.85;
-        transform: scale(1.05);
-      }
-    }
-  `,
 })
 export class HeroSection {
   private readonly router = inject(Router);
 
-  navigateToProjects(): void {
-    this.router.navigate(['/projects']);
-  }
+  private readonly defaultDisplayName = 'Julien NÉDELLEC';
+  private readonly defaultHeroDescription =
+    "Je crée des applications web modernes, performantes et accessibles. J'aime me spécialiser dans le développement frontend avec Angular mais aussi dans la partie backend selon les besoins.";
 
-  navigateToContact(): void {
-    this.router.navigate(['/contact']);
-  }
+  readonly displayName = computed(() => this.defaultDisplayName);
+  readonly description = computed(() => this.defaultHeroDescription);
 
-  navigateToAbout(): void {
-    this.router.navigate(['/about']);
+  navigateTo(path: string): void {
+    void this.router.navigate(['/', path]);
   }
 }

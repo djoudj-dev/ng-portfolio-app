@@ -7,6 +7,12 @@ lucide:user
 lucide:database
 lucide:code
 lucide:mail
+lucide:download
+
+# Navbar-Other
+lucide:shield-user
+lucide:menu
+lucide:log-out
 
 # Navbar-view-cv 
 lucide:view
@@ -22,3 +28,57 @@ lucide:eye
 lucide:eye-off
 lucide:triangle-alert
 lucide:log-in
+
+# Landing
+lucide:code-xml
+lucide:arrow-big-down
+svg-spinners:eclipse
+lucide:mouse
+
+# Stack
+# Front
+devicon:angular
+devicon:rxjs
+devicon:typescript
+devicon:html5
+devicon:css3
+devicon:javascript
+devicon:tailwindcss
+devicon:bootstrap
+# Backend
+devicon:nestjs
+devicon:java
+devicon:postgresql
+devicon:mongodb
+devicon:mysql
+devicon:supabase
+# Devops
+devicon:git
+devicon:githubactions
+devicon:docker
+devicon:linux
+devicon:webstorm
+devicon:vscode
+
+# About
+simple-icons:github
+simple-icons:linkedin
+simple-icons:x
+simple-icons:discord
+
+# About-cards
+ph:student-bold
+ph:brain
+ph:users-three
+ph:lightbulb-filament-bold
+
+# Stacks-catégorie
+material-symbols-light:laptop-mac-outline-sharp
+material-symbols-light:data-table
+ic:sharp-terminal
+
+fxemoji:trophy
+material-symbols:call
+simple-icons:googlemaps
+lucide:notebook-pen
+lucide:arrow-big-up
