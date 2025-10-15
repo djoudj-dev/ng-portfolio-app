@@ -13,10 +13,11 @@ import { AuthService } from '@core/services/auth';
 import { CvService } from '@features/cv/services/cv';
 import { ButtonComponent } from '@shared/ui/button/button';
 import { ToastService } from '@shared/ui/toast/service/toast-service';
+import { SvgIcon } from '../icon-svg/icon-svg';
 
 @Component({
   selector: 'app-navbar',
-  imports: [NgOptimizedImage, RouterLink, ButtonComponent],
+  imports: [NgOptimizedImage, RouterLink, ButtonComponent, SvgIcon],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './navbar.html',
   styleUrl: './navbar.css',
@@ -34,11 +35,11 @@ export class NavbarComponent {
   readonly logoutCompleted = output<void>();
 
   readonly navLinks = signal<NavLink[]>([
-    { label: 'Accueil', route: '/', icon: 'home' },
-    { label: 'À propos', route: '/about', icon: 'about' },
-    { label: 'Compétences', route: '/skills', icon: 'stack' },
-    { label: 'Projets', route: '/projects', icon: 'project' },
-    { label: 'Contact', route: '/contact', icon: 'contact' },
+    { label: 'Accueil', route: '/', icon: 'lucide:house' },
+    { label: 'À propos', route: '/about', icon: 'lucide:user' },
+    { label: 'Compétences', route: '/skills', icon: 'lucide:database' },
+    { label: 'Projets', route: '/projects', icon: 'lucide:code' },
+    { label: 'Contact', route: '/contact', icon: 'lucide:mail' },
   ]);
 
   private readonly _isDarkMode = signal(false);
@@ -51,9 +52,8 @@ export class NavbarComponent {
   readonly isMobileMenuOpen = computed(() => this._isMobileMenuOpen());
 
   readonly themeIcon = computed(() => ({
-    src: this.isDarkMode() ? '/icons/sun.svg' : '/icons/moon.svg',
+    name: this.isDarkMode() ? 'lucide:sun' : 'lucide:moon',
     alt: this.isDarkMode() ? 'Mode clair' : 'Mode sombre',
-    class: this.isDarkMode() ? 'w-5 h-5 icon-invert' : 'w-5 h-5',
   }));
 
   readonly themeAriaLabel = computed(() =>
@@ -63,7 +63,7 @@ export class NavbarComponent {
   readonly menuIcon = computed(() => ({
     src: this.isMobileMenuOpen() ? '/icons/close.svg' : '/icons/open.svg',
     alt: this.isMobileMenuOpen() ? 'Fermer menu' : 'Ouvrir menu',
-    class: this.isDarkMode() ? 'w-6 h-6 icon-invert' : 'w-6 h-6',
+    class: this.isDarkMode() ? 'w-6 h-6' : 'w-6 h-6',
   }));
 
   readonly menuAriaLabel = computed(() =>
@@ -154,10 +154,10 @@ export class NavbarComponent {
     try {
       await this.cvService.openCvInNewTab();
     } catch (error) {
-      console.error('Erreur lors de l\'ouverture du CV:', error);
+      console.error("Erreur lors de l'ouverture du CV:", error);
       this.toastService.danger(
         'CV indisponible',
-        'Le CV est temporairement indisponible. Veuillez réessayer plus tard ou contacter l\'administrateur.'
+        "Le CV est temporairement indisponible. Veuillez réessayer plus tard ou contacter l'administrateur.",
       );
     }
   }

@@ -5,7 +5,9 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "prestart": "pnpm run icons:build",
     "build": "ng build",
+    "prebuild": "pnpm run icons:build",
     "watch": "ng build --watch --configuration development",
     "test": "vitest",
     "test:run": "vitest run",
@@ -20,7 +22,10 @@
     "pre-commit": "pnpm lint:fix && pnpm format",
     "dev:fast": "ng serve --poll=2000 --live-reload",
     "build:analyze": "ng build --stats-json && npx webpack-bundle-analyzer dist/stats.json",
-    "workflow:local": "pnpm code:check && pnpm test:run && pnpm build"
+    "workflow:local": "pnpm code:check && pnpm test:run && pnpm build",
+    "icons": "node script/icons.mjs",
+    "icons:build": "pnpm run icons",
+    "watch:icons": "chokidar \"public/icons/**/*.svg\" \"public/icons/iconify.txt\" -c 'pnpm run icons'"
   },
   "prettier": {
     "printWidth": 100,
