@@ -1,10 +1,10 @@
 import { Component, ChangeDetectionStrategy, signal, output } from '@angular/core';
 import { LoginForm } from '@shared/ui/login/login-form/login-form';
-import { NgOptimizedImage } from '@angular/common';
+import { SvgIcon } from '../../icon-svg/icon-svg';
 
 @Component({
   selector: 'app-login-modal',
-  imports: [LoginForm, NgOptimizedImage],
+  imports: [LoginForm, SvgIcon],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     @if (isVisible()) {
@@ -13,7 +13,7 @@ import { NgOptimizedImage } from '@angular/common';
         (click)="onOverlayClick($event)"
         (keydown)="onKeyDown($event)"
       >
-        <div class="fixed inset-0 bg-background bg-opacity-75 transition-opacity"></div>
+        <div class="fixed inset-0 bg-background/80 bg-opacity-100 transition-opacity"></div>
 
         <div class="flex min-h-screen items-center justify-center p-4">
           <div
@@ -27,17 +27,16 @@ import { NgOptimizedImage } from '@angular/common';
           >
             <button
               type="button"
-              class="absolute right-4 top-4 z-10 p-1 rounded hover:bg-accent/20 transition-colors duration-200"
+              class="absolute right-4 top-4 z-10 p-1 flex items-center justify-center text-text rounded hover:bg-accent transition-colors duration-200"
               (click)="closeModal()"
               aria-label="Fermer la modal"
               tabindex="0"
             >
-              <img
-                [ngSrc]="'icons/close.svg'"
-                alt=""
-                width="16"
-                height="16"
-                class="h-4 w-4 icon-invert"
+              <app-svg-icon
+                name="lucide:circle-x"
+                [width]="'24'"
+                [height]="'24'"
+                [iconClass]="'w-6 h-6'"
               />
             </button>
 
@@ -64,6 +63,7 @@ export class LoginModal {
     this._previouslyFocused = (document.activeElement as HTMLElement) ?? null;
     this._isVisible.set(true);
     document.body.classList.add('overflow-hidden');
+    document.body.classList.add('blur-bg');
 
     setTimeout(() => {
       const modal = document.getElementById('login-modal');
@@ -75,6 +75,7 @@ export class LoginModal {
   hide(): void {
     this._isVisible.set(false);
     document.body.classList.remove('overflow-hidden');
+    document.body.classList.remove('blur-bg');
     // Restore focus to the element that opened the modal
     const toFocus = this._previouslyFocused;
     this._previouslyFocused = null;
@@ -87,16 +88,30 @@ export class LoginModal {
     const container = root ?? (document.getElementById('login-modal') as HTMLElement | null);
     if (!container) return [];
     const selectors = [
-      'a[href]','area[href]','input:not([disabled])','select:not([disabled])','textarea:not([disabled])',
-      'button:not([disabled])','iframe','object','embed','[contenteditable]','[tabindex]:not([tabindex="-1"])'
+      'a[href]',
+      'area[href]',
+      'input:not([disabled])',
+      'select:not([disabled])',
+      'textarea:not([disabled])',
+      'button:not([disabled])',
+      'iframe',
+      'object',
+      'embed',
+      '[contenteditable]',
+      '[tabindex]:not([tabindex="-1"])',
     ];
     const nodeList = container.querySelectorAll<HTMLElement>(selectors.join(','));
-    return Array.from(nodeList).filter((el) => !el.hasAttribute('disabled') && !el.getAttribute('aria-hidden'));
+    return Array.from(nodeList).filter(
+      (el) => !el.hasAttribute('disabled') && !el.getAttribute('aria-hidden'),
+    );
   }
 
   private focusFirstInteractive(root?: HTMLElement | null): void {
     const focusables = this.getFocusableElements(root);
-    const target = focusables.find((el) => el.tagName.toLowerCase() === 'input' || el.tagName.toLowerCase() === 'button') ?? focusables[0];
+    const target =
+      focusables.find(
+        (el) => el.tagName.toLowerCase() === 'input' || el.tagName.toLowerCase() === 'button',
+      ) ?? focusables[0];
     target?.focus();
   }
 
