@@ -268,10 +268,8 @@ export class LoginForm {
   readonly authService = inject(AuthService);
 
   private readonly _showPassword = signal(false);
-  private readonly _isDarkMode = signal(false);
 
   readonly showPassword = this._showPassword.asReadonly();
-  readonly isDarkMode = this._isDarkMode.asReadonly();
 
   readonly loginSuccess = output<void>();
   readonly loginCancel = output<void>();
@@ -295,10 +293,6 @@ export class LoginForm {
   }
 
   constructor() {
-    this.initializeTheme();
-
-    this.watchThemeChanges();
-
     effect(() => {
       const isLoading = this.authService.isLoading();
       if (isLoading) {
@@ -337,28 +331,5 @@ export class LoginForm {
 
   closeLogin(): void {
     this.loginCancel.emit();
-  }
-
-  private initializeTheme(): void {
-    const isDark =
-      document.documentElement.hasAttribute('data-theme') &&
-      document.documentElement.getAttribute('data-theme') === 'dark';
-    this._isDarkMode.set(isDark);
-  }
-
-  private watchThemeChanges(): void {
-    const observer = new MutationObserver((mutations) => {
-      mutations.forEach((mutation) => {
-        if (mutation.type === 'attributes' && mutation.attributeName === 'data-theme') {
-          const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-          this._isDarkMode.set(isDark);
-        }
-      });
-    });
-
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ['data-theme'],
-    });
   }
 }

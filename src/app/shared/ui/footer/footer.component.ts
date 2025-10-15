@@ -1,9 +1,10 @@
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
-import { CommonModule, NgOptimizedImage } from '@angular/common';
+import { CommonModule } from '@angular/common';
+import { SvgIcon } from '../icon-svg/icon-svg';
 
 @Component({
   selector: 'app-footer',
-  imports: [CommonModule, NgOptimizedImage],
+  imports: [CommonModule, SvgIcon],
   templateUrl: './footer.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

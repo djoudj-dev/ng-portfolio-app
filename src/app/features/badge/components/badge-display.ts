@@ -8,13 +8,14 @@ import {
   signal,
   ChangeDetectionStrategy,
 } from '@angular/core';
-import { CommonModule, NgOptimizedImage } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { Badge, BadgeStatus } from '../models/badge.model';
 import { BadgeService } from '../services/badge-service';
+import { SvgIcon } from '@app/shared/ui/icon-svg/icon-svg';
 
 @Component({
   selector: 'app-badge-display',
-  imports: [CommonModule, NgOptimizedImage],
+  imports: [CommonModule, SvgIcon],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     @if (currentBadge()) {
@@ -25,15 +26,12 @@ import { BadgeService } from '../services/badge-service';
           class="flex items-center space-x-1.5 sm:space-x-3 md:space-x-4 relative z-10 min-h-[3rem] sm:min-h-0"
         >
           <div class="flex-shrink-0">
-            <div class="w-12 h-12 sm:w-12 sm:h-12 md:w-14 md:h-14 p-1">
-              <img
-                [ngSrc]="'/icons/angular.webp'"
-                alt="Angular"
-                class="w-full h-full rounded-md"
-                height="860"
-                width="860"
-              />
-            </div>
+            <app-svg-icon
+              name="logos:angular-icon"
+              [width]="'56'"
+              [height]="'56'"
+              [iconClass]="'w-12 h-12 sm:w-12 sm:h-12 md:w-14 md:h-14'"
+            />
           </div>
 
           <div class="flex-1 min-w-0 pr-1 relative">
@@ -137,14 +135,13 @@ import { BadgeService } from '../services/badge-service';
         class="flex items-center space-x-2 sm:space-x-3 md:space-x-4 px-2 sm:px-4 md:px-6 py-2 sm:py-4 bg-gradient-to-r from-background/70 to-background/50 border border-accent/20 rounded-lg sm:rounded-2xl shadow-sm sm:shadow-md backdrop-blur-sm opacity-60"
       >
         <div
-          class="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-lg sm:rounded-xl bg-gradient-to-br from-gray-100 to-gray-200 p-1 flex items-center justify-center flex-shrink-0"
+          class="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-lg sm:rounded-xl bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center flex-shrink-0"
         >
-          <img
-            [ngSrc]="'/icons/angular.webp'"
-            alt="Angular"
-            class="w-5 h-5 sm:w-6 sm:h-6 md:w-8 md:h-8 rounded-md sm:rounded-lg opacity-40"
-            height="860"
-            width="860"
+          <app-svg-icon
+            name="logos:angular-icon"
+            [width]="'40'"
+            [height]="'40'"
+            [iconClass]="'w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 opacity-40'"
           />
         </div>
         <div class="flex-1 min-w-0">

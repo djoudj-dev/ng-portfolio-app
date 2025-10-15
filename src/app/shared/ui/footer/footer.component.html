@@ -1,8 +1,10 @@
-<footer class="bg-background border-accent z-10 w-full border-t" role="contentinfo">
+<footer class="bg-background border-t border-primary/40 shadow-lg shadow-primary/20 z-10 w-full" role="contentinfo">
   <div class="mx-auto max-w-7xl px-3 sm:px-4 md:px-6 lg:px-8">
     <div class="flex flex-col items-center py-3 space-y-2 sm:hidden">
       <div class="text-center">
-        <p class="text-text text-xs font-extrabold">&copy; {{ currentYear() }} Julien Nédellec. Tous droits réservés.</p>
+        <p class="text-text text-xs font-extrabold">
+          &copy; {{ currentYear() }} Julien Nédellec. Tous droits réservés.
+        </p>
       </div>
 
       <div class="flex items-center space-x-4">
@@ -10,32 +12,40 @@
           href="https://www.linkedin.com/in/nedellec-julien/"
           target="_blank"
           class="text-text hover:text-accent transition-colors"
-          aria-label="LinkedIn">
-          <img
-            [ngSrc]="'/icons/linkedin.svg'"
-            alt="LinkedIn"
+          aria-label="LinkedIn"
+        >
+          <app-svg-icon
+            name="simple-icons:linkedin"
+            [height]="'20'"
+            [width]="'20'"
             class="icon-invert h-5 w-5"
             width="20"
-            height="20" />
+            height="20"
+          />
         </a>
         <a
           href="https://github.com/djoudj-dev"
           target="_blank"
           class="text-text hover:text-accent transition-colors"
-          aria-label="GitHub">
-          <img
-            [ngSrc]="'/icons/github.svg'"
-            alt="GitHub"
+          aria-label="GitHub"
+        >
+          <app-svg-icon
+            name="simple-icons:github"
+            [height]="'20'"
+            [width]="'20'"
             class="icon-invert h-5 w-5"
             width="20"
-            height="20" />
+            height="20"
+          />
         </a>
       </div>
     </div>
 
     <div class="hidden sm:flex h-12 items-center justify-between">
       <div class="flex flex-col justify-center">
-        <p class="text-text text-sm font-bold">&copy; {{ currentYear() }} Julien Nédellec. Tous droits réservés.</p>
+        <p class="text-text text-sm font-bold">
+          &copy; {{ currentYear() }} Julien Nédellec. Tous droits réservés.
+        </p>
       </div>
 
       <div class="flex items-center space-x-4">
@@ -43,27 +53,31 @@
           href="https://www.linkedin.com/in/nedellec-julien/"
           target="_blank"
           class="text-text hover:text-accent transition-colors"
-          aria-label="LinkedIn">
-          <img
-            [ngSrc]="'/icons/linkedin.svg'"
-            alt="LinkedIn"
+          aria-label="LinkedIn"
+        >
+          <app-svg-icon
+            name="simple-icons:linkedin"
+            [height]="'24'"
+            [width]="'24'"
             class="icon-invert h-6 w-6"
             width="24"
             height="24"
-            sizes="(min-width: 768px) 6vw, 10vw" />
+          />
         </a>
         <a
           href="https://github.com/djoudj-dev"
           target="_blank"
           class="text-text hover:text-accent transition-colors"
-          aria-label="GitHub">
-          <img
-            [ngSrc]="'/icons/github.svg'"
-            alt="GitHub"
+          aria-label="GitHub"
+        >
+          <app-svg-icon
+            name="simple-icons:github"
+            [height]="'24'"
+            [width]="'24'"
             class="icon-invert h-6 w-6"
             width="24"
             height="24"
-            sizes="(min-width: 768px) 6vw, 10vw" />
+          />
         </a>
       </div>
     </div>

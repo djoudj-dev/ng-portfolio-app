@@ -147,28 +147,6 @@ a:hover {
   color: #0052a3 !important;
 }
 
-/* Mode sombre - améliorer les contrastes */
-@media (prefers-color-scheme: dark) {
-  .text-text\/80 {
-    color: rgb(255 255 255 / 0.9) !important;
-  }
-  
-  .text-text\/70 {
-    color: rgb(255 255 255 / 0.8) !important;
-  }
-  
-  .text-secondary {
-    color: rgb(156 163 175) !important; /* gray-400 pour le mode sombre */
-  }
-
-  .text-accent {
-    color: #60a5fa !important; /* Bleu plus clair pour le mode sombre */
-  }
-
-  .text-accent:hover {
-    color: #93c5fd !important;
-  }
-}
 
 /* Améliorer la lisibilité des petits textes */
 .text-xs {
