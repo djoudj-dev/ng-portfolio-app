@@ -4,7 +4,7 @@ export const SOCIAL_BADGES: SocialBadge[] = [
   {
     name: 'linkedin',
     href: 'https://linkedin.com/in/julien-nedellec',
-    iconPath: '/icons/linkedin.svg',
+    iconPath: 'simple-icons:linkedin',
     alt: 'LinkedIn',
     ariaLabel: 'Profil LinkedIn de Julien NÉDELLEC',
   },
