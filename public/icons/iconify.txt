@@ -1,0 +1,16 @@
+# Liste d'icônes Iconify à inclure dans le sprite
+# Format : collection:name (un par ligne).
+
+# Navbar-Link
+lucide:house
+lucide:user
+lucide:database
+lucide:code
+lucide:mail
+
+# Navbar-view-cv 
+lucide:view
+
+# Navbar-Darkmode 
+lucide:sun
+lucide:moon
