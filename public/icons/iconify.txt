@@ -14,3 +14,11 @@ lucide:view
 # Navbar-Darkmode 
 lucide:sun
 lucide:moon
+
+# Modal-Login 
+lucide:circle-x
+lucide:lock-keyhole
+lucide:eye
+lucide:eye-off
+lucide:triangle-alert
+lucide:log-in
