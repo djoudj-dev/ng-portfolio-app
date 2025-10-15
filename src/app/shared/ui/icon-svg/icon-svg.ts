@@ -11,7 +11,7 @@ import { CommonModule } from '@angular/common';
 import { IconSvg } from '../../../core/services/icon-svg';
 
 @Component({
-  selector: 'app-svg-icon, app-icon-svg',
+  selector: 'app-svg-icon',
   imports: [CommonModule],
   template: `
     <svg
@@ -23,7 +23,7 @@ import { IconSvg } from '../../../core/services/icon-svg';
       aria-hidden="true"
       focusable="false"
     >
-      <use [attr.href]="'#' + symbolId()"></use>
+      <use [attr.xlink:href]="spriteUrl() + '#' + symbolId()"></use>
     </svg>
   `,
   styles: [
@@ -35,7 +35,6 @@ import { IconSvg } from '../../../core/services/icon-svg';
       }
 
       svg {
-        display: block;
         transition: all 0.3s ease;
         will-change: transform;
         transform: translateZ(0);
@@ -51,7 +50,7 @@ import { IconSvg } from '../../../core/services/icon-svg';
       }
 
       :host(.using-optimized-spin) svg {
-        animation: optimizedSpin 4s linear infinite;
+        animation: optimizedSpin 1.5s linear infinite;
         backface-visibility: hidden;
         perspective: 1000;
       }
