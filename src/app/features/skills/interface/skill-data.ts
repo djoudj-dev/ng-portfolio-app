@@ -8,6 +8,7 @@ export interface SkillData {
   id: string;
   title: string;
   icon: string;
+  url?: string;
 }
 
 export interface CertificationData {

@@ -1,13 +1,13 @@
-import { NgOptimizedImage } from "@angular/common";
-import { ChangeDetectionStrategy, Component, signal } from "@angular/core";
-import { CERTIFICATIONS } from "../data/skill-data";
-import { CertificationData } from "../interface/skill-data";
-import { ButtonComponent } from "@shared/ui/button/button";
+import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { CERTIFICATIONS } from '../data/skill-data';
+import { CertificationData } from '../interface/skill-data';
+import { ButtonComponent } from '@shared/ui/button/button';
+import { SvgIcon } from '@app/shared/ui/icon-svg/icon-svg';
 
 @Component({
-  selector: "app-skills-certification",
-  imports: [NgOptimizedImage, ButtonComponent],
-  templateUrl: "./skills-certification.html",
+  selector: 'app-skills-certification',
+  imports: [ButtonComponent, SvgIcon],
+  templateUrl: './skills-certification.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SkillsCertification {

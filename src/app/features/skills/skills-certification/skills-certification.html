@@ -1,140 +1,123 @@
-<section class="px-3 py-4 sm:px-4 sm:py-6" aria-labelledby="certifications-section">
-      <h2
-        id="certifications-section"
-        class="text-accent decoration-text mb-4 text-center text-lg font-bold underline sm:text-xl sm:mb-6 md:text-2xl"
-      >
-        Certifications
-      </h2>
+<section class="px-1 py-3 sm:px-3 sm:py-4" aria-labelledby="certifications-section">
+  <h2
+    id="certifications-section"
+    class="text-accent/60 mb-4 text-lg font-semibold uppercase tracking-280 sm:text-xl sm:mb-6"
+  >
+    Certifications
+  </h2>
 
-      <div
-        class="mx-auto grid max-w-sm grid-cols-1 gap-3 sm:max-w-2xl sm:gap-4 sm:grid-cols-2 md:max-w-4xl md:gap-6 lg:max-w-6xl"
-        role="list"
+  <div class="mx-auto grid w-full grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4 md:gap-5" role="list">
+    @for (certification of certifications(); track certification.id; let idx = $index) {
+      <article
+        class="relative rounded-2xl border border-primary/25 bg-gradient-to-br from-background/80 via-background/60 to-primary/10 p-3 sm:p-4 shadow-lg shadow-primary/15 transition-all duration-300 hover:border-accent/40 hover:shadow-accent/30 hover:-translate-y-1"
+        role="article"
+        [style.animation-delay]="(idx * 100) + 'ms'"
       >
-        @for (certification of certifications(); track certification.id) {
-          <article
-            class="bg-background shadow-text border-accent relative rounded-lg border p-3 sm:p-4"
-            role="article"
+        <header class="mb-3 flex items-center gap-2 sm:gap-3 sm:mb-4">
+          <div class="flex-shrink-0 inline-flex h-12 w-12 items-center justify-center rounded-xl border border-accent/40 bg-gradient-to-br from-accent/30 via-background/50 to-primary/20">
+            <app-svg-icon
+              [name]="'ph:student-bold'"
+              [height]="'24'"
+              [width]="'24'"
+              class="h-5 w-5 sm:h-6 sm:w-6"
+              [attr.aria-hidden]="true"
+            />
+          </div>
+          <h3
+            class="text-sm font-semibold uppercase tracking-250 text-primary/70 sm:text-base leading-tight flex-1"
+            id="certification-{{ certification.id }}"
           >
-            <header class="mb-2 flex items-center gap-1.5 sm:gap-2 sm:mb-3">
-              <img
-                [ngSrc]="'/icons/student.svg'"
-                alt="Icône de certification"
-                width="20"
-                height="20"
-                class="icon-invert h-4 w-4 sm:h-5 sm:w-5"
-              />
-              <h3
-                class="decoration-accent text-base font-semibold underline sm:text-lg md:text-xl leading-tight"
-                id="certification-{{ certification.id }}"
-              >
-                {{ certification.title }}
-              </h3>
-            </header>
+            {{ certification.title }}
+          </h3>
+        </header>
 
-            <div
-              class="relative mt-2 min-h-[160px] overflow-hidden sm:mt-3 sm:min-h-[180px] md:min-h-[200px]"
-              [attr.aria-labelledby]="'certification-' + certification.id"
+        <div
+          class="relative mt-2 min-h-[120px] overflow-hidden sm:mt-3 sm:min-h-[140px] md:min-h-[160px]"
+          [attr.aria-labelledby]="'certification-' + certification.id"
+        >
+          <section
+            class="absolute inset-0 w-full transition-all duration-500 ease-out"
+            [class.transform]="getCurrentSlide(certification.id) !== 0"
+            [class.translate-x-0]="getCurrentSlide(certification.id) === 0"
+            [class.-translate-x-full]="getCurrentSlide(certification.id) !== 0"
+            [class.opacity-100]="getCurrentSlide(certification.id) === 0"
+            [class.opacity-0]="getCurrentSlide(certification.id) !== 0"
+            [attr.aria-hidden]="getCurrentSlide(certification.id) !== 0"
+            id="certification-{{ certification.id }}-description"
+          >
+            <p class="text-text/90 text-xs leading-relaxed sm:text-sm">
+              {{ certification.description }}
+            </p>
+          </section>
+
+          <section
+            class="absolute inset-0 w-full transition-all duration-500 ease-out"
+            [class.transform]="getCurrentSlide(certification.id) !== 1"
+            [class.translate-x-0]="getCurrentSlide(certification.id) === 1"
+            [class.translate-x-full]="getCurrentSlide(certification.id) !== 1"
+            [class.opacity-100]="getCurrentSlide(certification.id) === 1"
+            [class.opacity-0]="getCurrentSlide(certification.id) !== 1"
+            [attr.aria-hidden]="getCurrentSlide(certification.id) !== 1"
+          >
+            <h4
+              class="mb-2 text-xs font-semibold uppercase tracking-200 text-accent/60 sm:text-sm sm:mb-3"
+              id="skills-{{ certification.id }}"
             >
-              <section
-                class="absolute inset-0 w-full transition-all duration-300 ease-in-out"
-                [class.transform]="getCurrentSlide(certification.id) !== 0"
-                [class.translate-x-0]="getCurrentSlide(certification.id) === 0"
-                [class.-translate-x-full]="
-                  getCurrentSlide(certification.id) !== 0
-                "
-                [class.opacity-100]="getCurrentSlide(certification.id) === 0"
-                [class.opacity-0]="getCurrentSlide(certification.id) !== 0"
-                [attr.aria-hidden]="getCurrentSlide(certification.id) !== 0"
-                id="certification-{{ certification.id }}-description"
-              >
-                <p class="text-text text-xs leading-relaxed sm:text-sm md:text-base">
-                  {{ certification.description }}
-                </p>
-              </section>
-
-              <section
-                class="absolute inset-0 w-full transition-all duration-300 ease-in-out"
-                [class.transform]="getCurrentSlide(certification.id) !== 1"
-                [class.translate-x-0]="getCurrentSlide(certification.id) === 1"
-                [class.translate-x-full]="
-                  getCurrentSlide(certification.id) !== 1
-                "
-                [class.opacity-100]="getCurrentSlide(certification.id) === 1"
-                [class.opacity-0]="getCurrentSlide(certification.id) !== 1"
-                [attr.aria-hidden]="getCurrentSlide(certification.id) !== 1"
-              >
-                <h4
-                  class="mb-1.5 text-sm font-semibold sm:text-base sm:mb-2"
-                  id="skills-{{ certification.id }}"
-                >
-                  Compétences acquises :
-                </h4>
-                <ul
-                  class="list-disc space-y-1 pl-4 text-sm sm:pl-4 sm:space-y-1 sm:text-sm md:text-base"
-                  [attr.aria-labelledby]="'skills-' + certification.id"
-                >
-                  @for (skill of certification.skillsLearned; track skill) {
-                    <li class="text-text/70 break-words">{{ skill }}</li>
-                  }
-                </ul>
-              </section>
-            </div>
-
-            <footer
-              class="mt-3 flex flex-col gap-2 sm:mt-4 sm:gap-3 md:flex-row md:items-center md:justify-between"
+              Compétences acquises
+            </h4>
+            <ul
+              class="space-y-1 pl-0 text-xs sm:space-y-1.5 sm:text-sm text-text/80"
+              [attr.aria-labelledby]="'skills-' + certification.id"
             >
-              <div class="flex items-center gap-1.5 sm:gap-2">
-                <img
-                  [ngSrc]="'/icons/trophy.svg'"
-                  alt="Icône de trophée"
-                  width="20"
-                  height="20"
-                  class="h-5 w-5 sm:h-6 sm:w-6"
-                />
-                <p class="text-text/70 text-xs font-bold sm:text-sm md:text-base">
-                  {{ certification.status }}
-                </p>
-              </div>
+              @for (skill of certification.skillsLearned; track skill) {
+                <li>• {{ skill }}</li>
+              }
+            </ul>
+          </section>
+        </div>
 
-              <nav
-                class="flex gap-1.5 sm:gap-2"
-                aria-label="Navigation des détails de certification"
-              >
-                <app-button
-                  [color]="
-                    getCurrentSlide(certification.id) === 0
-                      ? 'secondary'
-                      : 'accent'
-                  "
-                  [customClass]="
-                    'flex-1 px-2 py-1 text-xs sm:px-3 sm:py-1.5 sm:text-sm md:flex-initial'
-                  "
-                  (buttonClick)="goToSlide(certification.id, 0)"
-                  [attr.aria-pressed]="getCurrentSlide(certification.id) === 0"
-                  [attr.aria-controls]="
-                    'certification-' + certification.id + '-description'
-                  "
-                >
-                  Description
-                </app-button>
-                <app-button
-                  [color]="
-                    getCurrentSlide(certification.id) === 1
-                      ? 'secondary'
-                      : 'accent'
-                  "
-                  [customClass]="
-                    'flex-1 px-2 py-1 text-xs sm:px-3 sm:py-1.5 sm:text-sm md:flex-initial'
-                  "
-                  (buttonClick)="goToSlide(certification.id, 1)"
-                  [attr.aria-pressed]="getCurrentSlide(certification.id) === 1"
-                  [attr.aria-controls]="'skills-' + certification.id"
-                >
-                  Compétences
-                </app-button>
-              </nav>
-            </footer>
-          </article>
-        }
-      </div>
-    </section>
+        <footer
+          class="mt-3 flex flex-col gap-2 sm:mt-4 sm:gap-3"
+        >
+          <div class="flex items-center gap-2 sm:gap-2.5 px-2 py-1.5 rounded-lg border border-primary/20 bg-gradient-to-br from-background/60 via-background/40 to-primary/10">
+            <app-svg-icon
+              [name]="'fxemoji:trophy'"
+              [height]="'20'"
+              [width]="'20'"
+              class="h-5 w-5 sm:h-6 sm:w-6"
+              [attr.aria-hidden]="true"
+            />
+            <p class="text-primary/70 text-xs font-semibold uppercase tracking-150 sm:text-sm">
+              {{ certification.status }}
+            </p>
+          </div>
+
+          <nav class="flex gap-2" aria-label="Navigation des détails de certification">
+            <app-button
+              [color]="getCurrentSlide(certification.id) === 0 ? 'secondary' : 'accent'"
+              [customClass]="
+                'flex-1 px-3 py-2 text-xs rounded-xl font-semibold sm:px-4 sm:py-2.5 sm:text-sm transition-all duration-300'
+              "
+              (buttonClick)="goToSlide(certification.id, 0)"
+              [attr.aria-pressed]="getCurrentSlide(certification.id) === 0"
+              [attr.aria-controls]="'certification-' + certification.id + '-description'"
+            >
+              Description
+            </app-button>
+            <app-button
+              [color]="getCurrentSlide(certification.id) === 1 ? 'secondary' : 'accent'"
+              [customClass]="
+                'flex-1 px-3 py-2 text-xs rounded-xl font-semibold sm:px-4 sm:py-2.5 sm:text-sm transition-all duration-300'
+              "
+              (buttonClick)="goToSlide(certification.id, 1)"
+              [attr.aria-pressed]="getCurrentSlide(certification.id) === 1"
+              [attr.aria-controls]="'skills-' + certification.id"
+            >
+              Compétences
+            </app-button>
+          </nav>
+        </footer>
+      </article>
+    }
+  </div>
+</section>
