@@ -8,10 +8,10 @@ import { ProjectService } from './services/project-service';
 import { Router } from '@angular/router';
 import { ProjectCategory } from '@features/projects/enums/project-enum';
 import { TECHNOLOGIES, Technology } from '@features/projects/data/technologies';
+import { SvgIcon } from '@app/shared/ui/icon-svg/icon-svg';
 
 @Component({
-  selector: 'app-project',
-  imports: [NgOptimizedImage, ProjectSearch, ProjectPagination, DatePipe],
+  imports: [NgOptimizedImage, ProjectSearch, ProjectPagination, DatePipe, SvgIcon],
   templateUrl: './project.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -115,7 +115,7 @@ export class Project implements OnInit {
         href: project.githubUrls.frontend,
         label: 'GitHub Front',
         ariaLabel: 'Voir le code source frontend sur GitHub',
-        icon: '/icons/github.svg',
+        icon: 'simple-icons:github',
       });
     }
 
@@ -124,7 +124,7 @@ export class Project implements OnInit {
         href: project.githubUrls.backend,
         label: 'GitHub Back',
         ariaLabel: 'Voir le code source backend sur GitHub',
-        icon: '/icons/github.svg',
+        icon: 'simple-icons:github',
       });
     }
 
@@ -133,7 +133,7 @@ export class Project implements OnInit {
         href: project.githubUrls.fullstack,
         label: 'GitHub',
         ariaLabel: 'Voir le code source sur GitHub',
-        icon: '/icons/github.svg',
+        icon: 'simple-icons:github',
       });
     }
 
@@ -150,7 +150,7 @@ export class Project implements OnInit {
         href: project.demoUrl,
         label: 'Démo',
         ariaLabel: 'Voir la démo du projet',
-        icon: '/icons/external-link.svg',
+        icon: 'lucide:external-link',
       });
     }
 
