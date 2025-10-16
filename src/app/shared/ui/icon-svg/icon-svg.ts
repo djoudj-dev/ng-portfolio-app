@@ -67,7 +67,7 @@ export class SvgIcon implements OnInit {
   readonly color = input<string>('currentColor');
   readonly stroke = input<string>('none');
   // Align with build output from scripts/icons.mjs (generates /sprite.svg in public)
-  readonly spriteUrl = input<string>('/sprite.svg');
+  readonly spriteUrl = input<string>('sprite.svg');
 
   private readonly iconSvg = inject(IconSvg);
   loaded = signal(false);

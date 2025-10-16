@@ -13,7 +13,7 @@ export class IconSvg {
   private readonly document = inject(DOCUMENT, { optional: true });
   private readonly spriteCache = new Map<string, string>();
   private readonly loadingSprites = new Map<string, Observable<string>>();
-  private readonly defaultSpriteUrl = '/sprite.svg';
+  private readonly defaultSpriteUrl = 'sprite.svg';
 
   constructor() {
     // Préchargement automatique du sprite par défaut pour éviter les latences
@@ -25,39 +25,41 @@ export class IconSvg {
    * et éviter les latences lors de la navigation
    */
   preloadDefaultSprite(): void {
-    setTimeout(() => this.loadSprite(this.defaultSpriteUrl), 0);
+    setTimeout(() => this.loadSprite(this.defaultSpriteUrl).subscribe(), 0);
   }
 
   loadSprite(url: string): Observable<string> {
+    const targetUrl = this.resolveSpriteUrl(url || this.defaultSpriteUrl);
+
     // Vérifier le cache
-    if (this.spriteCache.has(url)) {
-      return of(this.spriteCache.get(url)!);
+    if (this.spriteCache.has(targetUrl)) {
+      return of(this.spriteCache.get(targetUrl)!);
     }
 
     // Vérifier si déjà en cours de chargement
-    if (this.loadingSprites.has(url)) {
-      return this.loadingSprites.get(url)!;
+    if (this.loadingSprites.has(targetUrl)) {
+      return this.loadingSprites.get(targetUrl)!;
     }
 
     // Utiliser priority: 'high' pour charger le sprite en priorité
     const loading$ = this.http
-      .get(url, {
+      .get(targetUrl, {
         responseType: 'text',
         headers: { 'X-Priority': 'high' },
       })
       .pipe(
         tap((sprite) => {
-          this.spriteCache.set(url, sprite);
-          this.loadingSprites.delete(url);
-          this.injectSprite(url, sprite);
+          this.spriteCache.set(targetUrl, sprite);
+          this.loadingSprites.delete(targetUrl);
+          this.injectSprite(sprite);
         }),
       );
 
-    this.loadingSprites.set(url, loading$);
+    this.loadingSprites.set(targetUrl, loading$);
     return loading$;
   }
 
-  private injectSprite(url: string, sprite: string): void {
+  private injectSprite(sprite: string): void {
     const doc = this.document;
     const body = doc?.body;
     if (!body) {
@@ -98,6 +100,8 @@ export class IconSvg {
    * Extrait le SVG d'un <symbol> du sprite et le retourne sous forme de balise <svg> avec viewBox
    */
   getSymbolSvg(symbolId: string, spriteUrl: string = this.defaultSpriteUrl): Observable<string> {
+    const resolvedUrl = this.resolveSpriteUrl(spriteUrl || this.defaultSpriteUrl);
+
     return new Observable<string>((observer) => {
       const emitSymbol = (sprite: string) => {
         // RegExp sans backslash inutile, mode dotAll pour matcher tout
@@ -133,11 +137,29 @@ export class IconSvg {
         observer.complete();
       };
       // Sprite déjà chargé ?
-      if (this.spriteCache.has(spriteUrl)) {
-        emitSymbol(this.spriteCache.get(spriteUrl)!);
+      if (this.spriteCache.has(resolvedUrl)) {
+        emitSymbol(this.spriteCache.get(resolvedUrl)!);
       } else {
-        this.loadSprite(spriteUrl).subscribe(emitSymbol);
+        this.loadSprite(resolvedUrl).subscribe(emitSymbol);
       }
     });
+  }
+
+  private resolveSpriteUrl(url: string): string {
+    if (!url) {
+      return '';
+    }
+
+    const documentBase = this.document?.baseURI ?? '';
+    const fallbackBase =
+      typeof location !== 'undefined' && location.href ? location.href : 'http://localhost/';
+
+    const base = documentBase && documentBase !== 'about:blank' ? documentBase : fallbackBase;
+
+    try {
+      return new URL(url, base).toString();
+    } catch {
+      return url;
+    }
   }
 }
