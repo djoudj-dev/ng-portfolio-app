@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, signal, inject } from '@angular/core';
+import { Component, ChangeDetectionStrategy, signal, inject, effect, ElementRef } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { NavLink } from './interface/nav-link';
 import { CvService } from '@features/cv/services/cv';
@@ -22,6 +22,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   private readonly router = inject(Router);
   private readonly cvService = inject(CvService);
   private readonly toastService = inject(ToastService);
+  private readonly elementRef = inject(ElementRef<HTMLElement>);
   protected readonly isScrolled = signal(false);
   protected readonly currentRoute = signal<string>('');
   private routeSub?: Subscription;
@@ -36,6 +37,30 @@ export class NavbarComponent implements OnInit, OnDestroy {
   ]);
 
   readonly isMobileMenuOpen = signal(false);
+
+  constructor() {
+    // Gestion du click en dehors du menu mobile
+    effect(() => {
+      const isMenuOpen = this.isMobileMenuOpen();
+
+      if (isMenuOpen) {
+        // Attacher l'écouteur quand le menu s'ouvre
+        setTimeout(() => {
+          document.addEventListener('click', this.handleDocumentClick);
+        }, 0);
+      } else {
+        // Détacher l'écouteur quand le menu se ferme
+        document.removeEventListener('click', this.handleDocumentClick);
+      }
+    });
+  }
+
+  private readonly handleDocumentClick = (event: Event): void => {
+    const host = this.elementRef.nativeElement;
+    if (!host.contains(event.target as Node)) {
+      this.onCloseMobileMenu();
+    }
+  };
 
   onToggleMobileMenu(): void {
     this.isMobileMenuOpen.update((isOpen) => !isOpen);
@@ -81,5 +106,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.routeSub?.unsubscribe();
+    // Nettoyer l'écouteur de click si le composant est détruit
+    document.removeEventListener('click', this.handleDocumentClick);
   }
 }

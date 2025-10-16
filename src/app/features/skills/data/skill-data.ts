@@ -8,7 +8,7 @@ export const SKILL_CATEGORIES: SkillCategoryData[] = [
       {
         id: 'angular',
         title: 'Angular',
-        icon: 'angular',
+        icon: 'devicon:angular',
         url: 'https://angular.io/',
       },
       {
@@ -20,7 +20,7 @@ export const SKILL_CATEGORIES: SkillCategoryData[] = [
       {
         id: 'rxjs',
         title: 'RxJS',
-        icon: 'rxjs',
+        icon: 'devicon:rxjs',
         url: 'https://rxjs.dev/',
       },
       {
@@ -80,7 +80,7 @@ export const SKILL_CATEGORIES: SkillCategoryData[] = [
       {
         id: 'supabase',
         title: 'Supabase',
-        icon: 'supabase',
+        icon: 'devicon:supabase',
         url: 'https://supabase.com/',
       },
     ],

@@ -5,7 +5,7 @@ import { HeroSection } from '@features/landing/hero-section/hero-section';
   selector: 'app-landing',
   imports: [HeroSection],
   template: `
-    <main class="min-h-screen pt-20">
+    <main class="min-h-screen pt-20 sm:pt-18 md:pt-20">
       <app-hero-section />
     </main>
   `,

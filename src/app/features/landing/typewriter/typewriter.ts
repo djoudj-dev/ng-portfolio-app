@@ -47,7 +47,7 @@ import { isPlatformBrowser } from '@angular/common';
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     class:
-      'inline-flex items-center justify-center text-center text-accent font-bold uppercase tracking-120 text-lg sm:text-xl md:text-2xl lg:text-3xl',
+      'inline-flex items-center justify-center text-center text-accent font-bold uppercase tracking-120 text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl',
   },
 })
 export class TypewriterComponent implements OnInit, OnDestroy {

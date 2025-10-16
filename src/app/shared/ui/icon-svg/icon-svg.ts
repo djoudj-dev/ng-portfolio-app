@@ -23,7 +23,7 @@ import { IconSvg } from '../../../core/services/icon-svg';
       aria-hidden="true"
       focusable="false"
     >
-      <use [attr.xlink:href]="spriteUrl() + '#' + symbolId()"></use>
+      <use [attr.href]="'#' + symbolId()"></use>
     </svg>
   `,
   styles: [
