@@ -45,24 +45,79 @@ function toId(filePath) {
 function extractSvgContent(svg) {
   svg = svg.replace(/<\?xml[^>]*>|<!--[\s\S]*?-->/g, '').trim();
   const match = svg.match(/<svg[^>]*>([\s\S]*?)<\/svg>/i);
-  if (!match) return { content: svg, viewBox: null, defs: null };
+  if (!match) return { content: svg, viewBox: null };
 
   const openTag = svg.match(/<svg[^>]*>/i)[0];
   const viewBoxMatch = openTag.match(/viewBox=["']([^"']+)["']/i);
 
-  const innerContent = match[1].trim();
+  return {
+    content: match[1].trim(),
+    viewBox: viewBoxMatch ? viewBoxMatch[1] : null,
+  };
+}
 
-  // Extraire les <defs> s'ils existent
-  const defsMatch = innerContent.match(/<defs>([\s\S]*?)<\/defs>/i);
-  const defs = defsMatch ? defsMatch[0] : null;
+function makeIdsUnique(content, prefix) {
+  const idPattern = /id=["']([^"']+)["']/g;
+  const urlPattern = /url\(#([^\)]+)\)/g;
+  const hrefPattern = /xlink:href=["']#([^"']+)["']/g;
 
-  // Retirer les <defs> du contenu principal
-  const contentWithoutDefs = defs ? innerContent.replace(/<defs>[\s\S]*?<\/defs>/i, '').trim() : innerContent;
+  const ids = new Set();
+  let match;
+
+  while ((match = idPattern.exec(content)) !== null) {
+    ids.add(match[1]);
+  }
+
+  let result = content;
+  ids.forEach((id) => {
+    const uniqueId = `${prefix}-${id}`;
+    const idRegex = new RegExp(`id=["']${id}["']`, 'g');
+    const urlRegex = new RegExp(`url\\(#${id}\\)`, 'g');
+    const hrefRegex = new RegExp(`xlink:href=["']#${id}["']`, 'g');
+    const hrefRegex2 = new RegExp(`href=["']#${id}["']`, 'g');
+
+    result = result
+      .replace(idRegex, `id="${uniqueId}"`)
+      .replace(urlRegex, `url(#${uniqueId})`)
+      .replace(hrefRegex, `xlink:href="#${uniqueId}"`)
+      .replace(hrefRegex2, `href="#${uniqueId}"`);
+  });
+
+  return result;
+}
+
+function extractDefs(content) {
+  const defsElements = [];
+  const patterns = [
+    /<linearGradient[\s\S]*?<\/linearGradient>/gi,
+    /<radialGradient[\s\S]*?<\/radialGradient>/gi,
+    /<filter[\s\S]*?<\/filter>/gi,
+    /<clipPath[\s\S]*?<\/clipPath>/gi,
+    /<mask[\s\S]*?<\/mask>/gi,
+    /<pattern[\s\S]*?<\/pattern>/gi,
+  ];
+
+  patterns.forEach((pattern) => {
+    const matches = content.match(pattern);
+    if (matches) {
+      matches.forEach((match) => {
+        if (!match.includes('gradientUnits="userSpaceOnUse"')) {
+          defsElements.push(match);
+        }
+      });
+    }
+  });
+
+  let contentWithoutDefs = content;
+  defsElements.forEach((def) => {
+    contentWithoutDefs = contentWithoutDefs.replace(def, '');
+  });
+
+  contentWithoutDefs = contentWithoutDefs.replace(/<defs>\s*<\/defs>/gi, '');
 
   return {
-    content: contentWithoutDefs,
-    viewBox: viewBoxMatch ? viewBoxMatch[1] : null,
-    defs: defs,
+    defs: defsElements,
+    content: contentWithoutDefs.trim(),
   };
 }
 
@@ -123,26 +178,65 @@ function buildSprite() {
   const allDefs = [];
   const symbols = files.map((file) => {
     const svg = fs.readFileSync(file, 'utf8');
-    const { content, viewBox, defs } = extractSvgContent(svg);
+    const { content, viewBox } = extractSvgContent(svg);
     const id = toId(file);
     const vb = viewBox ? ` viewBox="${viewBox}"` : '';
 
-    // Collecter les defs pour les placer globalement
-    if (defs) {
-      allDefs.push(defs);
+    const contentWithUniqueIds = makeIdsUnique(content, id);
+    const { defs: extractedDefs, content: contentWithoutExtractedDefs } =
+      extractDefs(contentWithUniqueIds);
+
+    if (extractedDefs.length > 0) {
+      allDefs.push(...extractedDefs);
     }
 
-    return `  <symbol id="${id}"${vb}>${content}</symbol>`;
+    const hasLocalDefs =
+      /<(linearGradient|radialGradient|filter|clipPath|mask|pattern)[\s\S]*?<\/(linearGradient|radialGradient|filter|clipPath|mask|pattern)>/i.test(
+        contentWithoutExtractedDefs,
+      );
+
+    let symbolContent = contentWithoutExtractedDefs;
+    if (hasLocalDefs && !/<defs>/i.test(symbolContent)) {
+      const localDefs = [];
+      const localDefsPatterns = [
+        /<linearGradient[\s\S]*?<\/linearGradient>/gi,
+        /<radialGradient[\s\S]*?<\/radialGradient>/gi,
+        /<filter[\s\S]*?<\/filter>/gi,
+        /<clipPath[\s\S]*?<\/clipPath>/gi,
+        /<mask[\s\S]*?<\/mask>/gi,
+        /<pattern[\s\S]*?<\/pattern>/gi,
+      ];
+
+      localDefsPatterns.forEach((pattern) => {
+        const matches = symbolContent.match(pattern);
+        if (matches) {
+          localDefs.push(...matches);
+        }
+      });
+
+      let contentWithoutLocalDefs = symbolContent;
+      localDefs.forEach((def) => {
+        contentWithoutLocalDefs = contentWithoutLocalDefs.replace(def, '');
+      });
+
+      symbolContent = `<defs>${localDefs.join('')}</defs>${contentWithoutLocalDefs.trim()}`;
+    }
+
+    return `  <symbol id="${id}"${vb}>${symbolContent}</symbol>`;
   });
 
-  const defsSection = allDefs.length > 0 ? `  <defs>\n${allDefs.map(d => d.replace(/<\/?defs>/gi, '').trim()).join('\n')}\n  </defs>\n` : '';
+  const defsSection =
+    allDefs.length > 0 ? `  <defs>\n    ${allDefs.join('\n    ')}\n  </defs>` : '';
 
   const sprite = [
     '<?xml version="1.0" encoding="UTF-8"?>',
-    '<svg xmlns="http://www.w3.org/2000/svg" style="display:none">',
-    defsSection + symbols.join('\n'),
+    '<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" width="0" height="0" style="position:absolute;left:-9999px;top:-9999px;overflow:hidden">',
+    defsSection,
+    symbols.join('\n'),
     '</svg>',
-  ].join('\n');
+  ]
+    .filter(Boolean)
+    .join('\n');
 
   fs.writeFileSync(spriteFile, sprite);
   console.log(`🎨 Sprite généré: ${files.length} icônes dans public/sprite.svg`);

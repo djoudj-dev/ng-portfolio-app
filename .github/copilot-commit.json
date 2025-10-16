@@ -1,23 +1,25 @@
 {
   "commit_conventions": {
     "format": {
-      "structure": "type(scope): description",
-      "max_subject_length": 50,
+      "structure": "emoji type(scope): description",
+      "max_subject_length": 25,
       "require_blank_line_after_subject": true,
       "language": "french",
       "context_aware": true,
       "breaking_change_marker": "!",
       "footer_markers": {
         "breaking_changes": "BREAKING CHANGE:",
-        "deprecated": "DEPRECATED:",
-        "references": "Ref:",
-        "reviewed_by": "Reviewed-by:"
+        "deprecated": "DÉPRÉCIÉ:",
+        "references": "Réf:",
+        "reviewed_by": "Revu-par:"
       }
     },
     "validation_rules": {
       "require_french_characters": true,
       "reject_english_common_words": true,
       "force_french_commit_verbs": true,
+      "require_present_tense": true,
+      "allow_accents": true,
       "dictionary": {
         "add": "ajoute",
         "update": "met à jour",
@@ -27,54 +29,84 @@
         "improve": "améliore",
         "implement": "implémente",
         "optimize": "optimise",
-        "clean": "nettoie"
+        "clean": "nettoie",
+        "rename": "renomme",
+        "move": "déplace",
+        "rework": "revoit",
+        "secure": "sécurise",
+        "document": "documente"
       }
     },
     "error_messages": {
-      "non_french": "Le message doit être en français",
-      "english_words_detected": "Des mots anglais ont été détectés",
-      "missing_accents": "Utilisez les accents appropriés"
+      "non_french": "❌ Le message doit être rédigé en français.",
+      "english_words_detected": "⚠️ Des mots anglais ont été détectés, merci de les remplacer.",
+      "missing_accents": "⚠️ Utilisez les accents appropriés dans les mots français.",
+      "subject_too_long": "⚠️ Le titre ne doit pas dépasser 25 caractères.",
+      "missing_bullet_points": "⚠️ Le corps du message doit utiliser des puces commençant par '-'."
     },
     "explanation_formats": {
       "require_bullet_points": true,
       "bullet_point_marker": "-",
       "require_bullet_on_first_sentence": true,
       "force_language": "fr",
-      "instruction": "Les messages doivent être rédigés en français, en utilisant des verbes à l'indicatif présent. Exemple : 'feat(auth): ajoute la validation du formulaire de connexion'",
+      "instruction": "Les messages doivent être rédigés en français, avec un verbe d’action à l’indicatif présent. Exemple : '✨ feat(auth): ajoute la validation du formulaire de connexion'.",
       "min_french_words_ratio": 0.95,
-      "enforce_french_verbs": true
+      "enforce_french_verbs": true,
+      "body_guidelines": [
+        "Commencez chaque ligne par '-' pour décrire les actions ou détails",
+        "Utilisez des phrases courtes et précises",
+        "Expliquez la motivation ou le contexte si pertinent",
+        "Exemple :",
+        "- Corrige une erreur dans le calcul du total",
+        "- Améliore la logique de pagination",
+        "- Met à jour les dépendances critiques"
+      ]
     }
   },
+
   "types": {
-    "feat": "Nouvelle fonctionnalité",
-    "fix": "Correction de bug",
-    "refactor": "Refactorisation du code",
-    "chore": "Tâche de maintenance",
-    "hotfix": "Correction urgente",
-    "release": "Publication de version",
-    "update": "Mise à jour",
-    "dependencies": "Mise à jour des dépendances",
-    "performance": "Amélioration des performances",
-    "tests": "Modification des tests",
-    "documentation": "Documentation",
-    "style": "Modifications de style",
-    "ci": "Configuration CI/CD",
-    "revert": "Annulation d'un commit",
-    "security": "Correction de sécurité",
-    "i18n": "Internationalisation",
-    "a11y": "Accessibilité"
+    "🛠️ chore": "Maintenance ou tâches techniques",
+    "✨ feat": "Nouvelle fonctionnalité ou amélioration",
+    "🐛 fix": "Correction de bugs",
+    "🚑 hotfix": "Correction urgente en production",
+    "♻️ refactor": "Refactorisation du code",
+    "🚀 release": "Livraison d'une version stable",
+    "📦 update": "Mise à jour ou modifications générales",
+    "⚙️ ci": "Changements liés à CI/CD",
+    "📦 dependencies": "Mise à jour ou suppression de dépendances",
+    "🏗️ build": "Changements dans le processus de build",
+    "📖 docs": "Documentation",
+    "⚡ perf": "Amélioration des performances",
+    "🌀 cache": "Optimisation du caching / gestion d’état",
+    "🔐 security": "Correctif ou amélioration de sécurité",
+    "🔑 auth": "Authentification et gestion de session",
+    "✅ validation": "Ajout ou amélioration de validation de données",
+    "🎨 style": "Changements CSS / style",
+    "🖌️ ui": "Améliorations visuelles ou UX",
+    "🎭 animations": "Ajout ou correction d'animations",
+    "♿ a11y": "Amélioration d'accessibilité",
+    "🌐 api": "Modification des endpoints API",
+    "🗄️ db": "Changements base de données",
+    "🧠 store": "Gestion d’état (NgRx, Signals, etc.)",
+    "🧪 test": "Tests unitaires ou e2e",
+    "🎭 mock": "Ajout de mocks pour tests",
+    "🔍 debug": "Debug et corrections mineures",
+    "🧹 cleanup": "Suppression de code mort",
+    "⏪ revert": "Annulation d'un commit",
+    "🚚 migration": "Migration de version / refonte"
   },
+
   "components": {
     "component": {
-      "description": "Composants Angular",
+      "description": "Composants Angular (UI, pages, widgets, modals)",
       "sub_scopes": ["ui", "layout", "form", "modal", "widget", "pages", "shared"]
     },
     "service": {
-      "description": "Services Angular",
+      "description": "Services Angular / NestJS",
       "sub_scopes": ["auth", "api", "store", "utils", "guards", "interceptors"]
     },
     "style": {
-      "description": "Styles et CSS",
+      "description": "Styles et thèmes",
       "sub_scopes": ["theme", "layout", "components", "animations", "variables"]
     },
     "config": {
@@ -82,18 +114,18 @@
       "sub_scopes": ["build", "lint", "deploy", "i18n", "seo"]
     },
     "doc": {
-      "description": "Documentation",
-      "sub_scopes": ["docs"]
+      "description": "Documentation technique et utilisateur",
+      "sub_scopes": ["readme", "wiki", "guidelines"]
     },
     "ci_cd": {
-      "description": "Intégration et déploiement",
-      "sub_scopes": ["integration_continue"]
+      "description": "Intégration continue et déploiement",
+      "sub_scopes": ["github_actions", "docker", "pipeline"]
     },
     "performance": {
-      "description": "Performance"
+      "description": "Optimisation des performances"
     },
     "security": {
-      "description": "Sécurité"
+      "description": "Sécurité et conformité"
     }
   }
 }
