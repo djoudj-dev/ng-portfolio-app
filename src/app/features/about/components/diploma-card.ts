@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, input } from '@angular/core';
+import { Component, ChangeDetectionStrategy, input, signal } from '@angular/core';
 
 interface DiplomaTooltip {
   readonly description: string;
@@ -18,9 +18,17 @@ export interface Diploma {
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <article
-      class="group relative z-0 flex w-full flex-col gap-2 rounded-2xl border border-primary/25 bg-gradient-to-br from-background/80 via-background/60 to-primary/10 p-3 text-left shadow-lg shadow-primary/15 transition hover:z-30 hover:border-accent/40 hover:shadow-accent/30 focus-visible:z-30 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent sm:p-4 md:p-5"
+      class="group relative flex w-full flex-col gap-2 rounded-2xl border border-primary/25 bg-background p-3 text-left shadow-lg shadow-primary/15 transition hover:border-accent/40 hover:shadow-accent/30 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent sm:p-4 md:p-5 cursor-pointer"
+      [class.z-0]="!isTooltipVisible()"
+      [class.z-30]="isTooltipVisible()"
       tabindex="0"
       [attr.aria-describedby]="'diploma-tooltip-' + diploma().id"
+      [attr.aria-expanded]="isTooltipVisible()"
+      (click)="toggleTooltip()"
+      (keydown.enter)="toggleTooltip()"
+      (keydown.space)="toggleTooltip(); $event.preventDefault()"
+      (mouseenter)="showTooltip()"
+      (mouseleave)="hideTooltip()"
     >
       <header class="flex flex-col gap-1">
         <h3 class="text-sm font-semibold uppercase tracking-250 text-primary/70">
@@ -35,7 +43,11 @@ export interface Diploma {
       </p>
 
       <div
-        class="invisible absolute left-1/2 top-full z-50 w-[calc(100vw-2rem)] max-w-80 -translate-x-1/2 translate-y-3 scale-95 rounded-2xl border border-primary/30 bg-background/95 p-3 text-sm leading-relaxed text-text shadow-xl shadow-primary/25 transition-all duration-200 ease-out group-hover:visible group-hover:translate-y-0 group-hover:scale-100 group-focus-visible:visible group-focus-visible:translate-y-0 group-focus-visible:scale-100 sm:p-4"
+        class="absolute left-1/2 top-full z-50 w-[calc(100vw-2rem)] max-w-80 -translate-x-1/2 translate-y-3 scale-95 rounded-2xl border border-primary/30 bg-background p-3 text-sm leading-relaxed text-text shadow-xl shadow-primary/25 transition-all duration-200 ease-out sm:p-4"
+        [class.invisible]="!isTooltipVisible()"
+        [class.visible]="isTooltipVisible()"
+        [class.translate-y-0]="isTooltipVisible()"
+        [class.scale-100]="isTooltipVisible()"
         role="tooltip"
         [attr.id]="'diploma-tooltip-' + diploma().id"
       >
@@ -58,4 +70,17 @@ export interface Diploma {
 })
 export class DiplomaCardComponent {
   readonly diploma = input.required<Diploma>();
+  readonly isTooltipVisible = signal(false);
+
+  toggleTooltip(): void {
+    this.isTooltipVisible.update((visible) => !visible);
+  }
+
+  showTooltip(): void {
+    this.isTooltipVisible.set(true);
+  }
+
+  hideTooltip(): void {
+    this.isTooltipVisible.set(false);
+  }
 }

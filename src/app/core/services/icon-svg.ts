@@ -64,17 +64,30 @@ export class IconSvg {
       return; // SSR: pas de document disponible
     }
 
-    // Éviter les doublons si le sprite est déjà injecté
-    const existing = body.querySelector<HTMLDivElement>(`div[data-svg-sprite="${url}"]`);
-    if (existing) {
-      return;
+    // Vérifier si le sprite est déjà injecté (par le script au build ou précédemment)
+    const svgSpriteContainer = doc.getElementById('svg-sprite-container');
+    if (svgSpriteContainer && svgSpriteContainer.children.length > 0) {
+      return; // Le sprite est déjà là
     }
 
-    const container = doc.createElement('div');
-    container.setAttribute('data-svg-sprite', url);
-    container.style.display = 'none';
-    container.innerHTML = sprite;
-    body.appendChild(container);
+    // Injecter dans le container prévu ou créer un nouveau
+    if (svgSpriteContainer) {
+      svgSpriteContainer.innerHTML = sprite;
+      // Retirer display:none et utiliser position absolute à la place
+      svgSpriteContainer.style.position = 'absolute';
+      svgSpriteContainer.style.width = '0';
+      svgSpriteContainer.style.height = '0';
+      svgSpriteContainer.style.overflow = 'hidden';
+    } else {
+      const container = doc.createElement('div');
+      container.setAttribute('id', 'svg-sprite-container');
+      container.style.position = 'absolute';
+      container.style.width = '0';
+      container.style.height = '0';
+      container.style.overflow = 'hidden';
+      container.innerHTML = sprite;
+      body.insertBefore(container, body.firstChild);
+    }
   }
 
   getSafeHtml(html: string): SafeHtml {

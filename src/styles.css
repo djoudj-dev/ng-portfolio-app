@@ -74,15 +74,25 @@
 
   /* Letter spacing personnalisés */
   --letter-spacing-120: 0.12em;
+  --letter-spacing-140: 0.14em;
   --letter-spacing-160: 0.16em;
 
   /* Tailles personnalisées */
   --width-18: 4.5rem;
   --height-18: 4.5rem;
+
+  /* Tailles icônes hero - Mobile */
+  --width-140: 8.75rem;
+  --height-140: 8.75rem;
+  --width-180: 11.25rem;
+  --height-180: 11.25rem;
+
+  /* Tailles icônes hero - Tablet/Desktop */
   --width-220: 13.75rem;
   --height-220: 13.75rem;
   --width-280: 17.5rem;
   --height-280: 17.5rem;
+
   --width-caret: 0.125rem;
   --height-caret-h: 1.5rem;
 

@@ -1,9 +1,10 @@
-import { ChangeDetectionStrategy, Component, computed, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { SvgIcon } from '@shared/ui/icon-svg/icon-svg';
 import { type Diploma } from './components/diploma-card';
 import { type Highlight } from './components/highlight-card';
 import { DiplomasSectionComponent } from './components/diplomas-section';
 import { HighlightsSectionComponent } from './components/highlights-section';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-about',
@@ -12,12 +13,14 @@ import { HighlightsSectionComponent } from './components/highlights-section';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class About {
+  private readonly router = inject(Router);
+
   private readonly defaultDisplayName = 'Julien NÉDELLEC';
   private readonly defaultLocation = 'Voisins-Le-Bretonneux, France';
 
   protected readonly aboutTitle = signal('À propos');
   protected readonly aboutSubTitle = signal(
-    'Découvrez mon parcours, mes compétences et ma passion pour le développement web.'
+    'Découvrez mon parcours, mes compétences et ma passion pour le développement web.',
   );
 
   protected readonly displayName = computed(() => this.defaultDisplayName);
@@ -116,5 +119,9 @@ export class About {
       .slice(0, 2);
 
     return pieces.map((segment) => segment[0]?.toUpperCase() ?? '').join('');
+  }
+
+  navigateToSkills(): void {
+    this.router.navigate(['/skills']);
   }
 }
