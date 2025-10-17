@@ -18,6 +18,9 @@
 @if (isOpen()) {
   <div
     id="mobile-menu"
+    appClickOutside
+    [isEnabled]="isOpen()"
+    (clickOutside)="menuClose.emit()"
     class="lg:hidden border-t border-accent-200 py-3 sm:py-4 absolute top-full left-0 right-0 bg-background backdrop-blur-sm"
   >
     <div class="flex flex-col space-y-2 sm:space-y-3 px-3 sm:px-4 md:px-6">
