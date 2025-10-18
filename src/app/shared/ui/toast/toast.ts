@@ -48,7 +48,7 @@ import {
         <button
           type="button"
           (click)="onDismiss()"
-          class="ml-3 flex-shrink-0 p-1 rounded-full hover:bg-background focus:outline-none focus:ring-2 focus:ring-offset-2 transition-colors icon-invert"
+          class="ml-3 flex-shrink-0 p-1 text-text rounded-full hover:bg-background focus:outline-none focus:ring-2 focus:ring-offset-2 transition-colors"
           [class]="toastStyle().dismissButtonColor"
           aria-label="Fermer la notification"
         >
@@ -86,7 +86,6 @@ export class Toast {
 
   readonly toast = input.required<ToastData>();
 
-  // Only two computed signals for optimal performance and change detection
   readonly toastStyle = computed<ToastStyle>(() => TOAST_STYLE_MAP[this.toast().type]);
   readonly toastIcon = computed<string>(() => TOAST_ICON_MAP[this.toast().type]);
 

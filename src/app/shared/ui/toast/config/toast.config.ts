@@ -1,10 +1,10 @@
 import { ToastType } from '@shared/ui';
 
 export interface ToastStyle {
-  borderColor: string; // e.g., 'border-green-400'
-  iconColor: string; // e.g., 'text-green'
-  textColor: string; // e.g., 'text-green'
-  dismissButtonColor: string; // includes hover/focus ring classes
+  borderColor: string;
+  iconColor: string;
+  textColor: string;
+  dismissButtonColor: string;
 }
 
 export const TOAST_STYLE_MAP: Record<ToastType, ToastStyle> = {
@@ -28,18 +28,12 @@ export const TOAST_STYLE_MAP: Record<ToastType, ToastStyle> = {
   },
 } as const;
 
-/**
- * Map of toast types to their corresponding icon names
- */
 export const TOAST_ICON_MAP: Record<ToastType, string> = {
   success: 'qlementine-icons:success-12',
   warning: 'qlementine-icons:warning-12',
   danger: 'material-symbols:dangerous',
 } as const;
 
-/**
- * Map of toast types to their aria-label prefixes
- */
 export const TOAST_ARIA_LABEL_MAP: Record<ToastType, string> = {
   success: 'Succès',
   warning: 'Avertissement',
