@@ -14,14 +14,14 @@ lucide:shield-user
 lucide:menu
 lucide:log-out
 
-# Navbar-view-cv 
+# Navbar-view-cv
 lucide:view
 
-# Navbar-Darkmode 
+# Navbar-Darkmode
 lucide:sun
 lucide:moon
 
-# Modal-Login 
+# Modal-Login
 lucide:circle-x
 lucide:lock-keyhole
 lucide:eye
@@ -82,3 +82,7 @@ material-symbols:call
 simple-icons:googlemaps
 lucide:notebook-pen
 lucide:arrow-big-up
+qlementine-icons:success-12
+qlementine-icons:warning-12
+qlementine-icons:info-12
+material-symbols:dangerous

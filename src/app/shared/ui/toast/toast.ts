@@ -1,62 +1,44 @@
-import { Component, ChangeDetectionStrategy, input, output, computed, inject } from '@angular/core';
-import { CommonModule, NgOptimizedImage } from '@angular/common';
+import { Component, ChangeDetectionStrategy, input, computed, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import type { ToastData } from '@shared/ui';
 import { ToastService } from '@shared/ui';
+import { SvgIcon } from '@shared/ui/icon-svg/icon-svg';
+import {
+  TOAST_STYLE_MAP,
+  TOAST_ICON_MAP,
+  TOAST_ARIA_LABEL_MAP,
+  type ToastStyle,
+} from './config/toast.config';
 
 @Component({
   selector: 'app-toast',
-  imports: [CommonModule, NgOptimizedImage],
+  imports: [CommonModule, SvgIcon],
   template: `
     <div
-      [class]="toastClasses()"
-      class="flex items-start p-4 mb-3 rounded-lg shadow-lg border-l-4 animate-slide-in-right"
+      [class]="'transition-all duration-200 bg-background ' + toastStyle().borderColor"
+      class="flex items-start p-2 mb-2 rounded-md shadow border-l-2 animate-slide-in-right"
       role="alert"
       [attr.aria-live]="toast().type === 'danger' ? 'assertive' : 'polite'"
       aria-atomic="true"
       [attr.aria-label]="getAriaLabel()"
     >
       <!-- Icône -->
-      <div class="flex-shrink-0 mr-3">
-        @switch (toast().type) {
-          @case ('success') {
-            <img
-              [ngSrc]="'/icons/success.svg'"
-              alt="Success"
-              class="w-5 h-5"
-              [class]="iconClasses()"
-              height="24"
-              width="24"
-            />
-          }
-          @case ('warning') {
-            <img
-              [ngSrc]="'/icons/warning.svg'"
-              alt="Warning"
-              class="w-5 h-5"
-              [class]="iconClasses()"
-              height="24"
-              width="24"
-            />
-          }
-          @case ('danger') {
-            <img
-              [ngSrc]="'/icons/error.svg'"
-              alt="Error"
-              class="w-5 h-5"
-              [class]="iconClasses()"
-              height="24"
-              width="24"
-            />
-          }
-        }
+      <div class="flex-shrink-0 mr-2">
+        <app-svg-icon
+          [name]="toastIcon()"
+          [width]="'20'"
+          [height]="'20'"
+          [iconClass]="'w-5 h-5'"
+          [class]="toastStyle().iconColor"
+        />
       </div>
 
       <div class="flex-1 min-w-0">
-        <p class="text-sm text-text font-semibold mb-1" [class]="titleClasses()">
+        <p class="text-xs text-text font-semibold mb-1" [class]="toastStyle().textColor">
           {{ toast().title }}
         </p>
         @if (toast().message) {
-          <p class="text-sm text-text" [class]="messageClasses()">
+          <p class="text-xs text-text" [class]="toastStyle().textColor">
             {{ toast().message }}
           </p>
         }
@@ -67,10 +49,16 @@ import { ToastService } from '@shared/ui';
           type="button"
           (click)="onDismiss()"
           class="ml-3 flex-shrink-0 p-1 rounded-full hover:bg-background focus:outline-none focus:ring-2 focus:ring-offset-2 transition-colors icon-invert"
-          [class]="dismissButtonClasses()"
+          [class]="toastStyle().dismissButtonColor"
           aria-label="Fermer la notification"
         >
-          <img [ngSrc]="'icons/close.svg'" alt="Fermer" class="w-4 h-4" height="16" width="16" />
+          <app-svg-icon
+            name="lucide:circle-x"
+            [width]="'20'"
+            [height]="'20'"
+            [iconClass]="'w-5 h-5'"
+            [class]="toastStyle().iconColor"
+            />
         </button>
       }
     </div>
@@ -88,7 +76,7 @@ import { ToastService } from '@shared/ui';
     }
 
     .animate-slide-in-right {
-      animation: slide-in-right 0.3s ease-out;
+      animation: slide-in-right 0.2s ease-out;
     }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -97,95 +85,19 @@ export class Toast {
   private readonly toastService = inject(ToastService);
 
   readonly toast = input.required<ToastData>();
-  readonly dismissed = output<string>();
 
-  readonly toastClasses = computed(() => {
-    const type = this.toast().type;
-    const baseClasses = 'transition-all duration-300';
-
-    switch (type) {
-      case 'success':
-        return `${baseClasses} bg-background border-green-400`;
-      case 'warning':
-        return `${baseClasses} bg-background border-accent-400`;
-      case 'danger':
-        return `${baseClasses} bg-background border-red-400`;
-      default:
-        return baseClasses;
-    }
-  });
-
-  readonly iconClasses = computed(() => {
-    const type = this.toast().type;
-
-    switch (type) {
-      case 'success':
-        return 'text-green';
-      case 'warning':
-        return 'text-accent';
-      case 'danger':
-        return 'text-red';
-      default:
-        return 'text-text';
-    }
-  });
-
-  readonly titleClasses = computed(() => {
-    const type = this.toast().type;
-
-    switch (type) {
-      case 'success':
-        return 'text-green';
-      case 'warning':
-        return 'text-accent';
-      case 'danger':
-        return 'text-red';
-      default:
-        return 'text-text';
-    }
-  });
-
-  readonly messageClasses = computed(() => {
-    const type = this.toast().type;
-
-    switch (type) {
-      case 'success':
-        return 'text-green';
-      case 'warning':
-        return 'text-accent';
-      case 'danger':
-        return 'text-red';
-      default:
-        return 'text-text';
-    }
-  });
-
-  readonly dismissButtonClasses = computed(() => {
-    const type = this.toast().type;
-
-    switch (type) {
-      case 'success':
-        return 'text-green hover:text-green-800 focus:ring-green-500';
-      case 'warning':
-        return 'text-accent hover:text-accent-800 focus:ring-accent-500';
-      case 'danger':
-        return 'text-red hover:text-red-800 focus:ring-red-500';
-      default:
-        return 'text-secondary hover:text-secondary-800 focus:ring-secondary-500';
-    }
-  });
+  // Only two computed signals for optimal performance and change detection
+  readonly toastStyle = computed<ToastStyle>(() => TOAST_STYLE_MAP[this.toast().type]);
+  readonly toastIcon = computed<string>(() => TOAST_ICON_MAP[this.toast().type]);
 
   onDismiss(): void {
-    this.dismissed.emit(this.toast().id);
     this.toastService.dismiss(this.toast().id);
   }
 
   getAriaLabel(): string {
-    const type = this.toast().type;
-    const typeLabel = type === 'success' ? 'Succès' : type === 'warning' ? 'Avertissement' : 'Erreur';
-    const title = this.toast().title;
-    const message = this.toast().message;
-    
+    const { type, title, message } = this.toast();
+    const typeLabel = TOAST_ARIA_LABEL_MAP[type];
+
     return message ? `${typeLabel}: ${title}, ${message}` : `${typeLabel}: ${title}`;
   }
 }
