@@ -13,7 +13,7 @@ export type SubmissionStatus = 'success' | 'error';
       <div class="text-center">
         @if (status() === 'success') {
           <app-svg-icon
-            [name]="'lucide:check-circle'"
+            [name]="'lucide:badge-check'"
             class="mx-auto h-48 w-48"
             width="128"
             height="128"
