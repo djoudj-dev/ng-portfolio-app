@@ -10,7 +10,7 @@ export interface ToastStyle {
 export const TOAST_STYLE_MAP: Record<ToastType, ToastStyle> = {
   success: {
     borderColor: 'border-green-400',
-    iconColor: 'text-green',
+    iconColor: 'text-text',
     textColor: 'text-green',
     dismissButtonColor: 'text-green hover:text-green-800 focus:ring-green-500',
   },
