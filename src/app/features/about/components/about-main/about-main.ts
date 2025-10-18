@@ -9,19 +9,6 @@ import { SocialBadge } from '../../interface/social-badge';
   imports: [NgOptimizedImage, AboutCard],
   templateUrl: './about-main.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  styles: `
-    @keyframes halo {
-      0%,
-      100% {
-        opacity: 0.6;
-        transform: scale(1);
-      }
-      50% {
-        opacity: 0.85;
-        transform: scale(1.05);
-      }
-    }
-  `,
 })
 export class AboutMain {
   readonly socialBadges: SocialBadge[] = SOCIAL_BADGES;
