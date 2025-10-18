@@ -8,12 +8,12 @@
       id="about-heading"
       class="text-text decoration-accent mb-2 flex justify-center text-2xl font-bold underline decoration-2 underline-offset-4 sm:text-3xl sm:mb-3 md:text-4xl lg:text-5xl mt-[14px] sm:mt-5 lg:mt-8"
     >
-      {{ aboutTitle() }}
+      {{ aboutTitle }}
     </h1>
     <p
       class="text-text/80 mx-auto mb-3 max-w-2xl text-center text-sm px-2 leading-relaxed sm:text-base sm:mb-5 sm:px-0 md:text-lg"
     >
-      {{ aboutSubTitle() }}
+      {{ aboutSubTitle }}
     </p>
   </header>
 
@@ -28,11 +28,11 @@
           <div
             class="relative flex h-220 w-220 items-center justify-center overflow-hidden rounded-3xl border border-primary/20 transition-transform duration-200 hover:-translate-y-1 md:h-350 md:w-350"
           >
-            @if (hasAvatar()) {
+            @if (avatarUrl) {
               <img
                 class="h-full w-full object-cover"
-                [src]="avatarUrl()"
-                [alt]="displayName()"
+                [src]="avatarUrl"
+                [alt]="displayName"
                 loading="lazy"
               />
             } @else {
@@ -65,7 +65,7 @@
               Profil professionnel
             </p>
             <h1 class="text-3xl font-semibold uppercase tracking-300 text-primary/80">
-              {{ displayName() }}
+              {{ displayName }}
             </h1>
             <div class="flex flex-col gap-3 md:flex-row md:items-center md:gap-6">
               <p class="text-lg font-semibold uppercase tracking-220 text-accent/70">
@@ -73,14 +73,14 @@
               </p>
             </div>
           </header>
-          @if (hasLocation()) {
+          @if (location) {
             <dl class="grid gap-3 text-center sm:gap-4 md:gap-5 md:text-left">
               <div class="grid gap-1">
                 <dt class="text-md font-semibold uppercase tracking-280 text-accent/60">
                   Localisation
                 </dt>
                 <dd class="text-sm font-semibold uppercase tracking-100 text-primary/70">
-                  {{ location() }}
+                  {{ location }}
                 </dd>
               </div>
             </dl>
