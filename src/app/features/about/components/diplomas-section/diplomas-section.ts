@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy, input } from '@angular/core';
-import { DiplomaCardComponent, type Diploma } from './diploma-card';
+import { DiplomaCardComponent, type Diploma } from '../diploma-card/diploma-card';
 
 @Component({
   selector: 'app-diplomas-section',
