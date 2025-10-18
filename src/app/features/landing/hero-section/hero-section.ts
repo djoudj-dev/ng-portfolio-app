@@ -1,7 +1,7 @@
-import { ChangeDetectionStrategy, Component, inject, computed } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { ButtonComponent } from '@shared/ui/button/button';
-import { SvgIcon } from '@app/shared/ui/icon-svg/icon-svg';
+import { SvgIcon } from '@shared/ui/icon-svg/icon-svg';
 import { TypewriterComponent } from '../typewriter/typewriter';
 
 @Component({
@@ -13,12 +13,10 @@ import { TypewriterComponent } from '../typewriter/typewriter';
 export class HeroSection {
   private readonly router = inject(Router);
 
-  private readonly defaultDisplayName = 'Julien NÉDELLEC';
-  private readonly defaultHeroDescription =
+  readonly displayName =
+    'Julien NÉDELLEC';
+  readonly description =
     "Je crée des applications web modernes, performantes et accessibles. J'aime me spécialiser dans le développement frontend avec Angular mais aussi dans la partie backend selon les besoins.";
-
-  readonly displayName = computed(() => this.defaultDisplayName);
-  readonly description = computed(() => this.defaultHeroDescription);
 
   navigateTo(path: string): void {
     void this.router.navigate(['/', path]);

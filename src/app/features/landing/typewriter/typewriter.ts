@@ -16,21 +16,17 @@ import { isPlatformBrowser } from '@angular/common';
   selector: 'app-typewriter',
   template: `
     <div class="inline-flex items-center justify-center gap-2 sm:gap-3" aria-live="polite">
-      <!-- Développeur - fixe, ne bouge jamais -->
-      <span class="text-text font-bold uppercase tracking-120">{{ title() }}</span>
+      <span class="text-text font-bold uppercase tracking-120">Développeur</span>
 
       <!-- Zone animée avec réservation d'espace -->
       <div class="relative inline-flex items-center">
-        <!-- Espace réservé invisible (mot le plus long + curseur) -->
+        <!-- Espace réservé invisible -->
         <span class="opacity-0 pointer-events-none whitespace-nowrap" aria-hidden="true">
           {{ longestPhrase() }}
         </span>
-        <span
-          class="opacity-0 pointer-events-none inline-block h-caret-h w-caret"
-          aria-hidden="true"
-        ></span>
+        <span class="opacity-0 pointer-events-none inline-block h-caret-h w-caret" aria-hidden="true"></span>
 
-        <!-- Texte animé visible superposé -->
+        <!-- Texte animé visible -->
         <div class="absolute left-0 top-0 inline-flex items-center">
           <span class="whitespace-nowrap">{{ displayedText() }}</span>
           <span
@@ -51,28 +47,17 @@ import { isPlatformBrowser } from '@angular/common';
   },
 })
 export class TypewriterComponent implements OnInit, OnDestroy {
-  readonly title = computed(() => 'Développeur');
+  private readonly phrases = ['Angular', 'NestJS', 'Fullstack'] as const;
 
-  private readonly defaultPhrases = ['Angular', 'NestJS', 'Fullstack'] as const;
-
-  protected readonly phrases = computed<readonly string[]>(() => {
-    return [...this.defaultPhrases];
-  });
-
-  protected readonly longestPhrase = computed(() => {
-    const list = this.phrases();
-    if (list.length === 0) {
-      return '';
-    }
-
-    return list.reduce(
+  readonly longestPhrase = computed(() => {
+    return this.phrases.reduce(
       (longest, phrase) => (phrase.length > longest.length ? phrase : longest),
-      list[0],
+      this.phrases[0],
     );
   });
 
-  protected readonly displayedText = signal<string>('');
-  protected readonly reduceMotion = signal(false);
+  readonly displayedText = signal<string>('');
+  readonly reduceMotion = signal(false);
 
   private readonly typingDelay = 95;
   private readonly deletingDelay = 60;
@@ -81,8 +66,7 @@ export class TypewriterComponent implements OnInit, OnDestroy {
 
   private readonly platformId = inject(PLATFORM_ID);
   private readonly ngZone = inject(NgZone);
-  private readonly changeDetectorRef = inject(ChangeDetectorRef);
-  private readonly phrasesSnapshot = signal<readonly string[]>(this.defaultPhrases);
+  private readonly cdr = inject(ChangeDetectorRef);
 
   private wordIndex = 0;
   private charIndex = 0;
@@ -99,25 +83,20 @@ export class TypewriterComponent implements OnInit, OnDestroy {
 
       if (event.matches) {
         this.stopAnimation();
-        const phrases = this.phrases();
-        this.phrasesSnapshot.set(phrases);
-        this.displayedText.set(phrases[0] ?? '');
+        this.displayedText.set(this.phrases[0]);
       } else {
         this.resetState();
         this.startAnimation();
       }
 
-      this.changeDetectorRef.markForCheck();
+      this.cdr.markForCheck();
     });
   };
 
   ngOnInit(): void {
-    const phrases = this.phrases();
-    this.phrasesSnapshot.set(phrases);
-
     if (!isPlatformBrowser(this.platformId)) {
       this.reduceMotion.set(true);
-      this.displayedText.set(phrases[0] ?? '');
+      this.displayedText.set(this.phrases[0]);
       return;
     }
 
@@ -126,7 +105,7 @@ export class TypewriterComponent implements OnInit, OnDestroy {
     this.reduceMotion.set(shouldReduce);
 
     if (shouldReduce) {
-      this.displayedText.set(phrases[0] ?? '');
+      this.displayedText.set(this.phrases[0]);
       return;
     }
 
@@ -145,9 +124,7 @@ export class TypewriterComponent implements OnInit, OnDestroy {
   }
 
   private startAnimation(): void {
-    if (this.reduceMotion()) {
-      return;
-    }
+    if (this.reduceMotion()) return;
 
     this.ngZone.runOutsideAngular(() => {
       this.scheduleNextFrame();
@@ -170,13 +147,11 @@ export class TypewriterComponent implements OnInit, OnDestroy {
     this.accumulatedTime = 0;
     this.lastFrameTimestamp = null;
     this.displayedText.set('');
-    this.changeDetectorRef.markForCheck();
+    this.cdr.markForCheck();
   }
 
   private scheduleNextFrame(): void {
-    if (this.animationFrameId !== null || this.reduceMotion()) {
-      return;
-    }
+    if (this.animationFrameId !== null || this.reduceMotion()) return;
 
     this.animationFrameId = requestAnimationFrame((timestamp) =>
       this.handleTypewriterFrame(timestamp),
@@ -185,7 +160,6 @@ export class TypewriterComponent implements OnInit, OnDestroy {
 
   private handleTypewriterFrame(timestamp: number): void {
     this.animationFrameId = null;
-
     this.lastFrameTimestamp ??= timestamp;
 
     const delta = timestamp - this.lastFrameTimestamp;
@@ -194,26 +168,7 @@ export class TypewriterComponent implements OnInit, OnDestroy {
     if (this.pauseRemaining > 0) {
       this.pauseRemaining = Math.max(this.pauseRemaining - delta, 0);
     } else {
-      const latestPhrases = this.phrases();
-      if (latestPhrases !== this.phrasesSnapshot()) {
-        this.phrasesSnapshot.set(latestPhrases);
-        this.wordIndex = 0;
-        this.charIndex = 0;
-        this.isDeleting = false;
-      }
-
-      const phrases = this.phrasesSnapshot();
-      const total = phrases.length;
-      if (total === 0) {
-        return;
-      }
-
-      if (this.wordIndex >= total) {
-        this.wordIndex = 0;
-        this.charIndex = 0;
-      }
-
-      const currentPhrase = phrases[this.wordIndex];
+      const currentPhrase = this.phrases[this.wordIndex];
       const currentDelay = this.isDeleting ? this.deletingDelay : this.typingDelay;
       this.accumulatedTime += delta;
 
@@ -222,7 +177,7 @@ export class TypewriterComponent implements OnInit, OnDestroy {
 
         if (!this.isDeleting) {
           if (this.charIndex < currentPhrase.length) {
-            this.charIndex += 1;
+            this.charIndex++;
             this.publishText(currentPhrase.slice(0, this.charIndex));
           } else {
             this.isDeleting = true;
@@ -231,11 +186,11 @@ export class TypewriterComponent implements OnInit, OnDestroy {
             break;
           }
         } else if (this.charIndex > 0) {
-          this.charIndex -= 1;
+          this.charIndex--;
           this.publishText(currentPhrase.slice(0, this.charIndex));
         } else {
           this.isDeleting = false;
-          this.wordIndex = (this.wordIndex + 1) % total;
+          this.wordIndex = (this.wordIndex + 1) % this.phrases.length;
           this.pauseRemaining = this.transitionPauseDelay;
           this.accumulatedTime = 0;
           break;
@@ -249,7 +204,7 @@ export class TypewriterComponent implements OnInit, OnDestroy {
   private publishText(text: string): void {
     this.ngZone.run(() => {
       this.displayedText.set(text);
-      this.changeDetectorRef.markForCheck();
+      this.cdr.markForCheck();
     });
   }
 }
