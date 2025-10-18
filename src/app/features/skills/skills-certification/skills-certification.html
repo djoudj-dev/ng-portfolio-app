@@ -7,7 +7,7 @@
   </h2>
 
   <div class="mx-auto grid w-full grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4 md:gap-5" role="list">
-    @for (certification of certifications(); track certification.id; let idx = $index) {
+    @for (certification of certifications; track certification.id; let idx = $index) {
       <article
         class="relative rounded-2xl border border-primary/25 bg-gradient-to-br from-background/80 via-background/60 to-primary/10 p-3 sm:p-4 shadow-lg shadow-primary/15 transition-all duration-300 hover:border-accent/40 hover:shadow-accent/30 hover:-translate-y-1"
         role="article"
