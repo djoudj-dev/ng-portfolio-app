@@ -19,8 +19,8 @@ export class Project implements OnInit {
   private readonly projectService = inject(ProjectService);
   private readonly router = inject(Router);
 
-  readonly projectTitle = signal<string>('Mes Projets');
-  readonly projectSubTitle = signal<string>('Découvrez mes réalisations et projets personnels');
+  readonly projectTitle = 'Mes Projets';
+  readonly projectSubTitle = 'Découvrez mes réalisations et projets personnels';
 
   readonly allProjects = signal<ProjectModel[]>([]);
   readonly filters = signal<ProjectFilter[]>(PROJECT_FILTERS);
