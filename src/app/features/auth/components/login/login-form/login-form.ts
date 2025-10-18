@@ -2,7 +2,7 @@ import { Component, ChangeDetectionStrategy, signal, inject, output, effect } fr
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService, LoginRequest } from '@core/services/auth';
 import { ButtonComponent } from '@shared/ui/button/button';
-import { SvgIcon } from '../../icon-svg/icon-svg';
+import { SvgIcon } from '@shared/ui/icon-svg/icon-svg';
 
 interface LoginFormControls {
   email: FormControl<string>;
@@ -18,7 +18,7 @@ interface LoginFormControls {
       <div class="max-w-md w-full">
         <div class="text-center space-y-2 mb-6">
           <h2 class="text-3xl font-bold text-text">Connexion</h2>
-          <p class="text-sm text-secondary/80">Accédez à votre espace d'administration</p>
+          <p class="text-sm text-text">Accédez à votre espace d'administration</p>
         </div>
 
         <form
@@ -29,11 +29,9 @@ interface LoginFormControls {
         >
           <!-- Email -->
           <div class="space-y-2">
-            <label for="email" class="block text-sm font-semibold text-text/90">
-              Adresse email
-            </label>
+            <label for="email" class="block text-sm font-semibold text-text/90">Adresse email</label>
             <div class="relative">
-              <div class="input-icon-left">
+              <div class="absolute text-text inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                 <app-svg-icon name="lucide:mail" [width]="'20'" [height]="'20'" />
               </div>
               <input
@@ -41,13 +39,21 @@ interface LoginFormControls {
                 formControlName="email"
                 type="email"
                 autocomplete="email"
-                class="input-field pl-12"
-                [class.input-error]="emailControl.invalid && emailControl.touched"
                 placeholder="admin@example.com"
+                class="block w-full pl-12 px-4 py-3 border-2 rounded-xl
+                       focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent
+                       text-text placeholder-secondary/60 bg-background/50
+                       disabled:opacity-50 disabled:cursor-not-allowed
+                       transition-all duration-200 shadow-sm input-focus"
+                [class.border-primary-200]="!emailControl.invalid || !emailControl.touched"
+                [class.hover:border-primary-300]="!emailControl.invalid || !emailControl.touched"
+                [class.border-red-400]="emailControl.invalid && emailControl.touched"
+                [class.focus:ring-red-200]="emailControl.invalid && emailControl.touched"
+                [class.focus:border-red-400]="emailControl.invalid && emailControl.touched"
               />
             </div>
             @if (emailControl.invalid && emailControl.touched) {
-              <div class="error-message">
+              <div class="text-sm text-red-600 font-medium flex items-center gap-2">
                 <app-svg-icon name="lucide:triangle-alert" [width]="'16'" [height]="'16'" />
                 <span>
                   @if (emailControl.hasError('required')) {
@@ -62,11 +68,9 @@ interface LoginFormControls {
 
           <!-- Password -->
           <div class="space-y-2">
-            <label for="password" class="block text-sm font-semibold text-text/90">
-              Mot de passe
-            </label>
+            <label for="password" class="block text-sm font-semibold text-text/90">Mot de passe</label>
             <div class="relative">
-              <div class="input-icon-left">
+              <div class="absolute text-text inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                 <app-svg-icon name="lucide:lock-keyhole" [width]="'20'" [height]="'20'" />
               </div>
               <input
@@ -74,16 +78,26 @@ interface LoginFormControls {
                 formControlName="password"
                 [type]="showPassword() ? 'text' : 'password'"
                 autocomplete="current-password"
-                class="input-field pl-12 pr-14"
-                [class.input-error]="passwordControl.invalid && passwordControl.touched"
                 placeholder="••••••••"
+                class="block w-full pl-12 pr-14 px-4 py-3 border-2 rounded-xl
+                       focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent
+                       text-text placeholder-secondary/60 bg-background/50
+                       disabled:opacity-50 disabled:cursor-not-allowed
+                       transition-all duration-200 shadow-sm input-focus"
+                [class.border-primary-200]="!passwordControl.invalid || !passwordControl.touched"
+                [class.hover:border-primary-300]="!passwordControl.invalid || !passwordControl.touched"
+                [class.border-red-400]="passwordControl.invalid && passwordControl.touched"
+                [class.focus:ring-red-200]="passwordControl.invalid && passwordControl.touched"
+                [class.focus:border-red-400]="passwordControl.invalid && passwordControl.touched"
               />
               <button
                 type="button"
                 (click)="togglePasswordVisibility()"
-                class="input-icon-right"
                 [disabled]="authService.isLoading()"
                 [attr.aria-label]="showPassword() ? 'Masquer' : 'Afficher'"
+                class="absolute inset-y-0 right-0 pr-4 flex items-center
+                       text-text hover:text-accent transition-colors
+                       focus:outline-none focus:text-accent"
               >
                 <app-svg-icon
                   [name]="showPassword() ? 'lucide:eye-off' : 'lucide:eye'"
@@ -93,7 +107,7 @@ interface LoginFormControls {
               </button>
             </div>
             @if (passwordControl.invalid && passwordControl.touched) {
-              <div class="error-message">
+              <div class="text-sm text-red-600 font-medium flex items-center gap-2">
                 <app-svg-icon name="lucide:triangle-alert" [width]="'16'" [height]="'16'" />
                 <span>
                   @if (passwordControl.hasError('required')) {
@@ -108,26 +122,21 @@ interface LoginFormControls {
 
           <!-- Error -->
           @if (authService.error()) {
-            <div class="alert-error" role="alert" aria-live="polite">
-              <app-svg-icon
-                name="lucide:triangle-alert"
-                [width]="'20'"
-                [height]="'20'"
-                [iconClass]="'w-5 h-5'"
-                />
+            <div
+              class="bg-red-500/10 border-2 border-red-500/30 text-red-600
+                     px-4 py-3 rounded-xl flex items-center gap-3 shadow-sm"
+              role="alert"
+              aria-live="polite"
+            >
+              <app-svg-icon name="lucide:triangle-alert" [width]="'20'" [height]="'20'" [iconClass]="'w-5 h-5'" />
               <span class="flex-1">{{ authService.error() }}</span>
               <button
                 type="button"
                 (click)="authService.clearError()"
-                class="text-red-500 hover:text-red-700 p-1 rounded-full hover:bg-red-200"
+                class="text-red-500 hover:text-red-700 p-1 rounded-full hover:bg-red-200 transition-colors"
                 aria-label="Fermer"
               >
-                <app-svg-icon
-                  name="lucide:circle-x"
-                  [width]="'16'"
-                  [height]="'16'"
-                  [iconClass]="'w-4 h-4'"
-                  />
+                <app-svg-icon name="lucide:circle-x" [width]="'16'" [height]="'16'" [iconClass]="'w-4 h-4'" />
               </button>
             </div>
           }
@@ -158,39 +167,8 @@ interface LoginFormControls {
     </div>
   `,
   styles: `
-    .input-field {
-      @apply block w-full px-4 py-3 border-2 border-primary-200/30 rounded-xl
-             focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent
-             text-text placeholder-secondary/60 bg-background/50
-             disabled:opacity-50 disabled:cursor-not-allowed
-             transition-all duration-200 hover:border-primary-300/50 shadow-sm;
-    }
-
-    .input-field:focus {
+    .input-focus:focus {
       transform: translateY(-1px);
-    }
-
-    .input-error {
-      @apply border-red-400 focus:ring-red-200 focus:border-red-400;
-    }
-
-    .input-icon-left {
-      @apply absolute text-text inset-y-0 left-0 pl-4 flex items-center pointer-events-none;
-    }
-
-    .input-icon-right {
-      @apply absolute inset-y-0 right-0 pr-4 flex items-center
-             text-text hover:text-accent transition-colors
-             focus:outline-none focus:text-accent;
-    }
-
-    .error-message {
-      @apply text-sm text-red-600 font-medium flex items-center gap-2;
-    }
-
-    .alert-error {
-      @apply bg-red-500/10 border-2 border-red-500/30 text-red-600
-             px-4 py-3 rounded-xl flex items-center gap-3 shadow-sm;
     }
   `,
 })
@@ -224,8 +202,7 @@ export class LoginForm {
 
   constructor() {
     effect(() => {
-      const isLoading = this.authService.isLoading();
-      if (isLoading) {
+      if (this.authService.isLoading()) {
         this.loginForm.disable();
       } else {
         this.loginForm.enable();

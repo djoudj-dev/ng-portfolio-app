@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, signal, output, effect } from '@angular/core';
-import { LoginForm } from '@shared/ui/login/login-form/login-form';
-import { SvgIcon } from '../../icon-svg/icon-svg';
+import { LoginForm } from '@features/auth';
+import { SvgIcon } from '@shared/ui/icon-svg/icon-svg';
 
 @Component({
   selector: 'app-login-modal',
@@ -19,7 +19,8 @@ import { SvgIcon } from '../../icon-svg/icon-svg';
         <!-- Modal -->
         <div class="flex min-h-screen items-center justify-center p-4">
           <div
-            class="modal-content"
+            class="relative transform overflow-hidden rounded-2xl bg-background
+                   shadow-xl transition-all border border-accent"
             (click)="$event.stopPropagation()"
             role="dialog"
             aria-modal="true"
@@ -28,7 +29,8 @@ import { SvgIcon } from '../../icon-svg/icon-svg';
             <!-- Close Button -->
             <button
               type="button"
-              class="modal-close-btn"
+              class="absolute right-4 top-4 z-10 p-1 flex items-center justify-center
+                     text-text rounded hover:bg-accent transition-colors"
               (click)="closeModal()"
               aria-label="Fermer"
             >
@@ -40,17 +42,6 @@ import { SvgIcon } from '../../icon-svg/icon-svg';
           </div>
         </div>
       </div>
-    }
-  `,
-  styles: `
-    .modal-content {
-      @apply relative transform overflow-hidden rounded-2xl bg-background
-             shadow-xl transition-all border border-accent;
-    }
-
-    .modal-close-btn {
-      @apply absolute right-4 top-4 z-10 p-1 flex items-center justify-center
-             text-text rounded hover:bg-accent transition-colors;
     }
   `,
 })
