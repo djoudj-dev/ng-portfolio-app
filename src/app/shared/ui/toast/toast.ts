@@ -48,7 +48,8 @@ import {
         <button
           type="button"
           (click)="onDismiss()"
-          class="ml-3 flex-shrink-0 p-1 text-text rounded-full hover:bg-background focus:outline-none focus:ring-2 focus:ring-offset-2 transition-colors"
+          class="ml-3 flex-shrink-0 p-1 rounded-full hover:bg-background focus:outline-none focus:ring-2
+          focus:ring-offset-2 transition-colors"
           [class]="toastStyle().dismissButtonColor"
           aria-label="Fermer la notification"
         >
@@ -56,9 +57,9 @@ import {
             name="lucide:circle-x"
             [width]="'20'"
             [height]="'20'"
-            [iconClass]="'w-5 h-5'"
+            [iconClass]="'w-5 h-5 text-text'"
             [class]="toastStyle().iconColor"
-            />
+          />
         </button>
       }
     </div>
