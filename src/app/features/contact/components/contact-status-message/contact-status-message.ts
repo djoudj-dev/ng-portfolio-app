@@ -12,24 +12,28 @@ export type SubmissionStatus = 'success' | 'error';
     <div class="flex flex-col items-center justify-center py-14">
       <div class="text-center">
         @if (status() === 'success') {
-          <app-svg-icon
-            [name]="'lucide:circle-check-big'"
-            class="mx-auto h-32 w-32 text-green-500"
-            width="128"
-            height="128"
-          />
+          <div class="mx-auto mb-4 h-32 w-32 text-green-500">
+            <app-svg-icon
+              [name]="'lucide:circle-check-big'"
+              [width]="'128'"
+              [height]="'128'"
+              [iconClass]="'w-full h-full'"
+            />
+          </div>
 
           <p class="text-text mb-2 text-xl font-bold">Message envoyé avec succès!</p>
           <p class="text-text/70 mb-6 text-center">
             Merci pour votre message. Je vous répondrai dans les plus brefs délais.
           </p>
         } @else {
-          <app-svg-icon
-            [name]="'lucide:circle-x'"
-            class="mx-auto h-32 w-32 text-red-500"
-            width="128"
-            height="128"
-          />
+          <div class="mx-auto mb-4 h-32 w-32 text-red-500">
+            <app-svg-icon
+              [name]="'lucide:circle-x'"
+              [width]="'128'"
+              [height]="'128'"
+              [iconClass]="'w-full h-full'"
+            />
+          </div>
 
           <p class="text-text mb-2 text-xl font-bold">Erreur d'envoi</p>
           <p class="text-text/70 mb-6 text-center">
