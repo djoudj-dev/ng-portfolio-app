@@ -1,7 +1,6 @@
 import { Component, ChangeDetectionStrategy, signal, inject, output, effect } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService, LoginRequest } from '@core/services/auth';
-import { NgOptimizedImage } from '@angular/common';
 import { ButtonComponent } from '@shared/ui/button/button';
 import { SvgIcon } from '../../icon-svg/icon-svg';
 
@@ -12,20 +11,14 @@ interface LoginFormControls {
 
 @Component({
   selector: 'app-login-form',
-  imports: [ReactiveFormsModule, NgOptimizedImage, ButtonComponent, SvgIcon],
+  imports: [ReactiveFormsModule, ButtonComponent, SvgIcon],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <div
-      class="min-h-auto flex items-center justify-center bg-background p-8 relative overflow-hidden"
-    >
-      <div class="max-w-md w-full relative z-10">
-        <div class="text-center space-y-4">
-          <div class="space-y-2">
-            <h2 class="text-3xl font-bold text-text">Connexion</h2>
-            <p class="text-sm text-secondary/80 font-medium">
-              Accédez à votre espace d'administration
-            </p>
-          </div>
+    <div class="min-h-auto flex items-center justify-center bg-background p-8">
+      <div class="max-w-md w-full">
+        <div class="text-center space-y-2 mb-6">
+          <h2 class="text-3xl font-bold text-text">Connexion</h2>
+          <p class="text-sm text-secondary/80">Accédez à votre espace d'administration</p>
         </div>
 
         <form
@@ -34,241 +27,177 @@ interface LoginFormControls {
           class="space-y-6"
           [class.opacity-60]="authService.isLoading()"
         >
-          <!-- Email Field avec design moderne -->
-          <div class="space-y-2 pt-4">
+          <!-- Email -->
+          <div class="space-y-2">
             <label for="email" class="block text-sm font-semibold text-text/90">
               Adresse email
             </label>
-            <div class="relative group">
-              <div
-                class="absolute text-text inset-y-0 left-0 pl-4 flex items-center pointer-events-none z-10"
-              >
-                <app-svg-icon
-                  name="lucide:mail"
-                  [width]="'24'"
-                  [height]="'24'"
-                  [iconClass]="'w-6 h-6'"
-                />
+            <div class="relative">
+              <div class="input-icon-left">
+                <app-svg-icon name="lucide:mail" [width]="'20'" [height]="'20'" />
               </div>
               <input
                 id="email"
                 formControlName="email"
                 type="email"
                 autocomplete="email"
-                required
-                class="block w-full pl-12 pr-4 py-4 border-2 border-primary-200/30 rounded-xl
-                         focus:outline-none focus:ring-4 focus:ring-accent/20 focus:border-accent
-                         text-text placeholder-secondary/60 bg-background/50 backdrop-blur-sm
-                         disabled:opacity-50 disabled:cursor-not-allowed font-medium
-                         transition-all duration-300 hover:border-primary-300/50
-                         shadow-sm hover:shadow-md focus:shadow-lg"
-                [class.border-red-400]="emailControl.invalid && emailControl.touched"
-                [class.focus:ring-red-200]="emailControl.invalid && emailControl.touched"
-                [class.focus:border-red-400]="emailControl.invalid && emailControl.touched"
+                class="input-field pl-12"
+                [class.input-error]="emailControl.invalid && emailControl.touched"
                 placeholder="admin@example.com"
               />
             </div>
             @if (emailControl.invalid && emailControl.touched) {
-              <div class="mt-2 text-md text-red-600 font-medium flex items-center space-x-2">
-                <app-svg-icon
-                  name="lucide:triangle-alert"
-                  [width]="'20'"
-                  [height]="'20'"
-                  [iconClass]="'h-5 w-5 flex-shrink-0'"
-                />
+              <div class="error-message">
+                <app-svg-icon name="lucide:triangle-alert" [width]="'16'" [height]="'16'" />
                 <span>
                   @if (emailControl.hasError('required')) {
                     L'adresse email est obligatoire
                   } @else if (emailControl.hasError('email')) {
-                    Veuillez entrer une adresse email valide
+                    Adresse email invalide
                   }
                 </span>
               </div>
             }
           </div>
 
-          <!-- Password Field avec design moderne - STRUCTURE MODIFIÉE -->
-          <div class="space-y-2 pt-4">
+          <!-- Password -->
+          <div class="space-y-2">
             <label for="password" class="block text-sm font-semibold text-text/90">
               Mot de passe
             </label>
-            <!-- CHANGEMENT: Suppression de "group", ajout de conteneur simple "relative" -->
             <div class="relative">
-              <div
-                class="absolute text-text inset-y-0 left-0 pl-4 flex items-center pointer-events-none z-10"
-              >
-                <app-svg-icon
-                  name="lucide:lock-keyhole"
-                  [width]="'24'"
-                  [height]="'24'"
-                  [iconClass]="'w-6 h-6'"
-                />
+              <div class="input-icon-left">
+                <app-svg-icon name="lucide:lock-keyhole" [width]="'20'" [height]="'20'" />
               </div>
               <input
                 id="password"
                 formControlName="password"
                 [type]="showPassword() ? 'text' : 'password'"
                 autocomplete="current-password"
-                required
-                class="block w-full pl-12 pr-14 py-4 border-2 border-primary-200/30 rounded-xl
-                         focus:outline-none focus:ring-4 focus:ring-accent/20 focus:border-accent
-                         text-text placeholder-secondary/60 bg-background/50 backdrop-blur-sm
-                         disabled:opacity-50 disabled:cursor-not-allowed font-medium
-                         transition-all duration-300 hover:border-primary-300/50
-                         shadow-sm hover:shadow-md focus:shadow-lg"
-                [class.border-red-400]="passwordControl.invalid && passwordControl.touched"
-                [class.focus:ring-red-200]="passwordControl.invalid && passwordControl.touched"
-                [class.focus:border-red-400]="passwordControl.invalid && passwordControl.touched"
+                class="input-field pl-12 pr-14"
+                [class.input-error]="passwordControl.invalid && passwordControl.touched"
                 placeholder="••••••••"
               />
-              <!-- CHANGEMENT: Bouton déplacé AVANT le message d'erreur et pr-14 ajouté à l'input -->
               <button
                 type="button"
                 (click)="togglePasswordVisibility()"
-                class="absolute inset-y-0 right-0 pr-4 flex items-center z-10
-                         text-text hover:text-text transition-colors duration-200
-                         focus:outline-none focus:text-accent"
+                class="input-icon-right"
                 [disabled]="authService.isLoading()"
-                [attr.aria-label]="
-                  showPassword() ? 'Masquer le mot de passe' : 'Afficher le mot de passe'
-                "
+                [attr.aria-label]="showPassword() ? 'Masquer' : 'Afficher'"
               >
                 <app-svg-icon
                   [name]="showPassword() ? 'lucide:eye-off' : 'lucide:eye'"
                   [width]="'18'"
                   [height]="'18'"
-                  [iconClass]="'h-5 w-5 transition-all duration-200'"
                 />
               </button>
             </div>
-            <!-- CHANGEMENT: Message d'erreur maintenant EN DEHORS du conteneur relative -->
             @if (passwordControl.invalid && passwordControl.touched) {
-              <div class="mt-2 text-md text-red-600 font-medium flex items-center space-x-2">
-                <app-svg-icon
-                  name="lucide:triangle-alert"
-                  [width]="'20'"
-                  [height]="'20'"
-                  [iconClass]="'h-5 w-5 flex-shrink-0'"
-                />
+              <div class="error-message">
+                <app-svg-icon name="lucide:triangle-alert" [width]="'16'" [height]="'16'" />
                 <span>
                   @if (passwordControl.hasError('required')) {
                     Le mot de passe est obligatoire
                   } @else if (passwordControl.hasError('minlength')) {
-                    Le mot de passe doit contenir au moins 8 caractères
+                    Minimum 6 caractères
                   }
                 </span>
               </div>
             }
           </div>
 
-          <!-- Error Message avec design moderne -->
+          <!-- Error -->
           @if (authService.error()) {
-            <div
-              class="bg-red-500/10 backdrop-blur-sm border-2 border-red-500/30 text-red-600 px-4 py-3 rounded-xl flex items-center space-x-3 shadow-sm"
-              role="alert"
-              aria-live="polite"
-            >
-              <img
-                ngSrc="/icons/warning.svg"
-                alt="Erreur"
-                width="18"
-                height="18"
-                class="h-5 w-5 flex-shrink-0 text-red-600"
-              />
-              <span class="text-sm font-medium flex-1">{{ authService.error() }}</span>
+            <div class="alert-error" role="alert" aria-live="polite">
+              <app-svg-icon
+                name="lucide:triangle-alert"
+                [width]="'20'"
+                [height]="'20'"
+                [iconClass]="'w-5 h-5'"
+                />
+              <span class="flex-1">{{ authService.error() }}</span>
               <button
                 type="button"
                 (click)="authService.clearError()"
-                class="text-red-500 hover:text-red-700 transition-colors duration-200 p-1 rounded-full hover:bg-red-200"
-                aria-label="Fermer le message d'erreur"
+                class="text-red-500 hover:text-red-700 p-1 rounded-full hover:bg-red-200"
+                aria-label="Fermer"
               >
-                <img
-                  ngSrc="/icons/close.svg"
-                  alt="Fermer"
-                  width="14"
-                  height="14"
-                  class="h-3.5 w-3.5 icon-invert"
-                />
+                <app-svg-icon
+                  name="lucide:circle-x"
+                  [width]="'16'"
+                  [height]="'16'"
+                  [iconClass]="'w-4 h-4'"
+                  />
               </button>
             </div>
           }
 
-          <!-- Submit Button avec design moderne -->
-          <div class="pt-2">
-            <app-button
-              type="submit"
-              color="accent"
-              [disabled]="loginForm.invalid || authService.isLoading()"
-              [isLoading]="authService.isLoading()"
-              customClass="w-full py-4 text-base font-semibold rounded-xl shadow-lg hover:shadow-xl transform transition-all duration-200 hover:scale-[1.02] focus:scale-[0.98]"
-              (buttonClick)="onSubmit()"
-            >
-              @if (authService.isLoading()) {
-                <div class="flex items-center space-x-2">
-                  <div
-                    class="animate-spin rounded-full h-5 w-5 border-2 border-background border-t-transparent"
-                  ></div>
-                  <span>Connexion en cours...</span>
-                </div>
-              } @else {
-                <div class="flex items-center justify-center space-x-2">
-                  <app-svg-icon
-                    name="lucide:log-in"
-                    [width]="'24'"
-                    [height]="'24'"
-                    [iconClass]="'w-6 h-6'"
-                  />
-                  <span>Se connecter</span>
-                </div>
-              }
-            </app-button>
-          </div>
+          <!-- Submit -->
+          <app-button
+            type="submit"
+            color="accent"
+            [disabled]="loginForm.invalid || authService.isLoading()"
+            [isLoading]="authService.isLoading()"
+            customClass="w-full py-4 text-base font-semibold rounded-xl shadow-lg"
+            (buttonClick)="onSubmit()"
+          >
+            @if (authService.isLoading()) {
+              <div class="flex items-center gap-2">
+                <div class="animate-spin rounded-full h-5 w-5 border-2 border-background border-t-transparent"></div>
+                <span>Connexion...</span>
+              </div>
+            } @else {
+              <div class="flex items-center justify-center gap-2">
+                <app-svg-icon name="lucide:log-in" [width]="'20'" [height]="'20'" />
+                <span>Se connecter</span>
+              </div>
+            }
+          </app-button>
         </form>
       </div>
     </div>
   `,
   styles: `
-    @keyframes spin-slow {
-      from {
-        transform: rotate(0deg);
-      }
-      to {
-        transform: rotate(360deg);
-      }
+    .input-field {
+      @apply block w-full px-4 py-3 border-2 border-primary-200/30 rounded-xl
+             focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent
+             text-text placeholder-secondary/60 bg-background/50
+             disabled:opacity-50 disabled:cursor-not-allowed
+             transition-all duration-200 hover:border-primary-300/50 shadow-sm;
     }
 
-    @keyframes fade-in {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .animate-spin-slow {
-      animation: spin-slow 8s linear infinite;
-    }
-
-    input:focus {
+    .input-field:focus {
       transform: translateY(-1px);
     }
 
-    /* Gradient text fallback pour les navigateurs non supportés */
-    @supports not (background-clip: text) {
+    .input-error {
+      @apply border-red-400 focus:ring-red-200 focus:border-red-400;
+    }
+
+    .input-icon-left {
+      @apply absolute text-text inset-y-0 left-0 pl-4 flex items-center pointer-events-none;
+    }
+
+    .input-icon-right {
+      @apply absolute inset-y-0 right-0 pr-4 flex items-center
+             text-text hover:text-accent transition-colors
+             focus:outline-none focus:text-accent;
+    }
+
+    .error-message {
+      @apply text-sm text-red-600 font-medium flex items-center gap-2;
+    }
+
+    .alert-error {
+      @apply bg-red-500/10 border-2 border-red-500/30 text-red-600
+             px-4 py-3 rounded-xl flex items-center gap-3 shadow-sm;
     }
   `,
-  host: {
-    '[class.login-form-container]': 'true',
-  },
 })
 export class LoginForm {
   readonly authService = inject(AuthService);
 
   private readonly _showPassword = signal(false);
-
   readonly showPassword = this._showPassword.asReadonly();
 
   readonly loginSuccess = output<void>();
@@ -288,6 +217,7 @@ export class LoginForm {
   get emailControl() {
     return this.loginForm.controls.email;
   }
+
   get passwordControl() {
     return this.loginForm.controls.password;
   }
@@ -296,19 +226,15 @@ export class LoginForm {
     effect(() => {
       const isLoading = this.authService.isLoading();
       if (isLoading) {
-        this.emailControl.disable();
-        this.passwordControl.disable();
+        this.loginForm.disable();
       } else {
-        this.emailControl.enable();
-        this.passwordControl.enable();
+        this.loginForm.enable();
       }
     });
   }
 
   onSubmit(): void {
-    if (this.loginForm.invalid || this.authService.isLoading()) {
-      return;
-    }
+    if (this.loginForm.invalid || this.authService.isLoading()) return;
 
     const credentials: LoginRequest = {
       email: this.emailControl.value,
@@ -316,20 +242,12 @@ export class LoginForm {
     };
 
     this.authService.login(credentials).subscribe({
-      next: () => {
-        this.loginSuccess.emit();
-      },
-      error: (error) => {
-        console.error('Erreur de connexion:', error);
-      },
+      next: () => this.loginSuccess.emit(),
+      error: (error) => console.error('Erreur de connexion:', error),
     });
   }
 
   togglePasswordVisibility(): void {
     this._showPassword.update((current) => !current);
-  }
-
-  closeLogin(): void {
-    this.loginCancel.emit();
   }
 }
