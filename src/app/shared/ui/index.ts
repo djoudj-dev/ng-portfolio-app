@@ -14,6 +14,5 @@ export { ConfirmModalService } from './confirm-modal/confirm-modal-service';
 
 export type { LoginRequest, User, AuthState, AuthResponse } from '@core/interfaces';
 export type { CvMetadata, UploadCvResponse } from '../../features/cv/interfaces/cv';
-export type { ToastData, ToastType, ToastConfig } from './toast/interface/toast';
-export type { ToastStyle } from './toast/config/toast.config';
+export type { ToastData, ToastType } from './toast/interface/toast';
 export type { ConfirmModalData } from './confirm-modal/confirm-modal';

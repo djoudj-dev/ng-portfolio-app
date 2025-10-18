@@ -3,6 +3,7 @@ import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { ContactService, ContactMessage } from '@features/contact/services/contact-service';
 import { ButtonComponent } from '@shared/ui/button/button';
 import { ToastService } from '@shared/ui/toast/service/toast-service';
+import { ConfirmModalService } from '@shared/ui';
 
 @Component({
   selector: 'app-admin-messages',
@@ -255,6 +256,7 @@ import { ToastService } from '@shared/ui/toast/service/toast-service';
 export class AdminMessagesPage {
   private readonly contactService = inject(ContactService);
   private readonly toastService = inject(ToastService);
+  private readonly confirmModalService = inject(ConfirmModalService);
 
   readonly messages = signal<ContactMessage[]>([]);
   readonly loading = signal<boolean>(false);
@@ -311,7 +313,7 @@ export class AdminMessagesPage {
   }
 
   async remove(msg: ContactMessage): Promise<void> {
-    const confirmed = await this.toastService.confirm({
+    const confirmed = await this.confirmModalService.confirm({
       title: 'Confirmer la suppression',
       message: 'Supprimer ce message ?',
       confirmText: 'Supprimer',
