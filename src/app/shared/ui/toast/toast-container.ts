@@ -1,25 +1,20 @@
 import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { Toast } from '@shared/ui';
 import { ToastService } from '@shared/ui';
-import { ToastPosition } from './directives/toast-position';
 
 @Component({
   selector: 'app-toast-container',
-  imports: [CommonModule, Toast, ToastPosition],
+  imports: [Toast],
   template: `
     @if (toastService.hasToasts()) {
       <div
-        class="fixed z-50 pointer-events-none"
-        appToastPosition
+        class="fixed top-4 right-4 z-50 flex flex-col pointer-events-auto"
         aria-live="polite"
         aria-label="Notifications"
       >
-        <div class="flex pointer-events-auto">
-          @for (toast of toastService.toasts(); track toast.id) {
-            <app-toast [toast]="toast" />
-          }
-        </div>
+        @for (toast of toastService.toasts(); track toast.id) {
+          <app-toast [toast]="toast" />
+        }
       </div>
     }
   `,
