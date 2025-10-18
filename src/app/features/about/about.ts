@@ -1,15 +1,16 @@
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { SvgIcon } from '@shared/ui/icon-svg/icon-svg';
-import { type Diploma } from './components/diploma-card';
-import { type Highlight } from './components/highlight-card';
-import { DiplomasSectionComponent } from './components/diplomas-section';
-import { HighlightsSectionComponent } from './components/highlights-section';
+import { type Diploma } from './components/diploma-card/diploma-card';
+import { type Highlight } from './components/highlight-card/highlight-card';
+import { DiplomasSectionComponent } from './components/diplomas-section/diplomas-section';
+import { HighlightsSectionComponent } from './components/highlights-section/highlights-section';
+import { BadgeFlat } from '@features/badge';
 import { Router } from '@angular/router';
 import { NgOptimizedImage } from '@angular/common';
 
 @Component({
   selector: 'app-about',
-  imports: [SvgIcon, DiplomasSectionComponent, HighlightsSectionComponent, NgOptimizedImage],
+  imports: [SvgIcon, DiplomasSectionComponent, HighlightsSectionComponent, NgOptimizedImage, BadgeFlat],
   templateUrl: './about.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

@@ -9,7 +9,7 @@ import { NAVIGATION_LINKS } from './data/navigation-links.data';
   imports: [CommonModule, NgOptimizedImage, RouterLink, RouterOutlet],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <div class="min-h-screen bg-background">
+    <div class="min-h-screen bg-background pt-24">
       <nav>
         <div class="max-w-7xl mx-auto px-6 py-4">
           <div class="flex justify-between items-center">

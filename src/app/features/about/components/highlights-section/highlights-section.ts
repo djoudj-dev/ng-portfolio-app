@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy, input } from '@angular/core';
-import { HighlightCardComponent, type Highlight } from './highlight-card';
+import { HighlightCardComponent, type Highlight } from '../highlight-card/highlight-card';
 
 @Component({
   selector: 'app-highlights-section',
