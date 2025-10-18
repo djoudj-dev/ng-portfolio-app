@@ -2,7 +2,7 @@ import { Component, ChangeDetectionStrategy, signal, inject, output, effect } fr
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService, LoginRequest } from '@core/services/auth';
 import { ButtonComponent } from '@shared/ui/button/button';
-import { SvgIcon } from '../../icon-svg/icon-svg';
+import { SvgIcon } from '@shared/ui/icon-svg/icon-svg';
 
 interface LoginFormControls {
   email: FormControl<string>;
@@ -18,7 +18,7 @@ interface LoginFormControls {
       <div class="max-w-md w-full">
         <div class="text-center space-y-2 mb-6">
           <h2 class="text-3xl font-bold text-text">Connexion</h2>
-          <p class="text-sm text-secondary/80">Accédez à votre espace d'administration</p>
+          <p class="text-sm text-text">Accédez à votre espace d'administration</p>
         </div>
 
         <form

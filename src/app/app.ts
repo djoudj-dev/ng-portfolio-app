@@ -1,14 +1,15 @@
 import { Component, signal, viewChild, inject, computed } from '@angular/core';
 import { Router, RouterOutlet, NavigationEnd } from '@angular/router';
-import { LoginModal, NavbarComponent, ToastContainer, ToastService } from '@shared/ui';
-import { FooterComponent } from '@shared/ui/footer/footer.component';
-import { AdminMenuComponent } from '@shared/ui/admin-menu/admin-menu';
+import { ToastContainer, ToastService } from '@shared/ui';
+import { NavbarComponent } from '@core/layout';
+import { LoginModal, AdminMenuComponent } from '@features/auth';
 import { filter, map } from 'rxjs/operators';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { Footer } from '@core/layout/footer/footer';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, NavbarComponent, LoginModal, ToastContainer, FooterComponent, AdminMenuComponent],
+  imports: [RouterOutlet, NavbarComponent, LoginModal, ToastContainer, Footer, AdminMenuComponent],
   templateUrl: './app.html',
   styleUrls: ['./app.css', './shared/animations/route-animations.css'],
   host: {

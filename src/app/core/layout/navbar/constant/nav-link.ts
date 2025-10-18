@@ -1,4 +1,4 @@
-import { NavLink } from '@shared/ui/navbar/interface/nav-link';
+import { NavLink } from '../interface/nav-link';
 
 export const NAV_LINKS: NavLink[] = [
   { label: 'Accueil', route: '/', icon: 'lucide:house' },

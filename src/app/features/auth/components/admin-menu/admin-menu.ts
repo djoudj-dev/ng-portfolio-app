@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '@core/services/auth';
-import { SvgIcon } from '../icon-svg/icon-svg';
+import { SvgIcon } from '@shared/ui/icon-svg/icon-svg';
 
 @Component({
   selector: 'app-admin-menu',

@@ -7,8 +7,8 @@ import {
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { NavLink } from '../interface/nav-link';
-import { SvgIcon } from '../../icon-svg/icon-svg';
 import { ClickOutside } from '../directive/click-outside';
+import { SvgIcon } from '@shared/ui/icon-svg/icon-svg';
 
 @Component({
   selector: 'app-menu-mobile',

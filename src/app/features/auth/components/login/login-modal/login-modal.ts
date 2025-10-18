@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, signal, output, effect } from '@angular/core';
-import { LoginForm } from '@shared/ui/login/login-form/login-form';
-import { SvgIcon } from '../../icon-svg/icon-svg';
+import { LoginForm } from '@features/auth';
+import { SvgIcon } from '@shared/ui/icon-svg/icon-svg';
 
 @Component({
   selector: 'app-login-modal',

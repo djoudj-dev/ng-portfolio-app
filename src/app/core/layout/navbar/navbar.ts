@@ -2,10 +2,10 @@ import { Component, ChangeDetectionStrategy, signal, inject } from '@angular/cor
 import { RouterLink } from '@angular/router';
 import { CvService } from '@features/cv/services/cv';
 import { ToastService } from '@shared/ui/toast/service/toast-service';
-import { SvgIcon } from '../icon-svg/icon-svg';
+import { SvgIcon } from '@shared/ui/icon-svg/icon-svg';
 import { ClickOutside } from './directive/click-outside';
-import { NAV_LINKS } from '@shared/ui/navbar/constant/nav-link';
-import { NavRouteService } from '@shared/ui/navbar/service/nav-route';
+import { NAV_LINKS } from './constant/nav-link';
+import { NavRouteService } from './service/nav-route';
 
 @Component({
   selector: 'app-navbar',
