@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { CERTIFICATIONS } from '../data/skill-data';
-import { CertificationData } from '../interface/skill-data';
+import { type CertificationData } from '../interface/skill-data';
 import { ButtonComponent } from '@shared/ui/button/button';
 import { SvgIcon } from '@app/shared/ui/icon-svg/icon-svg';
 
@@ -11,7 +11,7 @@ import { SvgIcon } from '@app/shared/ui/icon-svg/icon-svg';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SkillsCertification {
-  readonly certifications = signal<CertificationData[]>(CERTIFICATIONS);
+  readonly certifications: readonly CertificationData[] = CERTIFICATIONS;
   readonly certificationSlides = signal<Record<string, number>>({});
 
   goToSlide(certificationId: string, slideIndex: number): void {
