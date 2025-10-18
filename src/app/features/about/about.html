@@ -31,10 +31,10 @@
             @if (avatarUrl) {
               <img
                 class="h-full w-full object-cover"
-                [src]="avatarUrl"
+                [ngSrc]="avatarUrl"
                 [alt]="displayName"
                 loading="lazy"
-              />
+                fill/>
             } @else {
               <span class="text-2xl font-semibold uppercase tracking-350 text-primary/70">
                 {{ initials() }}
