@@ -87,3 +87,4 @@ qlementine-icons:warning-12
 qlementine-icons:info-12
 material-symbols:dangerous
 lucide:badge-check
+lucide:circle-check-big

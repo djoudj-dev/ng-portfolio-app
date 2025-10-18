@@ -13,8 +13,8 @@ export type SubmissionStatus = 'success' | 'error';
       <div class="text-center">
         @if (status() === 'success') {
           <app-svg-icon
-            [name]="'lucide:badge-check'"
-            class="mx-auto h-48 w-48"
+            [name]="'lucide:circle-check-big'"
+            class="mx-auto h-32 w-32 text-green-500"
             width="128"
             height="128"
           />
@@ -25,8 +25,8 @@ export type SubmissionStatus = 'success' | 'error';
           </p>
         } @else {
           <app-svg-icon
-            [name]="'lucide:x-circle'"
-            class="mx-auto h-48 w-48"
+            [name]="'lucide:circle-x'"
+            class="mx-auto h-32 w-32 text-red-500"
             width="128"
             height="128"
           />
