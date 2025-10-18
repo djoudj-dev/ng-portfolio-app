@@ -1,22 +1,23 @@
-import { Component, ChangeDetectionStrategy, computed, inject } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Toast } from '@shared/ui';
 import { ToastService } from '@shared/ui';
+import { ToastPosition } from './directives/toast-position';
 
 @Component({
   selector: 'app-toast-container',
-  imports: [CommonModule, Toast],
+  imports: [CommonModule, Toast, ToastPosition],
   template: `
     @if (toastService.hasToasts()) {
       <div
         class="fixed z-50 pointer-events-none"
-        [class]="containerPositionClasses()"
+        appToastPosition
         aria-live="polite"
         aria-label="Notifications"
       >
-        <div class="flex flex-col pointer-events-auto" [class]="containerDirectionClasses()">
+        <div class="flex pointer-events-auto">
           @for (toast of toastService.toasts(); track toast.id) {
-            <app-toast [toast]="toast" (dismissed)="onToastDismissed($event)" />
+            <app-toast [toast]="toast" />
           }
         </div>
       </div>
@@ -26,37 +27,4 @@ import { ToastService } from '@shared/ui';
 })
 export class ToastContainer {
   readonly toastService = inject(ToastService);
-
-  readonly containerPositionClasses = computed(() => {
-    const position = this.toastService.config().position ?? 'top-right';
-
-    switch (position) {
-      case 'top-right':
-        return 'top-4 right-4';
-      case 'top-left':
-        return 'top-4 left-4';
-      case 'top-center':
-        return 'top-4 left-1/2 transform -translate-x-1/2';
-      case 'bottom-right':
-        return 'bottom-4 right-4';
-      case 'bottom-left':
-        return 'bottom-4 left-4';
-      case 'bottom-center':
-        return 'bottom-4 left-1/2 transform -translate-x-1/2';
-      default:
-        return 'top-4 right-4';
-    }
-  });
-
-  readonly containerDirectionClasses = computed(() => {
-    const position = this.toastService.config().position ?? 'top-right';
-
-    if (position.startsWith('bottom')) {
-      return 'flex-col-reverse';
-    }
-
-    return 'flex-col';
-  });
-
-  onToastDismissed(_id: string): void {}
 }
