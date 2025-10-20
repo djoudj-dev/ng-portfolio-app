@@ -24,29 +24,25 @@ export const routes: Routes = [
   },
   {
     path: 'admin',
-    loadComponent: () => import('@features/admin/admin').then((m) => m.Admin),
+    loadComponent: () => import('@features/admin').then((m) => m.AdminLayout),
     canActivate: [adminGuard],
     children: [
       {
         path: '',
-        loadComponent: () =>
-          import('@features/admin/pages/dashboard/dashboard').then((m) => m.AdminDashboard),
-      },
-      {
-        path: 'cv',
-        loadComponent: () => import('@features/cv').then((m) => m.CvAdminComponent),
+        loadComponent: () => import('@features/admin').then((m) => m.AdminDashboard),
       },
       {
         path: 'badges',
-        loadComponent: () =>
-          import('@features/badge/pages/badges-admin').then((m) => m.BadgesAdmin),
+        loadComponent: () => import('@features/admin').then((m) => m.BadgesAdmin),
       },
       {
-        path: 'badges/edit',
-        loadComponent: () =>
-          import('@features/badge/pages/badges-admin').then((m) => m.BadgesAdmin),
+        path: 'messages',
+        loadComponent: () => import('@features/admin').then((m) => m.AdminMessagesPage),
       },
-
+      {
+        path: 'cv',
+        loadComponent: () => import('@features/admin').then((m) => m.CvAdminComponent),
+      },
       {
         path: 'projects',
         loadComponent: () =>
@@ -69,14 +65,8 @@ export const routes: Routes = [
           ),
       },
       {
-        path: 'contacts',
-        loadComponent: () =>
-          import('@features/contact/admin/messages').then((m) => m.AdminMessagesPage),
-      },
-      {
         path: 'settings',
-        loadComponent: () =>
-          import('@features/admin/pages/dashboard/dashboard').then((m) => m.AdminDashboard),
+        loadComponent: () => import('@features/admin').then((m) => m.AdminDashboard),
       },
     ],
   },
