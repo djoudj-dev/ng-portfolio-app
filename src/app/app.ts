@@ -34,6 +34,11 @@ export class App {
     return url === '/contact';
   });
 
+  readonly showNavbar = computed(() => {
+    const url = this.currentUrl();
+    return !url.startsWith('/admin');
+  });
+
   protected readonly title = signal('ng-portfolio-app');
   readonly loginModal = viewChild<LoginModal>('loginModal');
 

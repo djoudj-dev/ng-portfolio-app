@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mkdir -p src/app/features/admin/{core/{services,interfaces,data},features/{dashboard/{pages,components},badge/{pages,components,services,models,utils},messages/pages,cv/pages,analytics/{components,services,interfaces}}})",
+      "Bash(mv src/app/features/admin/services/* src/app/features/admin/core/services/)",
+      "Bash(mv src/app/features/admin/interfaces/* src/app/features/admin/core/interfaces/)",
+      "Bash(mv src/app/features/admin/data/* src/app/features/admin/core/data/)",
+      "Bash(mv src/app/features/admin/components/counter-admin.ts src/app/features/admin/features/dashboard/components/)",
+      "Bash(mv src/app/features/admin/components/period-counters.ts src/app/features/admin/features/dashboard/components/)",
+      "Bash(mv src/app/features/admin/components/recent-activity.ts src/app/features/admin/features/dashboard/components/)",
+      "Bash(mv src/app/features/admin/pages/dashboard/dashboard.ts src/app/features/admin/features/dashboard/pages/dashboard.page.ts)",
+      "Bash(cp -r src/app/features/badge/* src/app/features/admin/features/badge/)",
+      "Bash(cp -r src/app/features/analytics/* src/app/features/admin/features/analytics/)",
+      "Bash(cp src/app/features/contact/admin/messages.ts src/app/features/admin/features/messages/pages/messages.page.ts)",
+      "Bash(cp src/app/features/cv/pages/cv-admin/cv-admin.ts src/app/features/admin/features/cv/pages/cv-admin.page.ts)",
+      "Bash(tree -I 'node_modules|dist|.git' -L 4 src/app/features/admin/)",
+      "Bash(npm run build)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

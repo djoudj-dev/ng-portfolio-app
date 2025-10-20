@@ -7,10 +7,11 @@ import { ProjectModel } from '@features/projects/models/project-model';
 import { ButtonComponent } from '@shared/ui/button/button';
 import { Router } from '@angular/router';
 import { sortProjectsByPriority } from '@features/projects/utils/project-sort';
+import { SvgIcon } from '@shared/ui/icon-svg/icon-svg';
 
 @Component({
   selector: 'app-project-manager',
-  imports: [ButtonComponent, NgOptimizedImage],
+  imports: [ButtonComponent, NgOptimizedImage, SvgIcon],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="max-w-6xl mx-auto p-6 space-y-8">
@@ -21,13 +22,12 @@ import { sortProjectsByPriority } from '@features/projects/utils/project-sort';
           <div class="space-y-2">
             <div class="flex items-center gap-3">
               <div class="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center">
-                <img
-                  [ngSrc]="'/icons/project.svg'"
-                  alt="Projets"
-                  width="24"
-                  height="24"
-                  class="w-6 h-6 icon-invert"
-                />
+                <app-svg-icon
+                  name="lucide:code-xml"
+                  class="w-6 h-6 text-accent"
+                  width="32"
+                  height="32"
+                  />
               </div>
               <h1 class="text-3xl font-bold text-text">Gestion des projets</h1>
             </div>
@@ -53,13 +53,12 @@ import { sortProjectsByPriority } from '@features/projects/utils/project-sort';
               [customClass]="'px-6 py-3'"
             >
               <div class="flex items-center gap-2">
-                <img
-                  [ngSrc]="'/icons/plus.svg'"
-                  alt="Ajouter"
-                  class="w-5 h-5 icon-invert"
-                  width="20"
-                  height="20"
-                />
+                <app-svg-icon
+                  name="material-symbols:add-2"
+                  class="w-6 h-6 text-text"
+                  width="24"
+                  height="24"
+                  />
                 Nouveau projet
               </div>
             </app-button>
@@ -77,13 +76,12 @@ import { sortProjectsByPriority } from '@features/projects/utils/project-sort';
                 [class]="getViewButtonClass('list')"
                 class="px-4 py-2 text-sm rounded-lg transition-all duration-200 flex items-center gap-2"
               >
-                <img
-                  [ngSrc]="'/icons/list.svg'"
-                  alt="Liste"
-                  class="w-4 h-4 icon-invert"
+                <app-svg-icon
+                  name="material-symbols:page-menu-ios-outline-sharp"
+                  class="w-4 h-4 text-text"
                   width="16"
                   height="16"
-                />
+                  />
                 Liste
               </button>
               <button
@@ -91,13 +89,12 @@ import { sortProjectsByPriority } from '@features/projects/utils/project-sort';
                 [class]="getViewButtonClass('grid')"
                 class="px-4 py-2 text-sm rounded-lg transition-all duration-200 flex items-center gap-2"
               >
-                <img
-                  [ngSrc]="'/icons/grid.svg'"
-                  alt="Grille"
-                  class="w-4 h-4 icon-invert"
+                <app-svg-icon
+                  name="material-symbols:grid-view-outline"
+                  class="w-4 h-4 text-text"
                   width="16"
                   height="16"
-                />
+                  />
                 Grille
               </button>
             </div>
@@ -110,13 +107,12 @@ import { sortProjectsByPriority } from '@features/projects/utils/project-sort';
                 placeholder="Rechercher un projet..."
                 class="pl-10 pr-4 py-2.5 border border-accent/30 rounded-xl bg-background text-text placeholder-secondary focus:ring-2 focus:ring-primary focus:border-primary/30 transition-all duration-200 min-w-[250px]"
               />
-              <img
-                [ngSrc]="'/icons/search.svg'"
-                alt="Rechercher"
-                class="absolute left-3 top-3 w-5 h-5 icon-invert opacity-60"
-                width="20"
-                height="20"
-              />
+              <app-svg-icon
+                name="material-symbols:search"
+                class="absolute left-3 top-1/2 transform -translate-y-1/2 text-secondary"
+                width="24"
+                height="24"
+                />
             </div>
 
             <select
@@ -155,13 +151,12 @@ import { sortProjectsByPriority } from '@features/projects/utils/project-sort';
                         <div
                           class="w-16 h-16 bg-accent/10 rounded-xl flex items-center justify-center border border-accent/20"
                         >
-                          <img
-                            [ngSrc]="'/icons/folder.svg'"
-                            alt="Projet"
-                            class="w-8 h-8 icon-invert opacity-60"
+                          <app-svg-icon
+                            name="lucide:folder"
+                            class="w-6 h-6 text-text opacity-40"
                             width="32"
                             height="32"
-                          />
+                            />
                         </div>
                       }
                     </div>
@@ -177,7 +172,14 @@ import { sortProjectsByPriority } from '@features/projects/utils/project-sort';
                               <span
                                 class="bg-accent/10 text-accent text-xs font-medium px-2.5 py-1 rounded-full border border-accent/20 flex items-center gap-1"
                               >
-                                <span>⭐</span>
+                                <span>
+                                  <app-svg-icon
+                                  name="lucide:star"
+                                  class="w-4 h-4 text-accent"
+                                  width="16"
+                                  height="16"
+                                  />
+                                </span>
                                 Mis en avant
                               </span>
                             }

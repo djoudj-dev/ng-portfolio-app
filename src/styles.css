@@ -4,7 +4,7 @@
   --color-text: oklch(100% 0 89.88);
   --color-background: oklch(23.5% 0 89.88);
   --color-primary: oklch(50% 0.08 100);
-  --color-secondary: oklch(42% 0.12 55);
+  --color-secondary: oklch(50% 0.08 100);
   --color-accent: oklch(68% 0.15 135);
 
   --color-primary-50: oklch(98% 0.005 265);

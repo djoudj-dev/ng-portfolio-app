@@ -6,7 +6,9 @@
     <a href="#footer-content" class="skip-link">Aller au pied de page</a>
   </nav>
 
-  <app-navbar id="nav-menu" />
+  @if (showNavbar()) {
+    <app-navbar id="nav-menu" />
+  }
   <app-login-modal
     #loginModal
     (loginCompleted)="onLoginCompleted()"
