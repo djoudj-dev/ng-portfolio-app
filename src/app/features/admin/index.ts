@@ -7,12 +7,10 @@ export * from './admin.routes';
 // Core exports (data, interfaces, services only - NO components to avoid circular deps)
 export * from './core/interfaces/activity.interface';
 export * from './core/interfaces/counter-card.interface';
-export * from './core/interfaces/navigation-link.interface';
 export * from './core/data/counter-cards.data';
-export * from './core/data/navigation-links.data';
 export * from './core/services/admin-resource-service';
 export * from './core/services/activity-service';
-export { AdminSidebar } from './core/components/admin-sidebar';
+export { DashBar } from './core/components/dash-bar';
 
 // Dashboard exports (components only for external use)
 export { CounterAdmin } from './features/dashboard/components/counter-admin';
@@ -28,6 +26,9 @@ export { AdminMessagesPage } from './features/messages/pages/messages.page';
 
 // CV exports
 export { CvAdminComponent } from './features/cv/pages/cv-admin.page';
+
+// Settings exports
+export { AdminSettingsPage } from './features/settings/pages/settings.page';
 
 // Badge exports
 export * from './features/badge';

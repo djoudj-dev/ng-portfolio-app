@@ -8,10 +8,15 @@ import { ActivityChartComponent } from '@features/admin';
   imports: [CounterAdmin, RecentActivityComponent, ActivityChartComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <div class="space-y-6">
-      <!-- Test simple -->
-      <div class="p-4 bg-green-500 text-white font-bold">
-        Dashboard chargé avec succès !
+    <div class="space-y-8">
+      <!-- Welcome Header -->
+      <div class="bg-gradient-to-r from-primary/10 to-accent/10 rounded-2xl border border-primary/40 p-6">
+        <h2 class="text-2xl font-bold text-text mb-2">
+          Bienvenue sur votre Dashboard 👋
+        </h2>
+        <p class="text-secondary">
+          Gérez votre portfolio, consultez vos statistiques et administrez votre contenu.
+        </p>
       </div>
 
       <!-- Métriques principales -->

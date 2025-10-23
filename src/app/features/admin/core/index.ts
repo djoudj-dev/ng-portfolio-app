@@ -1,6 +1,5 @@
 // Components exports (explicit to avoid circular deps)
-export { AdminSidebar } from './components/admin-sidebar';
-export { AdminNavLink } from './components/admin-nav-link';
+export { DashBar } from './components/dash-bar';
 
 // Services
 export * from './services/admin-resource-service';
@@ -9,8 +8,6 @@ export * from './services/activity-service';
 // Interfaces
 export * from './interfaces/activity.interface';
 export * from './interfaces/counter-card.interface';
-export * from './interfaces/navigation-link.interface';
 
 // Data
 export * from './data/counter-cards.data';
-export * from './data/navigation-links.data';
