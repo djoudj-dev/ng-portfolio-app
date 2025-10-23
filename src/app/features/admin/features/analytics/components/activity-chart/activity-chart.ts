@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, signal, inject, computed, DestroyRef } from '@angular/core';
 import { SvgIcon } from '@shared/ui/icon-svg/icon-svg';
-import { AnalyticsService } from '@features/analytics';
+import { AnalyticsService } from '@features/admin';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { interval, from, EMPTY } from 'rxjs';
 import { switchMap, catchError, startWith } from 'rxjs/operators';

@@ -2,8 +2,8 @@ import { ChangeDetectionStrategy, Component, inject, signal, DestroyRef } from '
 import {
   type Activity,
   ActivityType,
-} from '@features/admin/core/interfaces/activity.interface';
-import { ActivityService } from '@features/admin/core/services/activity-service';
+} from '@features/admin';
+import { ActivityService } from '@features/admin';
 import { SvgIcon } from '@shared/ui/icon-svg/icon-svg';
 
 @Component({
