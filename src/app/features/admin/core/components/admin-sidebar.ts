@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, signal, computed, inject, effect, DestroyRef } from '@angular/core';
+import { Component, ChangeDetectionStrategy, signal, computed, inject, DestroyRef } from '@angular/core';
 import { NgOptimizedImage } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from '@core/services/auth';
@@ -242,14 +242,6 @@ export class AdminSidebar {
         mq.removeEventListener('change', updateIsMobile);
       });
     }
-
-    // Fermer automatiquement le sidebar mobile lors d'un changement de route
-    effect(() => {
-      if (this.isMobile() && this.isOpen()) {
-        // Permet de fermer le sidebar après navigation
-        this.isOpen.set(false);
-      }
-    });
   }
 
   /**

@@ -9,6 +9,11 @@ import { ActivityChartComponent } from '@features/admin/features/analytics';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="space-y-6">
+      <!-- Test simple -->
+      <div class="p-4 bg-green-500 text-white font-bold">
+        Dashboard chargé avec succès !
+      </div>
+
       <!-- Métriques principales -->
       <section
         class="bg-background rounded-2xl border border-primary/40 p-6 shadow-lg shadow-primary/20 backdrop-blur"
