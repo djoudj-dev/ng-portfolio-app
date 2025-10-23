@@ -6,7 +6,6 @@ import { AdminSidebar } from '@features/admin/core';
 
 @Component({
   selector: 'app-admin-layout',
-  standalone: true,
   imports: [RouterOutlet, AdminSidebar],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `

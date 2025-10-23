@@ -6,7 +6,6 @@ import { ActivityChartComponent } from '@features/admin/features/analytics';
 
 @Component({
   selector: 'app-admin-dashboard',
-  standalone: true,
   imports: [CommonModule, CounterAdmin, RecentActivityComponent, ActivityChartComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `

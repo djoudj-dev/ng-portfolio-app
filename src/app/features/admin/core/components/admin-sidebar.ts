@@ -226,23 +226,20 @@ export class AdminSidebar {
   });
 
   constructor() {
-    // Initialiser la détection mobile
+    // Initialiser la détection mobile via matchMedia (plus fiable que ResizeObserver sur <body>)
     if (typeof window !== 'undefined') {
-      this.isMobile.set(window.innerWidth < 1024);
+      const mq = window.matchMedia('(min-width: 1024px)');
+      const updateIsMobile = () => {
+        // mobile si écran < lg
+        this.isMobile.set(!mq.matches);
+      };
 
-      // ResizeObserver pour détecter les changements de taille
-      const resizeObserver = new ResizeObserver((entries) => {
-        for (const entry of entries) {
-          const width = entry.contentRect.width;
-          this.isMobile.set(width < 1024);
-        }
-      });
-
-      resizeObserver.observe(document.body);
+      updateIsMobile();
+      mq.addEventListener('change', updateIsMobile);
 
       // Cleanup automatique avec DestroyRef
       this.destroyRef.onDestroy(() => {
-        resizeObserver.disconnect();
+        mq.removeEventListener('change', updateIsMobile);
       });
     }
 

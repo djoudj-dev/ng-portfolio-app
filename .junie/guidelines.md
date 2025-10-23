@@ -10,7 +10,7 @@
 
 ### Components
 
-- **Standalone first**: Tous les nouveaux composants doivent être standalone (défaut depuis Angular 14+)
+- **Standalone first**: Tous les nouveaux composants doivent être standalone (défaut depuis Angular 14+, donc inutile d'ajouter des 'standalone: true' au components)
 - **Single responsibility**: Un composant = une responsabilité unique
 - **OnPush change detection**: Toujours utiliser `changeDetection: ChangeDetectionStrategy.OnPush`
 - **Petits templates**: Préférer les templates inline pour les petits composants

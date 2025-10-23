@@ -4,7 +4,6 @@ import { BadgeService } from '@features/badge';
 
 @Component({
   selector: 'app-badge-flat',
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     @if (currentBadge(); as badge) {
