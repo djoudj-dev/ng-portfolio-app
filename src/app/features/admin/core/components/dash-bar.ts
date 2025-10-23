@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy, computed, inject } from '@angular/core';
-import { Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from '@core/services/auth';
 import { SvgIcon } from '@shared/ui/icon-svg/icon-svg';
 
@@ -63,23 +63,19 @@ interface NavItem {
 
           <!-- User Menu -->
           <div class="flex items-center gap-3">
-            <div class="hidden sm:flex flex-col items-end bg-accent/30 px-4 py-2 rounded-xl border border-accent">
-              <span class="text-sm font-semibold text-text">{{ displayName }}</span>
-              <span class="text-xs text-secondary">{{ userEmail() }}</span>
-            </div>
 
             <button
-              (click)="onLogout()"
-              class="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-red-500/10 to-red-600/10 hover:from-red-500/20 hover:to-red-600/20 text-red-600 transition-all duration-300 border border-red-500/20 hover:border-red-500/40 hover:shadow-lg hover:shadow-red-500/20 group"
-              title="Déconnexion"
+              (click)="onBack()"
+              class="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-primary/10 to-accent/10 hover:from-primary/20 hover:to-accent/20 text-text transition-all duration-300 border border-accent/30 hover:border-accent/50 hover:shadow-lg hover:shadow-accent/20 group"
+              title="Retour"
             >
               <app-svg-icon
-                name="lucide:log-out"
+                name="streamline:return-2-remix"
                 class="w-5 h-5 group-hover:scale-110 transition-transform duration-300"
                 width="20"
                 height="20"
               />
-              <span class="hidden lg:inline text-sm font-medium">Déconnexion</span>
+              <span class="hidden lg:inline text-sm font-medium">Retour</span>
             </button>
           </div>
         </div>
@@ -88,7 +84,6 @@ interface NavItem {
   `,
 })
 export class DashBar {
-  private readonly router = inject(Router);
   private readonly authService = inject(AuthService);
 
   readonly displayName = 'Julien NÉDELLEC';
@@ -107,8 +102,7 @@ export class DashBar {
     { label: 'Paramètres', route: '/settings', icon: 'lucide:settings' },
   ];
 
-  protected onLogout(): void {
-    console.log('Déconnexion...');
-    void this.router.navigate(['/']);
+  protected onBack(): void {
+    history.back();
   }
 }
