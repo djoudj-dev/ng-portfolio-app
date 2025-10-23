@@ -1,12 +1,11 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { CounterAdmin } from '@features/admin';
 import { RecentActivityComponent } from '@features/admin';
 import { ActivityChartComponent } from '@features/admin/features/analytics';
 
 @Component({
   selector: 'app-admin-dashboard',
-  imports: [CommonModule, CounterAdmin, RecentActivityComponent, ActivityChartComponent],
+  imports: [CounterAdmin, RecentActivityComponent, ActivityChartComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="space-y-6">
