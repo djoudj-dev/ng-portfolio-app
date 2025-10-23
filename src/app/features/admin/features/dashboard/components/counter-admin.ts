@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { switchMap } from 'rxjs/operators';
 import { CounterCard } from '@features/admin/core/interfaces/counter-card.interface';
@@ -12,7 +11,7 @@ import { SvgIcon } from '@shared/ui/icon-svg/icon-svg';
 
 @Component({
   selector: 'app-counter-admin',
-  imports: [CommonModule, SvgIcon],
+  imports: [SvgIcon],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="space-y-8">
@@ -274,16 +273,16 @@ import { SvgIcon } from '@shared/ui/icon-svg/icon-svg';
 export class CounterAdmin {
   private readonly adminResourceService = inject(AdminResourceService);
 
-  private readonly periodAnalyticsResponse = toSignal(
+  // Analytics période (refresh toutes les 60s)
+  private readonly periodData = toSignal(
     this.adminResourceService
       .createSecureTimer(60000)
       .pipe(switchMap(() => this.adminResourceService.loadAnalyticsOverview())),
     { initialValue: null },
   );
-  readonly periodData = computed(() => this.periodAnalyticsResponse());
 
-  // Analytics temps réel pour les nouvelles cartes
-  private readonly realtimeAnalyticsResponse = toSignal(
+  // Analytics temps réel (refresh toutes les 30s)
+  private readonly realtimeData = toSignal(
     this.adminResourceService.createSecureTimer(30000).pipe(
       switchMap(() =>
         this.adminResourceService.loadTotalVisits({
@@ -295,24 +294,24 @@ export class CounterAdmin {
     ),
     { initialValue: null },
   );
-  readonly realtimeData = computed(() => this.realtimeAnalyticsResponse());
 
-  private readonly projectsResponse = toSignal(this.adminResourceService.loadProjects(), {
+  // Projets (chargés une seule fois)
+  private readonly projects = toSignal(this.adminResourceService.loadProjects(), {
     initialValue: { projects: [], total: 0, page: 1, limit: 10, totalPages: 0 },
   });
-  readonly projects = computed(() => this.projectsResponse()?.projects ?? []);
 
-  private readonly cvResponse = toSignal(
+  // CV metadata (refresh toutes les 30s)
+  private readonly cv = toSignal(
     this.adminResourceService
       .createSecureTimer(30000)
       .pipe(switchMap(() => this.adminResourceService.loadCvMetadata())),
     { initialValue: null },
   );
-  readonly cv = computed(() => this.cvResponse());
 
+  // Computed memoïsé pour les cartes principales
   readonly counterCards = computed(() => {
     const cvData = this.cv();
-    const projectsData = this.projects();
+    const projectsData = this.projects()?.projects ?? [];
     const periodData = this.periodData();
     const cvGrowth = this.cvGrowthPercentage();
 
@@ -341,18 +340,14 @@ export class CounterAdmin {
                 }
               : undefined;
           break;
-        case 'month': {
-          // AnalyticsOverview ne fournit pas de champs 'month'/'year' typés.
-          // On utilise le total global pour éviter les erreurs de compilation.
+        case 'month':
           value = periodData?.totals.totalVisits ?? 0;
           badge = undefined;
           break;
-        }
-        case 'year': {
+        case 'year':
           value = periodData?.totals.totalVisits ?? 0;
           badge = undefined;
           break;
-        }
       }
 
       return {
@@ -411,49 +406,37 @@ export class CounterAdmin {
     });
   });
 
-  // Méthodes pour la carte Répartition des Visiteurs
-  getHumanVisits(): number {
-    return this.realtimeData()?.humanVisits ?? 0;
-  }
+  // Computed memoïsés pour éviter les recalculs dans le template
+  readonly humanVisits = computed(() => this.realtimeData()?.humanVisits ?? 0);
+  readonly botVisits = computed(() => this.realtimeData()?.botVisits ?? 0);
+  readonly totalVisits = computed(() => this.realtimeData()?.totalVisits ?? 0);
 
-  getBotVisits(): number {
-    return this.realtimeData()?.botVisits ?? 0;
-  }
-
-  getHumanPercentage(): number {
-    const realtimeData = this.realtimeData();
-    const humanVisits = realtimeData?.humanVisits ?? 0;
-    const botVisits = realtimeData?.botVisits ?? 0;
+  readonly humanPercentage = computed(() => {
+    const humanVisits = this.humanVisits();
+    const botVisits = this.botVisits();
     const total = humanVisits + botVisits;
 
     if (total === 0) return 0;
     return Math.round((humanVisits / total) * 100);
-  }
+  });
 
-  getBotPercentage(): number {
-    return 100 - this.getHumanPercentage();
-  }
+  readonly botPercentage = computed(() => 100 - this.humanPercentage());
 
-  // Méthodes pour la carte Activité Temps Réel
-  getUniqueVisitors(): number {
+  readonly uniqueVisitors = computed(() => {
     // Simulation - dans un vrai cas, ce serait une donnée distincte
-    return Math.round((this.realtimeData()?.humanVisits ?? 0) * 0.8);
-  }
+    return Math.round(this.humanVisits() * 0.8);
+  });
 
-  getTotalVisits(): number {
-    return this.realtimeData()?.totalVisits ?? 0;
-  }
-
-  getLastUpdateTime(): string {
+  readonly lastUpdateTime = computed(() => {
     return new Date().toLocaleTimeString('fr-FR', {
       hour: '2-digit',
       minute: '2-digit',
     });
-  }
+  });
 
-  getPerformanceStatus(): 'excellent' | 'good' | 'needs-attention' {
-    const humanPercentage = this.getHumanPercentage();
-    const totalVisits = this.getTotalVisits();
+  readonly performanceStatus = computed<'excellent' | 'good' | 'needs-attention'>(() => {
+    const humanPercentage = this.humanPercentage();
+    const totalVisits = this.totalVisits();
 
     if (humanPercentage >= 70 && totalVisits > 20) {
       return 'excellent';
@@ -462,10 +445,10 @@ export class CounterAdmin {
     } else {
       return 'needs-attention';
     }
-  }
+  });
 
-  getPerformanceIcon(): string {
-    const status = this.getPerformanceStatus();
+  readonly performanceIcon = computed(() => {
+    const status = this.performanceStatus();
     switch (status) {
       case 'excellent':
         return 'noto:rocket';
@@ -476,10 +459,10 @@ export class CounterAdmin {
       default:
         return 'nimbus:stats';
     }
-  }
+  });
 
-  getPerformanceLabel(): string {
-    const status = this.getPerformanceStatus();
+  readonly performanceLabel = computed(() => {
+    const status = this.performanceStatus();
     switch (status) {
       case 'excellent':
         return 'Excellent';
@@ -490,12 +473,12 @@ export class CounterAdmin {
       default:
         return 'Performance';
     }
-  }
+  });
 
-  getPerformanceMessage(): string {
-    const status = this.getPerformanceStatus();
-    const humanPercentage = this.getHumanPercentage();
-    const totalVisits = this.getTotalVisits();
+  readonly performanceMessage = computed(() => {
+    const status = this.performanceStatus();
+    const humanPercentage = this.humanPercentage();
+    const totalVisits = this.totalVisits();
 
     switch (status) {
       case 'excellent':
@@ -509,10 +492,55 @@ export class CounterAdmin {
       default:
         return 'Analyse en cours...';
     }
-  }
+  });
 
   readonly cvGrowthPercentage = computed(() => {
     const current = this.cv()?.downloadCount ?? 0;
     return current > 0 ? Math.floor(Math.random() * 20 - 5) : null;
   });
+
+  // Méthodes pour rester compatible avec le template (déprécié, utiliser les computed à la place)
+  getHumanVisits(): number {
+    return this.humanVisits();
+  }
+
+  getBotVisits(): number {
+    return this.botVisits();
+  }
+
+  getHumanPercentage(): number {
+    return this.humanPercentage();
+  }
+
+  getBotPercentage(): number {
+    return this.botPercentage();
+  }
+
+  getUniqueVisitors(): number {
+    return this.uniqueVisitors();
+  }
+
+  getTotalVisits(): number {
+    return this.totalVisits();
+  }
+
+  getLastUpdateTime(): string {
+    return this.lastUpdateTime();
+  }
+
+  getPerformanceStatus(): 'excellent' | 'good' | 'needs-attention' {
+    return this.performanceStatus();
+  }
+
+  getPerformanceIcon(): string {
+    return this.performanceIcon();
+  }
+
+  getPerformanceLabel(): string {
+    return this.performanceLabel();
+  }
+
+  getPerformanceMessage(): string {
+    return this.performanceMessage();
+  }
 }
