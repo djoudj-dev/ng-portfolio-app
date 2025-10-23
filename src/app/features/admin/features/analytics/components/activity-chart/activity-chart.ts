@@ -21,15 +21,15 @@ interface ChartData {
   imports: [SvgIcon],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <div class="bg-background rounded-2xl border border-primary/40 shadow-lg shadow-primary/20 backdrop-blur p-6 space-y-6 hover:shadow-xl hover:shadow-primary/30 transition-all duration-200">
+    <div class="bg-background/80 backdrop-blur-xl rounded-2xl border border-accent shadow-xl shadow-primary/10 p-6 space-y-6 hover:shadow-2xl hover:shadow-primary/20 transition-all duration-300">
       <div class="flex items-center justify-between">
         <div class="flex items-center gap-3">
           <div
-            class="w-12 h-12 bg-gradient-to-br from-primary/20 to-accent/20 border border-primary/30 rounded-xl flex items-center justify-center shadow-sm"
+            class="w-12 h-12 bg-gradient-to-br from-primary/20 to-accent/20 border border-accent rounded-xl flex items-center justify-center shadow-lg shadow-primary/20"
           >
             <app-svg-icon
               name="ph:activity"
-              class="w-6 h-6 text-primary"
+              class="w-6 h-6 text-text"
               width="24"
               height="24"
               />
@@ -47,7 +47,7 @@ interface ChartData {
                 class="animate-spin rounded-full h-4 w-4 border-2 border-primary border-t-transparent"
               ></div>
             } @else {
-              <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+              <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse shadow-sm shadow-green-500"></span>
             }
             <span class="text-sm text-secondary">{{ getCurrentTime() }}</span>
           </div>
@@ -62,26 +62,26 @@ interface ChartData {
           <div class="flex items-center justify-between">
             <h4 class="text-lg font-semibold text-text">Répartition des visiteurs (7 jours)</h4>
             <div class="flex items-center gap-4 text-sm">
-              <div class="flex items-center gap-2">
+              <div class="flex items-center gap-2 px-3 py-1.5 bg-green-500/10 border border-green-500/30 rounded-full backdrop-blur-sm">
                 <div
-                  class="w-3 h-3 bg-gradient-to-r from-green-400 to-green-600 rounded-sm"
+                  class="w-3 h-3 bg-gradient-to-r from-green-400 to-green-600 rounded-sm shadow-sm"
                 ></div>
-                <span class="text-secondary">Visiteurs</span> :
-                <div class="text-sm font-bold text-green-600">{{ totals().humans }}</div>
+                <span class="text-secondary font-medium">Visiteurs</span>
+                <span class="text-sm font-bold text-green-600">{{ totals().humans }}</span>
               </div>
-              <div class="flex items-center gap-2">
-                <div
-                  class="w-3 h-3 bg-gradient-to-r from-orange-400 to-orange-600 rounded-sm"
-                ></div>
-                @if (totals().bots > 0) {
-                  <span class="text-secondary">Robots/Crawlers</span> :
-                  <div class="text-xs font-medium text-accent-600">{{ totals().bots }}</div>
-                }
-              </div>
+              @if (totals().bots > 0) {
+                <div class="flex items-center gap-2 px-3 py-1.5 bg-orange-500/10 border border-orange-500/30 rounded-full backdrop-blur-sm">
+                  <div
+                    class="w-3 h-3 bg-gradient-to-r from-orange-400 to-orange-600 rounded-sm shadow-sm"
+                  ></div>
+                  <span class="text-secondary font-medium">Robots</span>
+                  <span class="text-sm font-bold text-orange-600">{{ totals().bots }}</span>
+                </div>
+              }
             </div>
           </div>
 
-          <div class="bg-background border border-primary/30 rounded-xl p-4 backdrop-blur shadow-sm">
+          <div class="bg-background/60 backdrop-blur-sm border border-accent rounded-xl p-4 shadow-inner">
             <div class="h-64 flex items-end justify-between gap-2">
               @for (day of chartData(); track day.date) {
                 <div class="flex-1 flex flex-col items-center group cursor-pointer">
@@ -89,29 +89,29 @@ interface ChartData {
                     <div class="flex flex-col justify-end h-full">
                       @if (day.botHeight > 0) {
                         <div
-                          class="w-full bg-gradient-to-t from-orange-500 to-orange-400 rounded-t-lg shadow-sm transition-all duration-300 group-hover:shadow-lg"
+                          class="w-full bg-gradient-to-t from-orange-500 to-orange-400 rounded-t-lg shadow-md transition-all duration-300 group-hover:shadow-xl group-hover:shadow-orange-500/30"
                           [style.height.px]="day.botHeight"
                           [title]="day.botVisits + ' bots le ' + day.day"
                         ></div>
                       }
 
                       <div
-                        class="w-full bg-gradient-to-t from-green-500 to-green-400 shadow-md transition-all duration-300 group-hover:shadow-lg group-hover:scale-105"
+                        class="w-full bg-gradient-to-t from-green-500 to-green-400 shadow-md transition-all duration-300 group-hover:shadow-xl group-hover:shadow-green-500/30 group-hover:scale-105"
                         [class.rounded-lg]="day.botHeight === 0"
                         [class.rounded-b-lg]="day.botHeight > 0"
                         [style.height.px]="day.humanHeight"
                         [title]="day.humanVisits + ' visiteurs le ' + day.day"
                       >
                         <div
-                          class="absolute inset-0 bg-gradient-to-t from-transparent to-white/10 rounded-b-lg opacity-0 group-hover:opacity-100 transition-opacity"
+                          class="absolute inset-0 bg-gradient-to-t from-transparent to-white/20 rounded-b-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                         ></div>
                       </div>
                     </div>
                   </div>
 
-                  <div class="flex items-center justify-center space-x-2">
-                    <div class="text-xs text-secondary font-medium">{{ day.day }}</div>
-                    <div class="text-xs text-gray-500">{{ day.date }}</div>
+                  <div class="flex flex-col items-center space-y-1">
+                    <div class="text-xs text-text font-semibold">{{ day.day }}</div>
+                    <div class="text-xs text-secondary">{{ day.date }}</div>
                   </div>
                 </div>
               }
