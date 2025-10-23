@@ -1,3 +1,4 @@
-export * from './services/analytics-service';
+// Explicit exports to avoid circular dependencies
+export { AnalyticsService } from './services/analytics-service';
 export * from './interfaces/analytics.interface';
-export * from './components/activity-chart/activity-chart';
+export { ActivityChartComponent } from './components/activity-chart/activity-chart';

@@ -1,6 +1,6 @@
-// Components
-export * from './components/admin-sidebar';
-export * from './components/admin-nav-link';
+// Components exports (explicit to avoid circular deps)
+export { AdminSidebar } from './components/admin-sidebar';
+export { AdminNavLink } from './components/admin-nav-link';
 
 // Services
 export * from './services/admin-resource-service';
