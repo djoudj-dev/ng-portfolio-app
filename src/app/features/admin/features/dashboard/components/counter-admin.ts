@@ -19,12 +19,12 @@ import { SvgIcon } from '@shared/ui/icon-svg/icon-svg';
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
         @for (card of counterCards(); track card.id) {
           <article
-            class="bg-background rounded-2xl border border-primary/40 shadow-lg shadow-primary/20 backdrop-blur hover:shadow-xl hover:shadow-primary/30 overflow-hidden group h-28 transition-all duration-200 hover:-translate-y-1"
+            class="bg-background/80 backdrop-blur-xl rounded-2xl border border-accent shadow-xl shadow-primary/10 hover:shadow-2xl hover:shadow-primary/20 overflow-hidden group h-28 transition-all duration-300 hover:-translate-y-1"
           >
             <div class="px-6 py-4 h-full flex flex-col justify-center">
               <div class="flex items-center gap-3">
                 <div
-                  class="w-14 h-14 bg-gradient-to-br from-primary/20 to-accent/20 rounded-xl flex items-center justify-center border border-primary/30 group-hover:scale-110 transition-transform duration-200"
+                  class="w-14 h-14 bg-gradient-to-br from-primary/20 to-accent/20 rounded-xl flex items-center justify-center border border-accent group-hover:scale-110 transition-transform duration-300"
                 >
                   <app-svg-icon
                     [name]="card.icon"
@@ -40,18 +40,18 @@ import { SvgIcon } from '@shared/ui/icon-svg/icon-svg';
                       <span
                         [class]="
                           card.badge.type === 'positive'
-                            ? 'text-green-600 bg-green-100'
+                            ? 'text-green-600 bg-green-500/10 border-green-500/30'
                             : card.badge.type === 'negative'
-                              ? 'text-red-600 bg-red-100'
-                              : 'text-gray-600 bg-gray-100'
+                              ? 'text-red-600 bg-red-500/10 border-red-500/30'
+                              : 'text-secondary bg-accent/10 border-accent'
                         "
-                        class="text-sm font-medium px-2 py-1 rounded-full"
+                        class="text-xs font-semibold px-2 py-1 rounded-full border backdrop-blur-sm"
                       >
                         {{ card.badge.value }}
                       </span>
                     }
                   </div>
-                  <p class="text-text text-xs font-medium truncate">{{ card.title }}</p>
+                  <p class="text-secondary text-xs font-medium truncate">{{ card.title }}</p>
                 </div>
               </div>
             </div>
@@ -63,25 +63,25 @@ import { SvgIcon } from '@shared/ui/icon-svg/icon-svg';
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <!-- Carte Répartition des Visiteurs -->
         <article
-          class="bg-background rounded-2xl border border-primary/40 shadow-lg shadow-primary/20 backdrop-blur overflow-hidden group hover:shadow-xl hover:shadow-primary/30 transition-all duration-200 hover:-translate-y-1"
+          class="bg-background/80 backdrop-blur-xl rounded-2xl border border-accent shadow-xl shadow-primary/10 hover:shadow-2xl hover:shadow-primary/20 overflow-hidden group transition-all duration-300 hover:-translate-y-1"
         >
           <div class="px-8 py-6 space-y-4">
             <!-- Header -->
             <div class="flex items-center gap-4">
               <div
-                class="w-16 h-16 bg-gradient-to-br from-primary/20 to-accent/20 rounded-2xl flex items-center justify-center border border-primary/30 group-hover:scale-105 transition-all duration-300 shadow-sm"
+                class="w-16 h-16 bg-gradient-to-br from-primary/20 to-accent/20 rounded-2xl flex items-center justify-center border border-accent group-hover:scale-110 transition-all duration-300 shadow-lg shadow-primary/20"
               >
                 <app-svg-icon
                   name="lucide:candlestick-chart"
                   width="32"
                   height="32"
-                  class="h-8 w-8 opacity-80 group-hover:opacity-100 transition-opacity duration-300 text-text"
+                  class="h-8 w-8 text-text group-hover:scale-110 transition-transform duration-300"
                   />
               </div>
               <div>
                 <h3 class="text-xl font-bold text-text">Répartition des Visiteurs</h3>
-                <p class="text-xs text-text flex items-center gap-2">
-                  <span class="w-2 h-2 bg-primary rounded-full animate-pulse"></span>
+                <p class="text-xs text-secondary flex items-center gap-2">
+                  <span class="w-2 h-2 bg-primary rounded-full animate-pulse shadow-sm shadow-primary"></span>
                   Dernières 24h
                 </p>
               </div>
@@ -91,11 +91,11 @@ import { SvgIcon } from '@shared/ui/icon-svg/icon-svg';
             <div class="space-y-3">
               <!-- Ligne Visiteurs -->
               <div
-                class="flex justify-between items-center p-3 bg-gradient-to-r from-green-600 to-green-400  rounded-xl border border-green-200/50  backdrop-blur-sm"
+                class="flex justify-between items-center p-3 bg-gradient-to-r from-green-500/10 to-green-400/10 rounded-xl border border-green-500/30 backdrop-blur-sm transition-all duration-300 hover:shadow-lg hover:shadow-green-500/20"
               >
                 <div class="flex items-center gap-3">
                   <div
-                    class="w-4 h-4 bg-gradient-to-br from-green-400 to-green-600 rounded-full shadow-md ring-2 ring-green-200/50"
+                    class="w-4 h-4 bg-gradient-to-br from-green-400 to-green-600 rounded-full shadow-md ring-2 ring-green-500/20"
                   ></div>
                   <span class="text-sm font-medium text-text">Visiteurs</span>
                 </div>
@@ -104,11 +104,11 @@ import { SvgIcon } from '@shared/ui/icon-svg/icon-svg';
 
               <!-- Ligne Bots -->
               <div
-                class="flex justify-between items-center p-3 bg-gradient-to-r from-accent-600 to-accent-400  rounded-xl border border-orange-200/50  backdrop-blur-sm"
+                class="flex justify-between items-center p-3 bg-gradient-to-r from-orange-500/10 to-orange-400/10 rounded-xl border border-orange-500/30 backdrop-blur-sm transition-all duration-300 hover:shadow-lg hover:shadow-orange-500/20"
               >
                 <div class="flex items-center gap-3">
                   <div
-                    class="w-4 h-4 bg-gradient-to-br from-accent-400 to-accent-600 rounded-full shadow-md ring-2 ring-accent-200/50"
+                    class="w-4 h-4 bg-gradient-to-br from-orange-400 to-orange-600 rounded-full shadow-md ring-2 ring-orange-500/20"
                   ></div>
                   <span class="text-sm font-medium text-text">Bots</span>
                 </div>
@@ -116,26 +116,26 @@ import { SvgIcon } from '@shared/ui/icon-svg/icon-svg';
               </div>
 
               <!-- Barre de progression -->
-              <div class="space-y-3">
+              <div class="space-y-3 pt-2">
                 <div
-                  class="w-full bg-gradient-to-r from-accent/20 via-accent/15 to-accent/20 rounded-full h-4 overflow-hidden border border-accent/30 shadow-inner"
+                  class="w-full bg-accent/20 rounded-full h-4 overflow-hidden border border-accent shadow-inner"
                 >
                   <div
                     class="h-full bg-gradient-to-r from-green-500 via-green-400 to-green-300 rounded-full transition-all duration-1000 shadow-sm relative"
                     [style.width.%]="getHumanPercentage()"
                   >
                     <div
-                      class="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent rounded-full"
+                      class="absolute inset-0 bg-gradient-to-r from-white/30 to-transparent rounded-full"
                     ></div>
                   </div>
                 </div>
-                <div class="flex justify-between text-xs font-medium">
+                <div class="flex justify-between text-xs font-semibold">
                   <span
-                    class="text-green-600 px-3 py-1.5 bg-background rounded-full border border-accent"
+                    class="text-green-600 px-3 py-1.5 bg-green-500/10 rounded-full border border-green-500/30 backdrop-blur-sm"
                     >{{ getHumanPercentage() }}% Visiteurs</span
                   >
                   <span
-                    class="text-accent-600  px-3 py-1.5 bg-background rounded-full border border-accent"
+                    class="text-orange-600 px-3 py-1.5 bg-orange-500/10 rounded-full border border-orange-500/30 backdrop-blur-sm"
                     >{{ getBotPercentage() }}% Bots</span
                   >
                 </div>
@@ -146,25 +146,25 @@ import { SvgIcon } from '@shared/ui/icon-svg/icon-svg';
 
         <!-- Carte Activité Temps Réel -->
         <article
-          class="bg-background rounded-2xl border border-primary/40 shadow-lg shadow-primary/20 backdrop-blur overflow-hidden group hover:shadow-xl hover:shadow-primary/30 transition-all duration-200 hover:-translate-y-1"
+          class="bg-background/80 backdrop-blur-xl rounded-2xl border border-accent shadow-xl shadow-primary/10 hover:shadow-2xl hover:shadow-primary/20 overflow-hidden group transition-all duration-300 hover:-translate-y-1"
         >
           <div class="px-8 py-6 space-y-4">
             <!-- Header -->
             <div class="flex items-center gap-4">
               <div
-                class="w-16 h-16 bg-gradient-to-br from-primary/20 to-accent/20 rounded-2xl flex items-center justify-center border border-primary/30 group-hover:scale-105 transition-all duration-300 shadow-sm"
+                class="w-16 h-16 bg-gradient-to-br from-primary/20 to-accent/20 rounded-2xl flex items-center justify-center border border-accent group-hover:scale-110 transition-all duration-300 shadow-lg shadow-primary/20"
               >
                 <app-svg-icon
                   name="nimbus:stats"
                   width="32"
                   height="32"
-                  class="h-8 w-8 opacity-80 group-hover:opacity-100 transition-opacity duration-300 text-text"
+                  class="h-8 w-8 text-text group-hover:scale-110 transition-transform duration-300"
                   />
               </div>
               <div>
                 <h3 class="text-xl font-bold text-text">Activité Temps Réel</h3>
-                <p class="text-xs text-text flex items-center gap-2">
-                  <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                <p class="text-xs text-secondary flex items-center gap-2">
+                  <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse shadow-sm shadow-green-500"></span>
                   Mise à jour: {{ getLastUpdateTime() }}
                 </p>
               </div>
@@ -174,65 +174,65 @@ import { SvgIcon } from '@shared/ui/icon-svg/icon-svg';
             <div class="grid grid-cols-2 gap-4">
               <!-- Visiteurs Uniques -->
               <div
-                class="text-center p-4 bg-background rounded-2xl border border-accent backdrop-blur-sm hover:scale-105 group/metric"
+                class="text-center p-4 bg-background/60 backdrop-blur-sm rounded-2xl border border-accent/60 hover:scale-105 hover:shadow-lg hover:shadow-blue-500/10 transition-all duration-300 group/metric"
               >
                 <div class="flex items-center justify-center mb-2">
                   <div
-                    class="w-3 h-3 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full shadow-md ring-2 ring-blue-200/50"
+                    class="w-3 h-3 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full shadow-md ring-2 ring-blue-500/20"
                   ></div>
                 </div>
                 <div
-                  class="text-2xl font-bold text-text group-hover/metric:scale-110 transition-transform duration-200"
+                  class="text-2xl font-bold text-text group-hover/metric:scale-110 transition-transform duration-300"
                 >
                   {{ getUniqueVisitors() }}
                 </div>
-                <div class="text-xs font-medium text-text">Visiteurs uniques</div>
+                <div class="text-xs font-medium text-secondary mt-1">Visiteurs uniques</div>
               </div>
 
               <!-- Total Visites -->
               <div
-                class="text-center p-4 bg-background rounded-2xl border border-accent backdrop-blur-sm hover:scale-105 group/metric"
+                class="text-center p-4 bg-background/60 backdrop-blur-sm rounded-2xl border border-accent/60 hover:scale-105 hover:shadow-lg hover:shadow-purple-500/10 transition-all duration-300 group/metric"
               >
                 <div class="flex items-center justify-center mb-2">
                   <div
-                    class="w-3 h-3 bg-gradient-to-br from-purple-400 to-purple-600 rounded-full shadow-md ring-2 ring-purple-200/50"
+                    class="w-3 h-3 bg-gradient-to-br from-purple-400 to-purple-600 rounded-full shadow-md ring-2 ring-purple-500/20"
                   ></div>
                 </div>
                 <div
-                  class="text-2xl font-bold text-text group-hover/metric:scale-110 transition-transform duration-200"
+                  class="text-2xl font-bold text-text group-hover/metric:scale-110 transition-transform duration-300"
                 >
                   {{ getTotalVisits() }}
                 </div>
-                <div class="text-xs font-medium text-text mt-1">Total visites</div>
+                <div class="text-xs font-medium text-secondary mt-1">Total visites</div>
               </div>
 
               <!-- Taux de Bots -->
               <div
-                class="text-center p-4 bg-background rounded-2xl border border-accent backdrop-blur-sm hover:scale-105 group/metric"
+                class="text-center p-4 bg-background/60 backdrop-blur-sm rounded-2xl border border-accent/60 hover:scale-105 hover:shadow-lg hover:shadow-orange-500/10 transition-all duration-300 group/metric"
               >
                 <div class="flex items-center justify-center mb-2">
                   <div
-                    class="w-3 h-3 bg-gradient-to-br from-orange-400 to-orange-600 rounded-full shadow-md ring-2 ring-orange-200/50"
+                    class="w-3 h-3 bg-gradient-to-br from-orange-400 to-orange-600 rounded-full shadow-md ring-2 ring-orange-500/20"
                   ></div>
                 </div>
                 <div
-                  class="text-2xl font-bold text-text group-hover/metric:scale-110 transition-transform duration-200"
+                  class="text-2xl font-bold text-text group-hover/metric:scale-110 transition-transform duration-300"
                 >
                   {{ getBotPercentage() }}%
                 </div>
-                <div class="text-xs font-medium text-text mt-1">Taux de bots</div>
+                <div class="text-xs font-medium text-secondary mt-1">Taux de bots</div>
               </div>
 
               <!-- Performance -->
               <div
-                class="text-center p-4 bg-background rounded-2xl border border-accent backdrop-blur-sm hover:scale-105 group/metric"
+                class="text-center p-4 bg-background/60 backdrop-blur-sm rounded-2xl border border-accent/60 hover:scale-105 hover:shadow-lg hover:shadow-primary/10 transition-all duration-300 group/metric"
               >
                 <div class="flex items-center justify-center mb-3">
                   <app-svg-icon
                     [name]="getPerformanceIcon()"
                     width="48"
                     height="48"
-                    class="w-12 h-12 group-hover/metric:scale-110 transition-transform duration-200"
+                    class="w-12 h-12 group-hover/metric:scale-110 transition-transform duration-300"
                     [class]="
                       getPerformanceStatus() === 'excellent'
                         ? 'text-green-600'
@@ -242,7 +242,7 @@ import { SvgIcon } from '@shared/ui/icon-svg/icon-svg';
                     "
                   />
                 </div>
-                <div class="text-xs font-medium text-text mt-1">
+                <div class="text-xs font-medium text-secondary mt-1">
                   {{ getPerformanceLabel() }}
                 </div>
               </div>
@@ -250,7 +250,7 @@ import { SvgIcon } from '@shared/ui/icon-svg/icon-svg';
 
             <!-- Message de performance -->
             <div
-              class="mt-4 p-4 bg-background rounded-xl border border-accent shadow-sm backdrop-blur-sm"
+              class="mt-4 p-4 bg-background/60 backdrop-blur-sm rounded-xl border border-accent shadow-sm hover:shadow-md hover:shadow-primary/10 transition-all duration-300"
             >
               <div class="flex items-center justify-center gap-3">
                 <app-svg-icon

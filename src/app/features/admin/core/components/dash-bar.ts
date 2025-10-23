@@ -15,12 +15,12 @@ interface NavItem {
   imports: [RouterLink, RouterLinkActive, SvgIcon],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <nav class="sticky top-0 z-50 bg-background/95 backdrop-blur-lg border-b border-primary/40 shadow-lg">
+    <nav class="sticky top-0 z-50 bg-background/95 backdrop-blur-xl border-b border-accent shadow-lg shadow-primary/10">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between h-16">
           <!-- Logo / Brand -->
           <div class="flex items-center gap-3">
-            <div class="w-10 h-10 bg-gradient-to-br from-primary to-accent rounded-xl flex items-center justify-center shadow-lg">
+            <div class="w-11 h-11 bg-gradient-to-br from-primary via-primary/90 to-accent rounded-xl flex items-center justify-center shadow-lg shadow-primary/30 ring-2 ring-primary/20 hover:scale-105 transition-transform duration-300">
               <app-svg-icon
                 name="lucide:layout-dashboard"
                 class="w-6 h-6 text-white"
@@ -29,29 +29,31 @@ interface NavItem {
               />
             </div>
             <div class="hidden sm:block">
-              <h1 class="text-xl font-bold text-text">Dashboard Admin</h1>
+              <h1 class="text-xl font-bold text-text bg-gradient-to-r from-primary to-accent bg-clip-text">
+                Dashboard Admin
+              </h1>
             </div>
           </div>
 
           <!-- Navigation Links -->
-          <div class="flex items-center gap-2">
+          <div class="flex items-center gap-1.5">
             @for (item of navItems; track item.route) {
               <a
                 [routerLink]="'/admin' + item.route"
-                routerLinkActive="bg-primary text-white shadow-md"
+                routerLinkActive="bg-gradient-to-r from-primary to-accent text-white shadow-lg shadow-primary/30"
                 [routerLinkActiveOptions]="{ exact: item.route === '' }"
-                class="relative flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium text-text hover:bg-primary/10 transition-all duration-200 group"
+                class="relative flex items-center gap-2 px-3 py-2.5 rounded-xl text-sm font-medium text-text hover:bg-accent hover:shadow-md transition-all duration-300 group border border-transparent hover:border-accent"
               >
                 <app-svg-icon
                   [name]="item.icon"
-                  class="w-5 h-5 group-hover:scale-110 transition-transform"
+                  class="w-5 h-5 group-hover:scale-110 transition-transform duration-300"
                   width="20"
                   height="20"
                 />
                 <span class="hidden md:inline">{{ item.label }}</span>
 
                 @if (item.badge) {
-                  <span class="absolute -top-1 -right-1 px-1.5 py-0.5 text-xs font-bold rounded-full bg-red-500 text-white">
+                  <span class="absolute -top-1 -right-1 px-1.5 py-0.5 text-xs font-bold rounded-full bg-gradient-to-r from-red-500 to-red-600 text-white shadow-lg shadow-red-500/50 animate-pulse">
                     {{ item.badge }}
                   </span>
                 }
@@ -61,19 +63,19 @@ interface NavItem {
 
           <!-- User Menu -->
           <div class="flex items-center gap-3">
-            <div class="hidden sm:flex flex-col items-end">
+            <div class="hidden sm:flex flex-col items-end bg-accent/30 px-4 py-2 rounded-xl border border-accent">
               <span class="text-sm font-semibold text-text">{{ displayName }}</span>
               <span class="text-xs text-secondary">{{ userEmail() }}</span>
             </div>
 
             <button
               (click)="onLogout()"
-              class="flex items-center gap-2 px-3 py-2 rounded-lg bg-red-500/10 hover:bg-red-500/20 text-red-600 transition-colors"
+              class="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-red-500/10 to-red-600/10 hover:from-red-500/20 hover:to-red-600/20 text-red-600 transition-all duration-300 border border-red-500/20 hover:border-red-500/40 hover:shadow-lg hover:shadow-red-500/20 group"
               title="Déconnexion"
             >
               <app-svg-icon
                 name="lucide:log-out"
-                class="w-5 h-5"
+                class="w-5 h-5 group-hover:scale-110 transition-transform duration-300"
                 width="20"
                 height="20"
               />
