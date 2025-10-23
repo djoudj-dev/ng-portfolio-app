@@ -30,6 +30,16 @@ export const ADMIN_ROUTES: Routes = [
           import('./features/cv/pages/cv-admin.page').then((m) => m.CvAdminComponent),
       },
       {
+        path: 'projects',
+        loadComponent: () =>
+          import('@features/projects/components/project-manager').then((m) => m.ProjectManagerComponent),
+      },
+      {
+        path: 'settings',
+        loadComponent: () =>
+          import('./features/settings/pages/settings.page').then((m) => m.AdminSettingsPage),
+      },
+      {
         path: '**',
         redirectTo: '',
       },
