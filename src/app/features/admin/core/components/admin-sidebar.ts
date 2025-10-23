@@ -1,8 +1,6 @@
-import { Component, ChangeDetectionStrategy, signal, computed, inject } from '@angular/core';
+import { Component, ChangeDetectionStrategy, signal, computed, inject, effect, DestroyRef } from '@angular/core';
 import { NgOptimizedImage } from '@angular/common';
-import { RouterLink, RouterLinkActive, Router } from '@angular/router';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { map } from 'rxjs/operators';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from '@core/services/auth';
 import { NAVIGATION_LINKS } from '@features/admin';
 import type { NavigationLink } from '@features/admin';
@@ -194,32 +192,15 @@ import { SvgIcon } from '@shared/ui/icon-svg/icon-svg';
       </div>
     </aside>
   `,
-  styles: `
-    :host ::ng-deep .scrollbar-thin {
-      scrollbar-width: thin;
-    }
-
-    :host ::ng-deep .scrollbar-thin::-webkit-scrollbar {
-      width: 6px;
-    }
-
-    :host ::ng-deep .scrollbar-thin::-webkit-scrollbar-thumb {
-      background-color: rgba(156, 163, 175, 0.2);
-      border-radius: 3px;
-    }
-
-    :host ::ng-deep .scrollbar-thin::-webkit-scrollbar-thumb:hover {
-      background-color: rgba(156, 163, 175, 0.4);
-    }
-  `,
 })
 export class AdminSidebar {
-  private readonly router = inject(Router);
   private readonly authService = inject(AuthService);
+  private readonly destroyRef = inject(DestroyRef);
 
   // État du sidebar
   readonly isOpen = signal(false);
   readonly isExpanded = signal(true);
+  readonly isMobile = signal(false);
 
   // Navigation links
   protected readonly navigationLinks: ReadonlyArray<NavigationLink> = NAVIGATION_LINKS;
@@ -244,16 +225,35 @@ export class AdminSidebar {
     return name.substring(0, 2).toUpperCase();
   });
 
-  // Détection mobile
-  readonly isMobile = computed(() => {
-    if (typeof window === 'undefined') return false;
-    return window.innerWidth < 1024;
-  });
+  constructor() {
+    // Initialiser la détection mobile
+    if (typeof window !== 'undefined') {
+      this.isMobile.set(window.innerWidth < 1024);
 
-  // Route actuelle pour le titre
-  private readonly currentUrl = toSignal(this.router.events.pipe(map(() => this.router.url)), {
-    initialValue: this.router.url,
-  });
+      // ResizeObserver pour détecter les changements de taille
+      const resizeObserver = new ResizeObserver((entries) => {
+        for (const entry of entries) {
+          const width = entry.contentRect.width;
+          this.isMobile.set(width < 1024);
+        }
+      });
+
+      resizeObserver.observe(document.body);
+
+      // Cleanup automatique avec DestroyRef
+      this.destroyRef.onDestroy(() => {
+        resizeObserver.disconnect();
+      });
+    }
+
+    // Fermer automatiquement le sidebar mobile lors d'un changement de route
+    effect(() => {
+      if (this.isMobile() && this.isOpen()) {
+        // Permet de fermer le sidebar après navigation
+        this.isOpen.set(false);
+      }
+    });
+  }
 
   /**
    * Toggle l'ouverture du sidebar (mobile)
@@ -302,6 +302,8 @@ export class AdminSidebar {
   protected onLogout(): void {
     // À implémenter selon votre logique de déconnexion
     console.log('Logout clicked');
-    void this.router.navigate(['/']);
+    if (typeof window !== 'undefined') {
+      window.location.href = '/';
+    }
   }
 }

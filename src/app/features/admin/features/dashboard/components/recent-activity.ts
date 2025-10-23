@@ -1,5 +1,4 @@
-import { ChangeDetectorRef, ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { ChangeDetectionStrategy, Component, inject, signal, DestroyRef } from '@angular/core';
 import {
   type Activity,
   ActivityType,
@@ -9,7 +8,7 @@ import { SvgIcon } from '@shared/ui/icon-svg/icon-svg';
 
 @Component({
   selector: 'app-recent-activity',
-  imports: [CommonModule, SvgIcon],
+  imports: [SvgIcon],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="p-6 space-y-6">
@@ -81,29 +80,33 @@ import { SvgIcon } from '@shared/ui/icon-svg/icon-svg';
 })
 export class RecentActivityComponent {
   private readonly activityService = inject(ActivityService);
-  private readonly cdr = inject(ChangeDetectorRef);
+  private readonly destroyRef = inject(DestroyRef);
 
   readonly recentActivity = signal<Activity[]>([]);
+
+  constructor() {
+    // Chargement initial
+    void this.loadRecentActivities();
+
+    // Auto-refresh toutes les 2 minutes avec cleanup automatique
+    const refreshInterval = setInterval(() => {
+      void this.loadRecentActivities();
+    }, 120000);
+
+    // Cleanup automatique via DestroyRef
+    this.destroyRef.onDestroy(() => {
+      clearInterval(refreshInterval);
+    });
+  }
 
   private async loadRecentActivities(): Promise<void> {
     try {
       const activities = await this.activityService.getRecentActivities(5);
       this.recentActivity.set(activities);
-
-      this.cdr.markForCheck();
     } catch (error) {
       console.error('❌ Dashboard: Erreur lors du chargement des activités:', error);
       this.recentActivity.set([]);
-      this.cdr.markForCheck();
     }
-  }
-
-  constructor() {
-    this.loadRecentActivities();
-
-    setInterval(() => {
-      this.loadRecentActivities();
-    }, 120000);
   }
 
   getActivityTypeLabel(type: ActivityType): string {
