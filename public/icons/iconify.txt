@@ -113,3 +113,4 @@ lucide:external-link
 lucide:star
 lucide:upload
 lucide:folder-pen
+streamline:return-2-remix
