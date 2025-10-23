@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { CounterAdmin } from '@features/admin';
 import { RecentActivityComponent } from '@features/admin';
-import { ActivityChartComponent } from '@features/admin/features/analytics';
+import { ActivityChartComponent } from '@features/admin';
 
 @Component({
   selector: 'app-admin-dashboard',

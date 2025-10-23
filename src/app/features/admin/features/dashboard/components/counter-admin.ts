@@ -1,12 +1,12 @@
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { switchMap } from 'rxjs/operators';
-import { CounterCard } from '@features/admin/core/interfaces/counter-card.interface';
+import { CounterCard } from '@features/admin';
 import {
   COUNTER_CARDS_CONFIG,
   BIG_COUNTER_CARDS_CONFIG,
-} from '@features/admin/core/data/counter-cards.data';
-import { AdminResourceService } from '@features/admin/core/services/admin-resource-service';
+} from '@features/admin';
+import { AdminResourceService } from '@features/admin';
 import { SvgIcon } from '@shared/ui/icon-svg/icon-svg';
 
 @Component({
