@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { DashBar } from '@features/admin/core';
+import { DashBar } from './core/components/dash-bar';
 
 @Component({
   selector: 'app-admin-layout',
