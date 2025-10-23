@@ -82,21 +82,44 @@ interface ChartData {
           </div>
 
           <div class="bg-background/60 backdrop-blur-sm border border-accent rounded-xl p-4 shadow-inner">
-            <div class="h-64 flex items-end justify-between gap-2">
+            <div class="h-72 flex items-end justify-between gap-2">
               @for (day of chartData(); track day.date) {
                 <div class="flex-1 flex flex-col items-center group cursor-pointer">
+                  <!-- Nombre total de visites au-dessus de la colonne -->
+                  <div class="mb-2 min-h-[20px] flex items-end justify-center">
+                    <span class="text-xs font-bold text-text bg-accent/20 px-2 py-1 rounded-md border border-accent/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      {{ day.totalVisits }}
+                    </span>
+                  </div>
+
                   <div class="w-full mb-3 relative" style="height: 200px;">
-                    <div class="flex flex-col justify-end h-full">
+                    <div class="flex flex-col justify-end h-full relative">
+                      <!-- Nombre de visites affiché sur la colonne -->
+                      <div class="absolute inset-x-0 top-0 flex flex-col items-center justify-start z-10 pointer-events-none">
+                        <div class="bg-background/90 backdrop-blur-sm border border-accent px-2 py-1 rounded-lg shadow-lg">
+                          <div class="text-xs font-bold text-text">{{ day.totalVisits }}</div>
+                        </div>
+                      </div>
+
                       @if (day.botHeight > 0) {
                         <div
-                          class="w-full bg-gradient-to-t from-orange-500 to-orange-400 rounded-t-lg shadow-md transition-all duration-300 group-hover:shadow-xl group-hover:shadow-orange-500/30"
+                          class="w-full bg-gradient-to-t from-orange-500 to-orange-400 rounded-t-lg shadow-md transition-all duration-300 group-hover:shadow-xl group-hover:shadow-orange-500/30 relative"
                           [style.height.px]="day.botHeight"
                           [title]="day.botVisits + ' bots le ' + day.day"
-                        ></div>
+                        >
+                          <!-- Nombre de bots si significatif -->
+                          @if (day.botVisits > 0) {
+                            <div class="absolute inset-0 flex items-center justify-center">
+                              <span class="text-xs font-semibold text-white drop-shadow-md opacity-0 group-hover:opacity-100 transition-opacity">
+                                {{ day.botVisits }} 🤖
+                              </span>
+                            </div>
+                          }
+                        </div>
                       }
 
                       <div
-                        class="w-full bg-gradient-to-t from-green-500 to-green-400 shadow-md transition-all duration-300 group-hover:shadow-xl group-hover:shadow-green-500/30 group-hover:scale-105"
+                        class="w-full bg-gradient-to-t from-green-500 to-green-400 shadow-md transition-all duration-300 group-hover:shadow-xl group-hover:shadow-green-500/30 group-hover:scale-105 relative"
                         [class.rounded-lg]="day.botHeight === 0"
                         [class.rounded-b-lg]="day.botHeight > 0"
                         [style.height.px]="day.humanHeight"
@@ -105,6 +128,14 @@ interface ChartData {
                         <div
                           class="absolute inset-0 bg-gradient-to-t from-transparent to-white/20 rounded-b-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                         ></div>
+                        <!-- Nombre de visiteurs si significatif -->
+                        @if (day.humanVisits > 0 && day.humanHeight > 30) {
+                          <div class="absolute inset-0 flex items-center justify-center">
+                            <span class="text-xs font-semibold text-white drop-shadow-md opacity-0 group-hover:opacity-100 transition-opacity">
+                              {{ day.humanVisits }} 👤
+                            </span>
+                          </div>
+                        }
                       </div>
                     </div>
                   </div>
